@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الإدارة | كلين لايف</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <!-- ...existing code... -->
+    <!-- زر الترجمة تمت إزالته من لوحة التحكم -->
+  </header>
+  <main>
+    <h1>لوحة التحكم</h1>
+    <section class="dashboard-stats">
+      <div class="stat-card">
+        <div class="stat-title">عدد الحجوزات</div>
+        <div class="stat-value" id="stat-bookings">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">عدد الخدمات</div>
+        <div class="stat-value" id="stat-services">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">تقييم العملاء</div>
+        <div class="stat-value" id="stat-rating">0</div>
+      </div>
+    </section>
+    <section class="dashboard-section">
+      <h2>الحجوزات</h2>
+      <input type="text" id="search-bookings" placeholder="ابحث باسم العميل أو الخدمة..." style="margin-bottom:1rem;max-width:300px;">
+      <div class="dashboard-table-wrapper">
+        <table class="dashboard-table" id="bookings-table">
+          <thead>
+            <tr>
+              <th>الخدمة</th>
+              <th>التاريخ</th>
+              <th>الوقت</th>
+              <th>العميل</th>
+              <th>الجوال</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- سيتم تعبئة الحجوزات عبر JS -->
+          </tbody>
+        </table>
+      </div>
+      <button id="export-bookings">تصدير الحجوزات (xls)</button>
+    </section>
+    <section class="dashboard-section">
+      <h2>تقييمات العملاء</h2>
+      <div id="dashboard-feedback-list"></div>
+    </section>
+  </main>
+  <footer>
+    <!-- ...existing code... -->
+  </footer>
+  <script src="assets/js/admin.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

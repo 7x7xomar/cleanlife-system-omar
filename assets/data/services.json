@@ -1,0 +1,32 @@
+[
+  {
+    "id": "home-cleaning",
+    "name": "تنظيف المنازل",
+    "desc": "تنظيف شامل للمنازل والشقق باستخدام أفضل المواد.",
+    "icon": "home.png",
+    "features": ["تنظيف الأرضيات", "تعقيم الأسطح", "تنظيف النوافذ"],
+    "basePrice": 100,
+    "pricePerMeter": 2,
+    "pricePerRoom": 20
+  },
+  {
+    "id": "office-cleaning",
+    "name": "تنظيف المكاتب",
+    "desc": "خدمة تنظيف مخصصة للمكاتب والشركات.",
+    "icon": "office.png",
+    "features": ["تنظيف المكاتب", "تعقيم الأجهزة", "تنظيف الحمامات"],
+    "basePrice": 150,
+    "pricePerMeter": 3,
+    "pricePerRoom": 25
+  },
+  {
+    "id": "carpet-cleaning",
+    "name": "غسيل السجاد",
+    "desc": "غسيل وتعقيم السجاد والموكيت بأحدث الأجهزة.",
+    "icon": "carpet.png",
+    "features": ["غسيل بالبخار", "إزالة البقع", "تجفيف سريع"],
+    "basePrice": 80,
+    "pricePerMeter": 5,
+    "pricePerRoom": 0
+  }
+]

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>كلين لايف | CleanLife</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="assets/images/logo.png">
+</head>
+<body>
+  <header>
+    <nav>
+      <img src="assets/images/logo.png" alt="شعار كلين لايف" class="logo">
+      <ul>
+        <li><a href="index.html">الرئيسية</a></li>
+        <li><a href="services.html">خدماتنا</a></li>
+        <li><a href="booking.html">احجز خدمة</a></li>
+        <li><a href="pricing.html">الأسعار</a></li>
+        <li><a href="about.html">من نحن</a></li>
+        <li><a href="contact.html">تواصل معنا</a></li>
+        <li><a href="admin.html">لوحة الإدارة</a></li>
+      </ul>
+      <!-- <button id="theme-toggle" title="تغيير الوضع" aria-label="تغيير الوضع">🌙</button> -->
+      <button id="lang-toggle" title="ترجمة الصفحة" aria-label="ترجمة الصفحة" class="lang-btn">EN</button>
+    </nav>
+  </header>
+  <div id="welcome-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>مرحباً بك في كلين لايف!</h2>
+      <p>نحن هنا لنقدم لك أفضل تجربة تنظيف.</p>
+      <button id="close-modal">ابدأ التصفح</button>
+    </div>
+  </div>
+  <button id="scrollTopBtn" class="scroll-top hidden" title="إلى الأعلى">↑</button>
+  <main>
+    <section class="hero">
+      <h1>مرحباً بكم في كلين لايف</h1>
+      <p>أفضل خدمات التنظيف للمنازل والشركات في مدينتك</p>
+      <a href="booking.html" class="cta">احجز الآن</a>
+    </section>
+    <section class="steps">
+      <h2>كيف تعمل خدمتنا؟</h2>
+      <div class="steps-list" style="flex-wrap:nowrap;overflow-x:auto;">
+        <div class="step"><span>1</span><p>اختر الخدمة المناسبة</p></div>
+        <div class="step"><span>2</span><p>حدد الوقت والمكان</p></div>
+        <div class="step"><span>3</span><p>ادفع إلكترونياً أو عند الاستلام</p></div>
+        <div class="step"><span>4</span><p>استمتع بنظافة مثالية!</p></div>
+      </div>
+    </section>
+    <section class="features">
+      <h2>لماذا تختار كلين لايف؟</h2>
+      <div class="features-list" style="flex-wrap:nowrap;overflow-x:auto;">
+        <div class="feature"><h3>جودة عالية</h3><p>فريق مدرب ومواد صديقة للبيئة</p></div>
+        <div class="feature"><h3>سرعة ومرونة</h3><p>خدمة في نفس اليوم أو حسب رغبتك</p></div>
+        <div class="feature"><h3>أمان وموثوقية</h3><p>ضمان رضاك الكامل</p></div>
+        <div class="feature"><h3>دعم متواصل</h3><p>خدمة عملاء 24/7</p></div>
+      </div>
+    </section>
+    <section class="partners">
+      <h2>شركاؤنا</h2>
+      <div class="partners-list" style="gap:2.5rem;justify-content:center;align-items:center;flex-wrap:wrap;">
+        <!-- <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;">"شركة</p> -->
+        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;">شركة أرامكو </p>
+        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;">شركة سابك </p>
+        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;"> شركة الاتصالات السعودية </p>
+        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;"> الخطوط السعودية </p>
+        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;"> الشركة السعودية للكهرباء </p>
+      </div>
+    </section>
+    <section class="services-preview" id="services-preview">
+      <h2>معاينة خدماتنا</h2>
+      <div class="services-list" id="services-list">
+        <!-- سيتم تعبئة الخدمات تلقائياً عبر JS -->
+      </div>
+    </section>
+    <section class="testimonials">
+      <h2>آراء عملائنا</h2>
+      <div class="testimonials-slider" id="testimonials-slider">
+        <!-- سيتم تعبئة التقييمات عبر JS -->
+      </div>
+    </section>
+  </main>
+  <a href="https://wa.me/+966532256973" class="whatsapp-float" target="_blank" title="تواصل واتساب">💬</a>
+  <footer>
+    <div>جميع الحقوق محفوظة &copy; كلين لايف 2026</div>
+    <div><a href="contact.html">اتصل بنا</a></div>
+  </footer>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.getElementById('lang-toggle').onclick = function() {
+      if(document.documentElement.lang === 'ar') {
+        document.documentElement.lang = 'en';
+        document.body.dir = 'ltr';
+        document.querySelector('h1').textContent = 'Welcome to CleanLife';
+        document.querySelector('.hero p').textContent = 'The best cleaning services for homes and businesses in your city';
+        document.querySelector('.cta').textContent = 'Book Now';
+        document.querySelector('.steps h2').textContent = 'How does our service work?';
+        document.querySelectorAll('.step p')[0].textContent = 'Choose the right service';
+        document.querySelectorAll('.step p')[1].textContent = 'Select time and place';
+        document.querySelectorAll('.step p')[2].textContent = 'Pay online or on delivery';
+        document.querySelectorAll('.step p')[3].textContent = 'Enjoy perfect cleanliness!';
+        document.querySelector('.features h2').textContent = 'Why choose CleanLife?';
+        document.querySelectorAll('.feature h3')[0].textContent = 'High Quality';
+        document.querySelectorAll('.feature p')[0].textContent = 'Trained team and eco-friendly materials';
+        document.querySelectorAll('.feature h3')[1].textContent = 'Speed & Flexibility';
+        document.querySelectorAll('.feature p')[1].textContent = 'Same day service or as you wish';
+        document.querySelectorAll('.feature h3')[2].textContent = 'Continuous Support';
+        document.querySelectorAll('.feature p')[2].textContent = '24/7 customer service';
+        document.querySelectorAll('.feature h3')[3].textContent = 'Safety & Reliability';
+        document.querySelectorAll('.feature p')[3].textContent = 'Your full satisfaction guaranteed';
+        document.querySelector('.partners h2').textContent = 'Our Partners';
+        document.querySelector('.services-preview h2').textContent = 'Our Services Preview';
+        document.querySelector('.testimonials h2').textContent = 'Customer Reviews';
+        document.querySelector('footer div').innerHTML = 'All rights reserved &copy; CleanLife 2026';
+        document.querySelector('footer a').textContent = 'Contact Us';
+        this.textContent = 'AR';
+      } else {
+        location.reload(); // إعادة تحميل الصفحة للعربية
+      }
+    };
+  </script>
+</body>
+</html>

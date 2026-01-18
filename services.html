@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خدماتنا | كلين لايف</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <button id="lang-toggle" title="ترجمة الصفحة" aria-label="ترجمة الصفحة" class="lang-btn" style="margin-right:1rem;">EN</button>
+      <!-- <button id="theme-toggle" ...>🌙</button> -->
+    </nav>
+  </header>
+  <main>
+    <h1>خدماتنا</h1>
+    <div id="services-list">
+     
+    </div>
+  </main>
+  <footer>
+    
+  </footer>
+  <script src="assets/js/services.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.getElementById('lang-toggle').onclick = function() {
+      if(document.documentElement.lang === 'ar') {
+        document.documentElement.lang = 'en';
+        document.body.dir = 'ltr';
+        document.querySelector('h1').textContent = 'Our Services';
+        // ترجمة الخدمات
+        document.querySelectorAll('.service-card').forEach(card => {
+          const h3 = card.querySelector('h3');
+          const p = card.querySelector('p');
+          if(h3 && h3.textContent.includes('منزل')) h3.textContent = 'Home Cleaning';
+          if(h3 && h3.textContent.includes('مكتب')) h3.textContent = 'Office Cleaning';
+          if(h3 && h3.textContent.includes('سجاد')) h3.textContent = 'Carpet Cleaning';
+          if(p && p.textContent.includes('شامل')) p.textContent = 'Comprehensive cleaning for homes and apartments using the best materials.';
+          if(p && p.textContent.includes('مخصصة')) p.textContent = 'Custom cleaning service for offices and companies.';
+          if(p && p.textContent.includes('تعقيم')) p.textContent = 'Carpet and rug washing and sterilization with the latest equipment.';
+        });
+        this.textContent = 'AR';
+      } else {
+        location.reload();
+      }
+    };
+  </script>
+</body>
+</html>

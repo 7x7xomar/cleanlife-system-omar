@@ -1,0 +1,723 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+:root {
+  --main-color: #1abc9c;
+  --accent-color: #16a085;
+  --bg-color: #f8f8f8;
+  --text-color: #222;
+  --border-radius: 10px;
+  --transition: 0.3s;
+}
+body {
+  font-family: 'Cairo', Arial, sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  background: var(--main-color);
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+}
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color var(--transition);
+}
+nav a:hover {
+  color: var(--accent-color);
+}
+.logo {
+  height: 48px;
+}
+.hero {
+  background: linear-gradient(135deg, #1abc9c 60%, #16a085 100%);
+  color: #fff;
+  padding: 3rem 1rem;
+  text-align: center;
+  border-radius: var(--border-radius);
+  margin: 2rem auto;
+  max-width: 900px;
+}
+.cta {
+  display: inline-block;
+  background: #fff;
+  color: var(--main-color);
+  padding: 0.75rem 2rem;
+  border-radius: var(--border-radius);
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background var(--transition), color var(--transition);
+}
+.cta:hover {
+  background: var(--accent-color);
+  color: #fff;
+}
+.services-preview, #services-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+/* تحسين كروت الخدمات لتكون عصرية وجذابة أكثر */
+.service-card {
+  background: linear-gradient(135deg, #f8f8f8 60%, #e6fcfa 100%);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(26,188,156,0.10), 0 1.5px 6px rgba(22,160,133,0.07);
+  padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+  text-align: center;
+  transition: box-shadow 0.35s, transform 0.25s, background 0.3s;
+  position: relative;
+  /* overflow: hidden; */
+  border: 1.5px solid #e0f7f4;
+}
+.service-card:hover {
+  box-shadow: 0 8px 32px rgba(26,188,156,0.18), 0 2px 12px rgba(22,160,133,0.13);
+  transform: translateY(-10px) scale(1.04);
+  background: linear-gradient(135deg, #e6fcfa 60%, #d1f2eb 100%);
+  border-color: var(--main-color);
+}
+.service-card img {
+  height: 80px;
+  width: 80px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(26,188,156,0.10);
+  margin-bottom: 1.2rem;
+  padding: 14px;
+  object-fit: contain;
+  border: 2.5px solid #e0f7f4;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+.service-card:hover img {
+  box-shadow: 0 8px 32px rgba(26,188,156,0.18);
+  border: 2.5px solid var(--accent-color);
+}
+.service-card h3 {
+  font-size: 1.35rem;
+  color: var(--main-color);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.service-card p {
+  color: #444;
+  font-size: 1.05rem;
+  margin-bottom: 1.1rem;
+  min-height: 44px;
+}
+.service-card .cta {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--main-color) 60%, var(--accent-color) 100%);
+  color: #fff;
+  padding: 0.6rem 2.1rem;
+  border-radius: 24px;
+  font-size: 1.08rem;
+  margin-top: 0.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.13);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.18s;
+  letter-spacing: 0.2px;
+}
+.service-card .cta:hover {
+  background: linear-gradient(90deg, var(--accent-color) 60%, var(--main-color) 100%);
+  color: #fff;
+  transform: scale(1.11);
+  box-shadow: 0 4px 16px rgba(26,188,156,0.18);
+}
+.testimonials {
+  background: #fff;
+  border-radius: var(--border-radius);
+  margin: 4rem auto 2rem auto;
+  max-width: 900px;
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  box-shadow: 0 4px 24px rgba(26,188,156,0.09);
+  text-align: center;
+  position: relative;
+}
+.testimonials h2 {
+  margin-bottom: 2.2rem;
+  font-size: 2rem;
+  color: var(--main-color);
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+.testimonials-slider {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  justify-content: center;
+  align-items: stretch;
+  padding-bottom: 0.5rem;
+}
+.testimonial {
+  background: #f8f8f8;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.07);
+  padding: 1.2rem 1.5rem;
+  min-width: 220px;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 1.08rem;
+  color: #222;
+  transition: box-shadow 0.3s;
+}
+.testimonial p {
+  margin: 0 0 0.7rem 0;
+  font-style: italic;
+  color: #16a085;
+}
+.testimonial span {
+  color: #888;
+  font-size: 0.98rem;
+  align-self: flex-end;
+}
+footer {
+  margin-top: 2rem;
+  font-size: 1rem;
+}
+@media (max-width: 700px) {
+  nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .hero, .testimonials {
+    padding: 1.5rem 0.5rem;
+  }
+  .testimonials { padding: 1.2rem 0.5rem 1rem 0.5rem; margin-top: 2.5rem; }
+  .testimonials-slider { gap: 0.7rem; }
+}
+
+/* نافذة ترحيب */
+.modal {
+  position: fixed;
+  top: 0; right: 0; left: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal.hidden { display: none; }
+.modal-content {
+  background: #fff;
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  min-width: 260px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+}
+
+/* زر لأعلى */
+.scroll-top {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  background: var(--main-color);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  opacity: 0.8;
+  z-index: 999;
+  transition: opacity var(--transition), background var(--transition);
+}
+.scroll-top:hover { background: var(--accent-color); opacity: 1; }
+.scroll-top.hidden { display: none; }
+
+/* انتقالات للأقسام */
+section, .service-card, .testimonial {
+  transition: transform 0.5s, opacity 0.5s;
+}
+section.in-view, .service-card.in-view, .testimonial.in-view {
+  transform: translateY(0);
+  opacity: 1;
+}
+section, .service-card, .testimonial {
+  transform: translateY(40px);
+  opacity: 1;
+}
+
+/* الوضع الداكن */
+body.dark {
+  --bg-color: #23272f;
+  --text-color: #f1f1f1;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+body.dark header, body.dark footer {
+  background: #111b1e;
+}
+body.dark .modal-content {
+  background: #23272f;
+  color: #f1f1f1;
+}
+
+/* خطوات الحجز */
+.steps {
+  background: #fff;
+  border-radius: var(--border-radius);
+  margin: 2rem auto;
+  max-width: 900px;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.steps-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.step {
+  background: var(--main-color);
+  color: #fff;
+  border-radius: var(--border-radius);
+  padding: 1rem 1.5rem;
+  min-width: 120px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.step span {
+  font-size: 2rem;
+  font-weight: bold;
+  background: #fff;
+  color: var(--main-color);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+/* مميزات الشركة */
+.features {
+  background: var(--bg-color);
+  border-radius: var(--border-radius);
+  margin: 2rem auto;
+  max-width: 900px;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.features-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.feature {
+  background: #fff;
+  border-radius: var(--border-radius);
+  padding: 1rem 1.5rem;
+  min-width: 160px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.feature img {
+  height: 48px;
+  margin-bottom: 0.5rem;
+}
+
+/* شركاؤنا */
+.partners {
+  background: #fff;
+  border-radius: var(--border-radius);
+  margin: 2rem auto;
+  max-width: 900px;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.partners-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.partners-list img {
+  height: 48px;
+  filter: grayscale(1) contrast(1.2);
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.partners-list img:hover { opacity: 1; filter: none; }
+
+/* زر واتساب عائم */
+.whatsapp-float {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  background: #25d366;
+  color: #fff;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  z-index: 1001;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.whatsapp-float:hover { background: #128c7e; }
+
+@media (max-width: 700px) {
+  .steps-list, .features-list, .partners-list {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* تنسيق احترافي لنموذج الحجز */
+#booking-form {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(26,188,156,0.10);
+  max-width: 420px;
+  margin: 2.5rem auto 1.5rem auto;
+  padding: 2.2rem 1.5rem 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+#booking-form label {
+  font-size: 1.08rem;
+  color: var(--main-color);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.2px;
+}
+#booking-form input,
+#booking-form select {
+  border: 1.5px solid #e0f7f4;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 1.08rem;
+  background: #f8f8f8;
+  color: #222;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  margin-bottom: 0.2rem;
+}
+#booking-form input:focus,
+#booking-form select:focus {
+  border: 1.5px solid var(--main-color);
+  box-shadow: 0 2px 8px rgba(26,188,156,0.10);
+}
+#booking-form button[type="submit"] {
+  background: linear-gradient(90deg, var(--main-color) 60%, var(--accent-color) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.7rem 2.2rem;
+  font-size: 1.13rem;
+  font-weight: bold;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.13);
+  transition: background 0.3s, transform 0.18s;
+  letter-spacing: 0.2px;
+}
+#booking-form button[type="submit"]:hover {
+  background: linear-gradient(90deg, var(--accent-color) 60%, var(--main-color) 100%);
+  transform: scale(1.07);
+}
+#booking-summary .success {
+  background: #e6fcfa;
+  color: var(--main-color);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.07);
+}
+#booking-summary .error {
+  background: #ffeaea;
+  color: #c0392b;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(192,57,43,0.07);
+}
+
+/* تنسيق احترافي للنماذج والأزرار في جميع الصفحات */
+form, #pricing-form {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(26,188,156,0.10);
+  max-width: 420px;
+  margin: 2.5rem auto 1.5rem auto;
+  padding: 2.2rem 1.5rem 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+form label, #pricing-form label {
+  font-size: 1.08rem;
+  color: var(--main-color);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.2px;
+}
+form input, form textarea, form select,
+#pricing-form input, #pricing-form select {
+  border: 1.5px solid #e0f7f4;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 1.08rem;
+  background: #f8f8f8;
+  color: #222;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  margin-bottom: 0.2rem;
+}
+form input:focus, form textarea:focus, form select:focus,
+#pricing-form input:focus, #pricing-form select:focus {
+  border: 1.5px solid var(--main-color);
+  box-shadow: 0 2px 8px rgba(26,188,156,0.10);
+}
+form button, #pricing-form button {
+  background: linear-gradient(90deg, var(--main-color) 60%, var(--accent-color) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.7rem 2.2rem;
+  font-size: 1.13rem;
+  font-weight: bold;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.13);
+  transition: background 0.3s, transform 0.18s;
+  letter-spacing: 0.2px;
+}
+form button:hover, #pricing-form button:hover {
+  background: linear-gradient(90deg, var(--accent-color) 60%, var(--main-color) 100%);
+  transform: scale(1.07);
+}
+/* رسائل النجاح والخطأ للنماذج */
+#contact-result .success, #contact-result .error,
+#booking-summary .success, #booking-summary .error,
+#pricing-result .success, #pricing-result .error {
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.07);
+}
+#contact-result .success, #booking-summary .success, #pricing-result .success {
+  background: #e6fcfa;
+  color: var(--main-color);
+}
+#contact-result .error, #booking-summary .error, #pricing-result .error {
+  background: #ffeaea;
+  color: #c0392b;
+}
+
+/* داشبورد لوحة الإدارة */
+.dashboard-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin: 2.5rem 0 1.5rem 0;
+}
+.stat-card {
+  background: linear-gradient(135deg, #e6fcfa 60%, #d1f2eb 100%);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(26,188,156,0.10);
+  padding: 1.2rem 2.2rem;
+  text-align: center;
+  min-width: 120px;
+}
+.stat-title {
+  color: var(--main-color);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.stat-value {
+  font-size: 2.1rem;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+.dashboard-section {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(26,188,156,0.07);
+  margin: 2rem auto;
+  max-width: 900px;
+  padding: 2rem 1.5rem;
+}
+.dashboard-table-wrapper {
+  overflow-x: auto;
+}
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background: #f8f8f8;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.dashboard-table th, .dashboard-table td {
+  padding: 0.7rem 0.5rem;
+  border-bottom: 1px solid #e0f7f4;
+  text-align: center;
+}
+.dashboard-table th {
+  background: var(--main-color);
+  color: #fff;
+  font-weight: bold;
+}
+.dashboard-table tr:last-child td {
+  border-bottom: none;
+}
+.action-btn {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.action-btn:hover {
+  background: var(--main-color);
+  transform: scale(1.08);
+}
+#export-bookings {
+  background: linear-gradient(90deg, var(--main-color) 60%, var(--accent-color) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.6rem 2rem;
+  font-size: 1.08rem;
+  font-weight: bold;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.13);
+  transition: background 0.3s, transform 0.18s;
+}
+#export-bookings:hover {
+  background: linear-gradient(90deg, var(--accent-color) 60%, var(--main-color) 100%);
+  transform: scale(1.07);
+}
+.feedback-item {
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 1px 4px rgba(26,188,156,0.07);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.08rem;
+}
+.feedback-item .stars {
+  color: #ffd700;
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+}
+@media (max-width: 700px) {
+  .dashboard-stats { flex-direction: column; gap: 1rem; }
+  .dashboard-section { padding: 1rem 0.5rem; }
+}
+
+/* زر الترجمة (الإنجليزية) */
+.lang-btn, #lang-toggle {
+  background: linear-gradient(90deg, var(--main-color) 60%, var(--accent-color) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.08rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.13);
+  transition: background 0.3s, transform 0.18s, color 0.2s;
+  letter-spacing: 0.2px;
+  outline: none;
+  position: relative;
+  z-index: 2;
+}
+.lang-btn:hover, #lang-toggle:hover {
+  background: linear-gradient(90deg, var (--accent-color) 60%, var(--main-color) 100%);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* حقل البحث باسم العميل أو الخدمة */
+#search-bookings {
+  width: 100%;
+  max-width: 340px;
+  padding: 0.7rem 1.2rem 0.7rem 2.5rem;
+  border: 1.5px solid #e0f7f4;
+  border-radius: 24px;
+  font-size: 1.08rem;
+  background: #f8f8f8 url('data:image/svg+xml;utf8,<svg fill="%231abc9c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.53 20.47l-3.73-3.73A7.92 7.92 0 0018 10a8 8 0 10-8 8 7.92 7.92 0 006.74-3.2l3.73 3.73a1 1 0 001.41-1.41zM4 10a6 6 0 1112 0 6 6 0 01-12 0z"/></svg>') no-repeat 10px center;
+  background-size: 22px 22px;
+  color: #222;
+  outline: none;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(26,188,156,0.07);
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+  display: block;
+}
+#search-bookings:focus {
+  border: 1.5px solid var(--main-color);
+  box-shadow: 0 4px 16px rgba(26,188,156,0.13);
+  background-color: #fff;
+}
+@media (max-width: 700px) {
+  #search-bookings {
+    max-width: 100%;
+    font-size: 1rem;
+    padding-right: 1.2rem;
+    padding-left: 2.2rem;
+  }
+}
