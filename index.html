@@ -1,123 +1,551 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>كلين لايف | CleanLife</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" href="assets/images/logo.png">
-</head>
-<body>
-  <header>
-    <nav>
-      <img src="assets/images/logo.png" alt="شعار كلين لايف" class="logo">
-      <ul>
-        <li><a href="index.html">الرئيسية</a></li>
-        <li><a href="services.html">خدماتنا</a></li>
-        <li><a href="booking.html">احجز خدمة</a></li>
-        <li><a href="pricing.html">الأسعار</a></li>
-        <li><a href="about.html">من نحن</a></li>
-        <li><a href="contact.html">تواصل معنا</a></li>
-        <li><a href="admin.html">لوحة الإدارة</a></li>
-      </ul>
-      <!-- <button id="theme-toggle" title="تغيير الوضع" aria-label="تغيير الوضع">🌙</button> -->
-      <button id="lang-toggle" title="ترجمة الصفحة" aria-label="ترجمة الصفحة" class="lang-btn">EN</button>
-    </nav>
-  </header>
-  <div id="welcome-modal" class="modal hidden">
-    <div class="modal-content">
-      <h2>مرحباً بك في كلين لايف!</h2>
-      <p>نحن هنا لنقدم لك أفضل تجربة تنظيف.</p>
-      <button id="close-modal">ابدأ التصفح</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="page-title">متجر إلكتروني</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div id="toast-notification">
+      <i class="fa-solid fa-check-circle"></i>
+      <span id="toast-text">تمت العملية بنجاح</span>
     </div>
-  </div>
-  <button id="scrollTopBtn" class="scroll-top hidden" title="إلى الأعلى">↑</button>
-  <main>
-    <section class="hero">
-      <h1>مرحباً بكم في كلين لايف</h1>
-      <p>أفضل خدمات التنظيف للمنازل والشركات في مدينتك</p>
-      <a href="booking.html" class="cta">احجز الآن</a>
-    </section>
-    <section class="steps">
-      <h2>كيف تعمل خدمتنا؟</h2>
-      <div class="steps-list" style="flex-wrap:nowrap;overflow-x:auto;">
-        <div class="step"><span>1</span><p>اختر الخدمة المناسبة</p></div>
-        <div class="step"><span>2</span><p>حدد الوقت والمكان</p></div>
-        <div class="step"><span>3</span><p>ادفع إلكترونياً أو عند الاستلام</p></div>
-        <div class="step"><span>4</span><p>استمتع بنظافة مثالية!</p></div>
+
+    <header>
+      <button class="admin-trigger" onclick="openLoginModal()">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+
+      <div class="container">
+        <h1 id="store-header-name">جاري تحميل المتجر...</h1>
+        <p id="store-header-slogan">يرجى الانتظار</p>
       </div>
-    </section>
-    <section class="features">
-      <h2>لماذا تختار كلين لايف؟</h2>
-      <div class="features-list" style="flex-wrap:nowrap;overflow-x:auto;">
-        <div class="feature"><h3>جودة عالية</h3><p>فريق مدرب ومواد صديقة للبيئة</p></div>
-        <div class="feature"><h3>سرعة ومرونة</h3><p>خدمة في نفس اليوم أو حسب رغبتك</p></div>
-        <div class="feature"><h3>أمان وموثوقية</h3><p>ضمان رضاك الكامل</p></div>
-        <div class="feature"><h3>دعم متواصل</h3><p>خدمة عملاء 24/7</p></div>
+    </header>
+
+    <main class="container">
+      <div class="filter-container" id="filter-container">
+        <button class="filter-btn active" onclick="setFilter('all', this)">
+          <i class="fa-solid fa-border-all"></i> الكل
+        </button>
+        <button class="filter-btn" onclick="setFilter('featured', this)">
+          <i class="fa-solid fa-star"></i> مميز
+        </button>
+        <button class="filter-btn" onclick="setFilter('discount', this)">
+          <i class="fa-solid fa-tags"></i> عروض خاصة
+        </button>
       </div>
-    </section>
-    <section class="partners">
-      <h2>شركاؤنا</h2>
-      <div class="partners-list" style="gap:2.5rem;justify-content:center;align-items:center;flex-wrap:wrap;">
-        <!-- <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;">"شركة</p> -->
-        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;">شركة أرامكو </p>
-        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;">شركة سابك </p>
-        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;"> شركة الاتصالات السعودية </p>
-        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;"> الخطوط السعودية </p>
-        <p style="height:60px;width:auto;border-radius:12px;box-shadow:0 2px 8px #ccc;object-fit:contain;background:#fff;"> الشركة السعودية للكهرباء </p>
+
+      <section>
+        <div id="products-grid" class="products-grid"></div>
+      </section>
+    </main>
+
+    <!-- Loading -->
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <span id="loading-text">جاري التحميل...</span>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal">
+      <div class="login-content">
+        <h2
+          style="
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          تسجيل دخول المشرف
+          <button class="close-admin" onclick="closeLoginModal()">
+            &times;
+          </button>
+        </h2>
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>البريد الإلكتروني:</label>
+            <input
+              type="email"
+              id="login-email"
+              required
+              placeholder="admin@gmail.com"
+            />
+          </div>
+          <div class="form-group">
+            <label>كلمة المرور:</label>
+            <input
+              type="password"
+              id="login-password"
+              required
+              placeholder="********"
+            />
+          </div>
+          <button type="submit" class="admin-btn">دخول</button>
+        </form>
       </div>
-    </section>
-    <section class="services-preview" id="services-preview">
-      <h2>معاينة خدماتنا</h2>
-      <div class="services-list" id="services-list">
-        <!-- سيتم تعبئة الخدمات تلقائياً عبر JS -->
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal">
+      <div class="modal-content">
+        <button class="close-modal" onclick="closeProductModal()">
+          &times;
+        </button>
+        <div class="modal-slider-container" id="modal-slider"></div>
+        <div class="modal-thumbnails" id="modal-thumbnails"></div>
+        <div class="modal-body">
+          <div class="modal-header-row">
+            <h2 class="modal-title" id="modal-title"></h2>
+            <button class="share-btn" onclick="shareCurrentProduct()">
+              <i class="fa-solid fa-share-nodes"></i> مشاركة
+            </button>
+          </div>
+          <div class="modal-price" id="modal-price"></div>
+          <p class="modal-desc" id="modal-desc"></p>
+          <a
+            id="modal-whatsapp-btn"
+            href="#"
+            target="_blank"
+            class="whatsapp-btn"
+          >
+            <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem"></i>
+            طلب والاستفسار عبر الواتساب
+          </a>
+        </div>
       </div>
-    </section>
-    <section class="testimonials">
-      <h2>آراء عملائنا</h2>
-      <div class="testimonials-slider" id="testimonials-slider">
-        <!-- سيتم تعبئة التقييمات عبر JS -->
+    </div>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal">
+      <div class="admin-content">
+        <button
+          class="close-admin"
+          style="float: left"
+          onclick="closeAdminPanel()"
+        >
+          &times;
+        </button>
+        <h2
+          id="admin-form-title"
+          style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--primary)"
+        >
+          إدارة المنتجات
+        </h2>
+
+        <form id="product-form" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" id="editing-product-id" value="" />
+          <div class="form-group">
+            <label>اسم المنتج:</label>
+            <input
+              type="text"
+              id="p-name"
+              required
+              placeholder="اسم المنتج"
+            />
+          </div>
+          <div class="form-group">
+            <label>السعر (ر.س):</label>
+            <input type="number" id="p-price" required placeholder="55" />
+          </div>
+          <div class="form-group">
+            <label>الوصف:</label>
+            <textarea
+              id="p-desc"
+              rows="2"
+              placeholder="وصف المنتج..."
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>شارات المنتج:</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" id="p-featured" /> ⭐ مميز</label>
+              <label
+                ><input type="checkbox" id="p-discount" /> 🏷️ عرض خاص</label
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label>صور المنتج:</label>
+            <input type="file" id="p-images" accept="image/*" multiple />
+            <div id="current-images-preview" class="images-preview-grid"></div>
+          </div>
+          <button type="submit" id="admin-submit-btn" class="admin-btn">
+            حفظ ونشر
+          </button>
+          <button
+            type="button"
+            id="cancel-edit-btn"
+            class="cancel-edit-btn"
+            onclick="resetProductForm()"
+          >
+            إلغاء التعديل
+          </button>
+        </form>
+
+        <div class="sorting-panel">
+          <div class="sorting-panel-title">
+            <i class="fa-solid fa-arrow-down-wide-short"></i> ترتيب المنتجات
+          </div>
+          <button
+            type="button"
+            id="save-order-btn"
+            class="save-order-btn"
+            onclick="saveManualOrder()"
+          >
+            <i class="fa-solid fa-floppy-disk"></i> حفظ ترتيب المنتجات
+          </button>
+        </div>
+
+        <div class="admin-products-list">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 8px;
+            "
+          >
+            <span
+              style="
+                font-size: 0.85rem;
+                font-weight: 700;
+                color: var(--primary);
+              "
+              >المنتجات المحفوظة</span
+            >
+            <button type="button" onclick="logoutAdmin()" class="logout-btn">
+              <i class="fa-solid fa-right-from-bracket"></i> خروج
+            </button>
+          </div>
+          <div id="admin-list-container"></div>
+        </div>
       </div>
-    </section>
-  </main>
-  <a href="https://wa.me/+966532256973" class="whatsapp-float" target="_blank" title="تواصل واتساب">💬</a>
-  <footer>
-    <div>جميع الحقوق محفوظة &copy; كلين لايف 2026</div>
-    <div><a href="contact.html">اتصل بنا</a></div>
-  </footer>
-  <script src="assets/js/app.js"></script>
-  <script>
-    document.getElementById('lang-toggle').onclick = function() {
-      if(document.documentElement.lang === 'ar') {
-        document.documentElement.lang = 'en';
-        document.body.dir = 'ltr';
-        document.querySelector('h1').textContent = 'Welcome to CleanLife';
-        document.querySelector('.hero p').textContent = 'The best cleaning services for homes and businesses in your city';
-        document.querySelector('.cta').textContent = 'Book Now';
-        document.querySelector('.steps h2').textContent = 'How does our service work?';
-        document.querySelectorAll('.step p')[0].textContent = 'Choose the right service';
-        document.querySelectorAll('.step p')[1].textContent = 'Select time and place';
-        document.querySelectorAll('.step p')[2].textContent = 'Pay online or on delivery';
-        document.querySelectorAll('.step p')[3].textContent = 'Enjoy perfect cleanliness!';
-        document.querySelector('.features h2').textContent = 'Why choose CleanLife?';
-        document.querySelectorAll('.feature h3')[0].textContent = 'High Quality';
-        document.querySelectorAll('.feature p')[0].textContent = 'Trained team and eco-friendly materials';
-        document.querySelectorAll('.feature h3')[1].textContent = 'Speed & Flexibility';
-        document.querySelectorAll('.feature p')[1].textContent = 'Same day service or as you wish';
-        document.querySelectorAll('.feature h3')[2].textContent = 'Continuous Support';
-        document.querySelectorAll('.feature p')[2].textContent = '24/7 customer service';
-        document.querySelectorAll('.feature h3')[3].textContent = 'Safety & Reliability';
-        document.querySelectorAll('.feature p')[3].textContent = 'Your full satisfaction guaranteed';
-        document.querySelector('.partners h2').textContent = 'Our Partners';
-        document.querySelector('.services-preview h2').textContent = 'Our Services Preview';
-        document.querySelector('.testimonials h2').textContent = 'Customer Reviews';
-        document.querySelector('footer div').innerHTML = 'All rights reserved &copy; CleanLife 2026';
-        document.querySelector('footer a').textContent = 'Contact Us';
-        this.textContent = 'AR';
-      } else {
-        location.reload(); // إعادة تحميل الصفحة للعربية
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <h3 style="font-size: 1rem; font-weight: 700">
+          تواصل معنا وزور معرضنا
+        </h3>
+        <div class="social-icons" id="footer-socials"></div>
+        <div class="map-container" id="footer-map"></div>
+        <div class="footer-brand" id="footer-brand-name">Digital Store</div>
+      </div>
+    </footer>
+
+    <!-- Firebase & Logic Script -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+        getDoc,
+        addDoc,
+        updateDoc,
+        deleteDoc,
+        doc,
+        writeBatch
+      } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        signOut
+      } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCWgWYb0FhyT_Y2USUEMWU98RI-eq-tt_g",
+        authDomain: "tested-a4f3e.firebaseapp.com",
+        projectId: "tested-a4f3e",
+        storageBucket: "tested-a4f3e.firebasestorage.app",
+        messagingSenderId: "497927594737",
+        appId: "1:497927594737:web:3518063ed7bc809d123f50",
+        measurementId: "G-CNB6CJV3R9"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const storeId = urlParams.get("store");
+
+      let storeInfo = {
+        name: "متجر إلكتروني",
+        slogan: "أهلاً بك في متجرنا",
+        whatsapp: "966500000000",
+        instagram: "https://instagram.com",
+        tiktok: "https://tiktok.com",
+        mapIframe: ""
+      };
+
+      let globalProducts = [];
+      let workingImagesArray = [];
+      let activeSelectedProduct = null;
+      let openedFromAdmin = false;
+      let currentModalImages = [];
+      let currentModalIndex = 0;
+      let currentFilter = "all";
+
+      function showToast(message, isError = false) {
+        const toast = document.getElementById("toast-notification");
+        document.getElementById("toast-text").innerText = message;
+        toast.className = isError ? "error show" : "show";
+        setTimeout(() => {
+          toast.className = "";
+        }, 2500);
       }
-    };
-  </script>
-</body>
+
+      // جلب بيانات المتجر الديناميكية من قاعدة البيانات
+      async function fetchStoreSettings() {
+        if (!storeId) {
+          document.getElementById("store-header-name").innerText =
+            "لم يتم تحديد المتجر";
+          document.getElementById("store-header-slogan").innerText =
+            "يرجى التأكد من رابط المتجر الصحيح";
+          return;
+        }
+
+        try {
+          const docRef = doc(db, "stores", storeId);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            storeInfo = docSnap.data();
+          }
+
+          // تطبيق البيانات على الواجهة
+          document.getElementById("page-title").innerText = storeInfo.name;
+          document.getElementById("store-header-name").innerText =
+            storeInfo.name;
+          document.getElementById("store-header-slogan").innerText =
+            storeInfo.slogan || "";
+          document.getElementById("footer-brand-name").innerText =
+            storeInfo.name;
+
+          // الروابط الاجتماعية
+          const socialsContainer = document.getElementById("footer-socials");
+          socialsContainer.innerHTML = `
+            ${
+              storeInfo.instagram
+                ? `<a href="${storeInfo.instagram}" target="_blank"><i class="fa-brands fa-instagram"></i></a>`
+                : ""
+            }
+            ${
+              storeInfo.tiktok
+                ? `<a href="${storeInfo.tiktok}" target="_blank"><i class="fa-brands fa-tiktok"></i></a>`
+                : ""
+            }
+          `;
+
+          // الخريطة
+          if (storeInfo.mapIframe) {
+            document.getElementById("footer-map").innerHTML =
+              storeInfo.mapIframe;
+          }
+        } catch (error) {
+          console.error("خطأ في جلب بيانات المتجر:", error);
+        }
+      }
+
+      async function fetchProducts() {
+        if (!storeId) return;
+        try {
+          const q = query(
+            collection(db, "products"),
+            where("storeId", "==", storeId)
+          );
+          const querySnapshot = await getDocs(q);
+          const freshProducts = [];
+          querySnapshot.forEach((docSnap) => {
+            freshProducts.push({ id: docSnap.id, ...docSnap.data() });
+          });
+
+          globalProducts = sortProducts(freshProducts);
+          renderProducts(globalProducts);
+          renderAdminList(globalProducts);
+          checkUrlHashForProduct();
+        } catch (error) {
+          console.error("خطأ في جلب المنتجات:", error);
+        }
+      }
+
+      function sortProducts(products) {
+        return [...products].sort((a, b) => {
+          const orderA = a.sortOrder ?? Number.MAX_SAFE_INTEGER;
+          const orderB = b.sortOrder ?? Number.MAX_SAFE_INTEGER;
+          if (orderA !== orderB) return orderA - orderB;
+          return (a.createdAt || 0) - (b.createdAt || 0);
+        });
+      }
+
+      window.setFilter = function (filterType, btnElement) {
+        currentFilter = filterType;
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        if (btnElement) btnElement.classList.add("active");
+        renderProducts(globalProducts);
+      };
+
+      function renderProducts(products) {
+        const gridContainer = document.getElementById("products-grid");
+        gridContainer.innerHTML = "";
+
+        let filtered = products;
+        if (currentFilter === "featured")
+          filtered = products.filter((p) => p.isFeatured);
+        else if (currentFilter === "discount")
+          filtered = products.filter((p) => p.hasDiscount);
+
+        if (filtered.length === 0) {
+          gridContainer.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:2rem;">لا توجد منتجات مطابقة.</p>`;
+          return;
+        }
+
+        filtered.forEach((product) => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.onclick = () => {
+            openedFromAdmin = false;
+            openProductModal(product.id);
+          };
+
+          const firstImg = product.images?.[0] || "";
+          card.innerHTML = `
+            <div class="card-img-container">
+              <img src="${firstImg}" alt="${product.name}" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="product-title">${product.name}</h3>
+              <div class="product-price">${product.price} ر.س</div>
+              <div class="whatsapp-btn" style="pointer-events:none;"><i class="fa-brands fa-whatsapp"></i> طلب المنتج</div>
+            </div>
+          `;
+          gridContainer.appendChild(card);
+        });
+      }
+
+      window.openProductModal = function (productId) {
+        const product = globalProducts.find((p) => p.id === productId);
+        if (!product) return;
+
+        activeSelectedProduct = product;
+        currentModalImages = product.images || [];
+        currentModalIndex = 0;
+
+        document.getElementById("modal-title").innerText = product.name;
+        document.getElementById("modal-price").innerText =
+          `${product.price} ريال`;
+        document.getElementById("modal-desc").innerText =
+          product.description || "";
+
+        const baseUrl = window.location.href.split("#")[0];
+        const productUrl = `${baseUrl}#product-${product.id}`;
+        const message = `مرحباً، أرغب في طلب هذا المنتج من متجر ${storeInfo.name}:\n\n*المنتج:* ${product.name}\n*السعر:* ${product.price} ريال\n*الرابط:* ${productUrl}`;
+
+        document.getElementById("modal-whatsapp-btn").href = `https://wa.me/${
+          storeInfo.whatsapp
+        }?text=${encodeURIComponent(message)}`;
+
+        updateModalSlider();
+        document.getElementById("product-modal").style.display = "flex";
+      };
+
+      function updateModalSlider() {
+        const sliderContainer = document.getElementById("modal-slider");
+        sliderContainer.innerHTML = "";
+        if (currentModalImages.length > 0) {
+          const img = document.createElement("img");
+          img.src = currentModalImages[currentModalIndex];
+          img.className = "active";
+          sliderContainer.appendChild(img);
+        }
+      }
+
+      window.closeProductModal = function () {
+        document.getElementById("product-modal").style.display = "none";
+        if (openedFromAdmin) {
+          document.getElementById("admin-modal").style.display = "flex";
+          openedFromAdmin = false;
+        }
+      };
+
+      window.openLoginModal = () =>
+        (document.getElementById("login-modal").style.display = "flex");
+      window.closeLoginModal = () =>
+        (document.getElementById("login-modal").style.display = "none");
+      window.closeAdminPanel = () =>
+        (document.getElementById("admin-modal").style.display = "none");
+
+      window.handleLogin = async function (e) {
+        e.preventDefault();
+        try {
+          await signInWithEmailAndPassword(
+            auth,
+            document.getElementById("login-email").value,
+            document.getElementById("login-password").value
+          );
+          closeLoginModal();
+          document.getElementById("admin-modal").style.display = "flex";
+          showToast("تم الدخول بنجاح!");
+        } catch (err) {
+          showToast("خطأ في البيانات", true);
+        }
+      };
+
+      window.logoutAdmin = async () => {
+        await signOut(auth);
+        closeAdminPanel();
+        showToast("تم تسجيل الخروج");
+      };
+
+      function renderAdminList(products) {
+        const container = document.getElementById("admin-list-container");
+        container.innerHTML = "";
+        products.forEach((product, index) => {
+          const item = document.createElement("div");
+          item.className = "admin-item";
+          item.innerHTML = `
+            <div class="admin-order-number">${index + 1}</div>
+            <div class="admin-item-info">
+              <div class="admin-item-name">${product.name}</div>
+              <div class="admin-item-price">${product.price} ر.س</div>
+            </div>
+            <div class="admin-actions">
+              <button class="delete-btn" onclick="deleteProduct('${
+                product.id
+              }')">حذف</button>
+            </div>
+          `;
+          container.appendChild(item);
+        });
+      }
+
+      window.deleteProduct = async function (id) {
+        if (!confirm("هل أنت متأكد من الحذف؟")) return;
+        await deleteDoc(doc(db, "products", id));
+        fetchProducts();
+        showToast("تم الحذف بنجاح");
+      };
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        await fetchStoreSettings();
+        await fetchProducts();
+      });
+    </script>
+  </body>
 </html>
