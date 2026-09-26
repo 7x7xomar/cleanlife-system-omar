@@ -2,30 +2,46 @@
 <html lang="ar" dir="rtl">
   <head>
     <!-- =========================================
-     SEO - متجر ابكس لتقنية المعلومات والديكور
-     ========================================= -->
+         SEO - متجر ابكس لتقنية المعلومات والديكور
+         ========================================= -->
     <meta charset="UTF-8" />
     <meta name="language" content="Arabic" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
+    <!-- العنوان الأساسي لمحركات البحث -->
     <title>ابكس لتقنية المعلومات</title>
-    <meta name="description" content="متجر ابكس لتقنية المعلومات." />
+
+    <!-- الوصف التعريفي -->
+    <meta name="description" content="متجر ابكس لتقنية المعلومات ." />
     <meta name="keywords" content="ابكس تقنية المعلومات" />
-    <meta name="author" content="APeX Tech" />
-    <meta name="publisher" content="APeX Tech" />
+
+    <!-- معلومات الموقع -->
+    <meta name="author" content="omar Ceramic" />
+    <meta name="publisher" content="omar Ceramic" />
+
+    <!-- توجيه محركات البحث -->
     <meta
       name="robots"
       content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
+
+    <!-- الرابط الأساسي -->
     <link rel="canonical" href="https://apex-eileen.vercel.app/" />
 
-    <!-- Open Graph -->
+    <!-- =========================================
+         Open Graph - واتساب / فيسبوك / تيليجرام
+         ========================================= -->
     <meta property="og:site_name" content="ابكس لتقنية المعلومات" />
     <meta property="og:title" content="ابكس لتقنية المعلومات" />
-    <meta property="og:description" content="متجر ابكس لتقنية المعلومات." />
+    <meta property="og:description" content="متجر ابكس لتقنية المعلومات ." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://apex-eileen.vercel.app/" />
     <meta property="og:locale" content="ar_SA" />
+
+    <!-- صورة المشاركة -->
     <meta
       property="og:image"
       content="https://apex-eileen.vercel.app/images/og-image.jpg"
@@ -33,16 +49,21 @@
     <meta property="og:image:alt" content="ابكس لتقنية المعلومات" />
     <meta property="og:image:type" content="image/jpeg" />
 
-    <!-- Twitter / X Card -->
+    <!-- =========================================
+         Twitter / X Card
+         ========================================= -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ابكس لتقنية المعلومات" />
-    <meta name="twitter:description" content="متجر ابكس لتقنية المعلومات." />
+    <meta name="twitter:description" content="متجر ابكس لتقنية المعلومات ." />
     <meta
       name="twitter:image"
       content="https://apex-eileen.vercel.app/images/og-image.jpg"
     />
     <meta name="twitter:image:alt" content="ابكس لتقنية المعلومات" />
 
+    <!-- =========================================
+         تحسين اللغة والمنطقة
+         ========================================= -->
     <link
       rel="alternate"
       hreflang="ar-SA"
@@ -54,14 +75,17 @@
       href="https://apex-eileen.vercel.app/"
     />
 
+    <!-- =========================================
+         تحسينات إضافية والمكتبات
+         ========================================= -->
     <meta name="theme-color" content="#1e293b" />
     <meta name="format-detection" content="telephone=no" />
     <meta
       name="google-site-verification"
       content="y8wxUWQD7Qw9x6RdXLla8q8Dk_jmaxMDnHecdvki4f4"
     />
-    <link rel="manifest" href="manifest.json" />
 
+    <link rel="manifest" href="manifest.json" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -475,7 +499,9 @@
         z-index: 99;
         cursor: pointer;
         border: 2px solid rgba(255, 255, 255, 0.15);
-        transition: transform 0.2s, background 0.2s;
+        transition:
+          transform 0.2s,
+          background 0.2s;
       }
 
       .floating-cart-bar:hover {
@@ -1450,7 +1476,9 @@
           <h2 style="font-size: 1.1rem; color: var(--primary)">
             <i class="fa-solid fa-cart-shopping"></i> سلة المشتريات
           </h2>
-          <button class="close-admin" onclick="closeCartModal()">&times;</button>
+          <button class="close-admin" onclick="closeCartModal()">
+            &times;
+          </button>
         </div>
 
         <div class="cart-modal-body">
