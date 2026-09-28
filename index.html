@@ -48,6 +48,45 @@
         padding-bottom: calc(70px + env(safe-area-inset-bottom));
       }
 
+      /* ---------- شاشة التحميل الأولية ---------- */
+      #page-loading-overlay {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(135deg, #f7f5f0 0%, #ede8dc 100%);
+        z-index: 2500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+      #page-loading-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #page-loading-overlay .brand-logo {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: var(--primary);
+        letter-spacing: -0.5px;
+        text-align: center;
+        line-height: 1.3;
+      }
+      #page-loading-overlay .brand-logo small {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--accent-dark);
+        margin-top: 4px;
+      }
+      #page-loading-overlay .loading-text {
+        color: var(--text-light);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
       /* ---------- الهيدر ---------- */
       header {
         background: linear-gradient(135deg, #072f3a 0%, #0d4c5c 55%, #1a6b7e 100%);
@@ -1423,6 +1462,8 @@
         align-items: center;
         gap: 10px;
         border: 1.5px solid var(--accent);
+        max-width: 92%;
+        text-align: center;
       }
       #toast-notification.show { transform: translateX(-50%) translateY(0); }
       #toast-notification.error {
@@ -1432,6 +1473,16 @@
     </style>
   </head>
   <body>
+    <!-- شاشة التحميل الأولية -->
+    <div id="page-loading-overlay">
+      <div class="brand-logo">
+        سيراميك الفخامة
+        <small>Al-Fakhama Ceramics</small>
+      </div>
+      <div class="spinner"></div>
+      <div class="loading-text">جاري التحميل...</div>
+    </div>
+
     <div id="toast-notification">
       <i class="fa-solid fa-check-circle"></i>
       <span id="toast-text">تمت العملية بنجاح</span>
@@ -1680,6 +1731,10 @@
           <div class="form-group">
             <label id="p-images-label">صور المنتج:</label>
             <input type="file" id="p-images" accept="image/*" multiple />
+            <div class="category-form-hint" style="margin-top:6px;">
+              <i class="fa-solid fa-circle-info"></i>
+              الحد الأقصى لكل صورة: 8 ميجابايت (يُضغط تلقائياً)
+            </div>
             <div id="current-images-preview" class="images-preview-grid"></div>
           </div>
 
@@ -1738,9 +1793,13 @@
         getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, writeBatch
       } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
       import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+      // ✅ NEW: Firebase Storage
+      import {
+        getStorage, ref as storageRef, uploadBytes, getDownloadURL
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
       // ===================================================
-      // ✅ إعدادات Firebase الجديدة - مشروع ramah-6c086
+      // إعدادات Firebase
       // ===================================================
       const firebaseConfig = {
         apiKey: "AIzaSyBGmQ79uC7Vy25Dvrza6LNwRnLCApZBHLU",
@@ -1751,13 +1810,15 @@
         appId: "1:1021899751757:web:048e840f9e7aa12324f704"
       };
 
-      // إعدادات عامة
       const PHONE_NUMBER = "966510014106";
       const BRAND_NAME_AR = "سيراميك الفخامة";
       const BRAND_NAME_EN = "Al-Fakhama Ceramics";
       const BRAND_SUB_AR = "تشكيلة راقية من أجود أنواع السيراميك والبورسلان 🏺";
       const BRAND_SUB_EN = "Premium Ceramic & Porcelain Collection 🏺";
       const SITE_URL = window.location.origin;
+
+      // ✅ NEW: حد أقصى لحجم الصورة قبل الضغط
+      const MAX_IMAGE_SIZE = 8 * 1024 * 1024; // 8 MB
 
       document.title = `${BRAND_NAME_AR} | ${BRAND_NAME_EN}`;
       document.querySelector('meta[property="og:site_name"]')?.setAttribute("content", BRAND_NAME_AR);
@@ -1770,9 +1831,10 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
       const auth = getAuth(app);
+      const storage = getStorage(app); // ✅ NEW
 
       let globalProducts = [];
-      let workingImagesArray = [];
+      let workingImagesArray = []; // ✅ NEW: array of { src } objects
       let activeSelectedProduct = null;
       let currentActiveCategory = "all";
       let adminOrderDirty = false;
@@ -1801,10 +1863,13 @@
           copyPrompt: "انسخ الرابط:",
           processingImages: "جاري معالجة الصور...",
           imageProcessing: "ضغط الصورة",
+          uploadingImages: "جاري رفع الصور...",
           saving: "جاري حفظ البيانات...",
           saveSuccess: "تم تحديث المنتج بنجاح!",
           addSuccess: "تم إضافة المنتج بنجاح!",
           noImage: "أرفق صورة واحدة على الأقل للمنتج!",
+          imageTooLarge: "الصورة كبيرة جداً (الحد الأقصى 8 ميجابايت)",
+          invalidFileType: "الملف المرفق ليس صورة",
           fetchError: "خطأ في جلب بيانات المنتجات",
           loginSuccess: "تم الدخول بنجاح!",
           loginError: "خطأ في بيانات الدخول",
@@ -1900,7 +1965,10 @@
           sizeSpec: "المقاس",
           finishSpec: "السطح",
           originSpec: "المنشأ",
-          colorSpec: "اللون"
+          colorSpec: "اللون",
+          unsavedChangesConfirm: "لديك تغييرات غير محفوظة في ترتيب المنتجات. هل تريد الإغلاق بدون حفظ؟",
+          unsavedChangesBrowser: "لديك تعديلات غير محفوظة.",
+          pageLoading: "جاري التحميل..."
         },
         en: {
           languageButton: "العربية",
@@ -1917,10 +1985,13 @@
           copyPrompt: "Copy the link:",
           processingImages: "Processing images...",
           imageProcessing: "Compressing image",
+          uploadingImages: "Uploading images...",
           saving: "Saving data...",
           saveSuccess: "Product updated successfully!",
           addSuccess: "Product added successfully!",
           noImage: "Please attach at least one image!",
+          imageTooLarge: "Image is too large (max 8 MB)",
+          invalidFileType: "The file is not an image",
           fetchError: "Error loading products",
           loginSuccess: "Login successful!",
           loginError: "Invalid login details",
@@ -2016,7 +2087,10 @@
           sizeSpec: "Size",
           finishSpec: "Finish",
           originSpec: "Origin",
-          colorSpec: "Color"
+          colorSpec: "Color",
+          unsavedChangesConfirm: "You have unsaved order changes. Close without saving?",
+          unsavedChangesBrowser: "You have unsaved changes.",
+          pageLoading: "Loading..."
         }
       };
 
@@ -2061,6 +2135,46 @@
 
       function scrollToProductsTop() {
         window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // ✅ NEW: صفحة تحميل
+      function hidePageLoader() {
+        const loader = document.getElementById("page-loading-overlay");
+        if (loader) {
+          loader.classList.add("hidden");
+          setTimeout(() => { loader.style.display = "none"; }, 500);
+        }
+      }
+
+      function updatePageLoaderText(text) {
+        const loader = document.getElementById("page-loading-overlay");
+        if (loader) {
+          const txt = loader.querySelector(".loading-text");
+          if (txt) txt.textContent = text;
+        }
+      }
+
+      // =========================================
+      // ✅ NEW: Firebase Storage Helpers
+      // =========================================
+      function dataURLToBlob(dataURL) {
+        return fetch(dataURL).then((res) => res.blob());
+      }
+
+      function formatBytes(bytes) {
+        if (!Number.isFinite(bytes)) return "";
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+      }
+
+      async function uploadDataURLToStorage(dataURL) {
+        const blob = await dataURLToBlob(dataURL);
+        const ext = blob.type === "image/png" ? "png" : "jpg";
+        const filename = `products/${Date.now()}_${Math.random().toString(36).slice(2, 10)}.${ext}`;
+        const fileRef = storageRef(storage, filename);
+        await uploadBytes(fileRef, blob, { contentType: blob.type || "image/jpeg" });
+        return await getDownloadURL(fileRef);
       }
 
       // =========================================
@@ -2165,7 +2279,7 @@
             const card = document.createElement("div");
             card.className = "cart-item-card";
             card.innerHTML = `
-              <img src="${item.image}" class="cart-item-img" alt="${escapeHtml(getCartItemName(item))}">
+              <img src="${item.image}" class="cart-item-img" alt="${escapeHtml(getCartItemName(item))}" loading="lazy">
               <div class="cart-item-details">
                 <div class="cart-item-title">${escapeHtml(getCartItemName(item))}</div>
                 <div class="cart-item-price">${(item.price * item.quantity).toFixed(2)} ${t("currencyShort")}</div>
@@ -2547,7 +2661,7 @@
         setTimeout(() => { toast.className = ""; }, 2500);
       }
 
-      let productsCacheKey = "ceramics_products_cache_v1";
+      let productsCacheKey = "ceramics_products_cache_v2";
       const PRODUCTS_DB_NAME = "CeramicsCache";
       const PRODUCTS_DB_VERSION = 1;
       const PRODUCTS_STORE = "products";
@@ -2992,14 +3106,15 @@
         });
       }
 
+      // ✅ NEW: preview يدعم { src } objects
       function renderWorkingImagesPreview() {
         const container = document.getElementById("current-images-preview");
         container.innerHTML = "";
-        workingImagesArray.forEach((imgUrl, index) => {
+        workingImagesArray.forEach((item, index) => {
           const box = document.createElement("div");
           box.className = `preview-thumb-box ${index === 0 ? "is-primary" : ""}`;
           box.innerHTML = `
-            <img src="${imgUrl}">
+            <img src="${item.src}" loading="lazy">
             ${index === 0 ? `<span class="primary-tag-badge">${t("primaryTag")}</span>` : ""}
             <div class="preview-thumb-actions">
               ${index !== 0 ? `<button type="button" title="${t("makePrimaryTitle")}" onclick="makeImagePrimary(${index})"><i class="fa-solid fa-star"></i></button>` : ""}
@@ -3021,6 +3136,46 @@
         renderWorkingImagesPreview();
       };
 
+      // ✅ NEW: معالج رفع الصور عند اختيارها + التحقق من الحجم والنوع
+      async function handleImageInputChange(e) {
+        const files = [...(e.target.files || [])];
+        if (!files.length) return;
+
+        const loadingOverlay = document.getElementById("loading-overlay");
+        const loadingText = document.getElementById("loading-text");
+
+        loadingOverlay.style.display = "flex";
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+
+          // ✅ التحقق من النوع
+          if (!file.type || !file.type.startsWith("image/")) {
+            showToast(`${t("invalidFileType")}: ${file.name}`, true);
+            continue;
+          }
+
+          // ✅ التحقق من الحجم
+          if (file.size > MAX_IMAGE_SIZE) {
+            showToast(`${t("imageTooLarge")} — ${file.name} (${formatBytes(file.size)})`, true);
+            continue;
+          }
+
+          try {
+            loadingText.innerText = `${t("imageProcessing")} ${i + 1}/${files.length}...`;
+            const preview = await compressImage(file);
+            workingImagesArray.push({ src: preview });
+          } catch (err) {
+            console.error("Image compression failed:", err);
+            showToast(`تعذر معالجة الصورة ${file.name}`, true);
+          }
+        }
+
+        loadingOverlay.style.display = "none";
+        renderWorkingImagesPreview();
+        e.target.value = ""; // reset حتى يستطيع المستخدم اختيار نفس الصورة مرة أخرى
+      }
+
       window.handleFormSubmit = async function (e) {
         e.preventDefault();
         const editingId = (document.getElementById("editing-product-id")?.value || "").trim();
@@ -3038,8 +3193,6 @@
         const descriptionEn = (document.getElementById("p-desc-en")?.value || "").trim();
         const isFeatured = !!document.getElementById("p-featured")?.checked;
         const hasDiscount = !!document.getElementById("p-discount")?.checked;
-        const imageInput = document.getElementById("p-images");
-        const imageFiles = imageInput ? imageInput.files : [];
         const submitBtn = document.getElementById("admin-submit-btn");
         const loadingOverlay = document.getElementById("loading-overlay");
         const loadingText = document.getElementById("loading-text");
@@ -3047,27 +3200,38 @@
         try {
           if (!nameAr && !nameEn) { showToast(t("invalidName"), true); return; }
           if (!Number.isFinite(price) || price < 0) { showToast(t("invalidPrice"), true); return; }
+          if (!workingImagesArray.length) { showToast(t("noImage"), true); return; }
 
           if (submitBtn) submitBtn.disabled = true;
           if (loadingOverlay) loadingOverlay.style.display = "flex";
 
-          if (imageFiles.length > 0) {
-            for (let i = 0; i < imageFiles.length; i++) {
-              if (loadingText) loadingText.innerText = `${t("imageProcessing")} ${i + 1}/${imageFiles.length}...`;
-              const compressed = await compressImage(imageFiles[i]);
-              workingImagesArray.push(compressed);
-            }
-          }
+          // ✅ NEW: رفع الصور الجديدة إلى Firebase Storage، مع الحفاظ على الروابط القديمة
+          const finalImages = [];
+          const totalImages = workingImagesArray.length;
 
-          if (!workingImagesArray.length) {
-            if (loadingOverlay) loadingOverlay.style.display = "none";
-            showToast(t("noImage"), true);
-            return;
+          for (let i = 0; i < totalImages; i++) {
+            const item = workingImagesArray[i];
+            if (item.src && item.src.startsWith("data:")) {
+              // صورة جديدة أو Base64 قديمة → رفعها إلى Storage
+              if (loadingText) loadingText.innerText = `${t("uploadingImages")} ${i + 1}/${totalImages}...`;
+              try {
+                const url = await uploadDataURLToStorage(item.src);
+                finalImages.push(url);
+              } catch (uploadErr) {
+                console.error("Upload failed:", uploadErr);
+                showToast(`تعذر رفع الصورة ${i + 1}: ${uploadErr?.message || uploadErr}`, true);
+                if (loadingOverlay) loadingOverlay.style.display = "none";
+                if (submitBtn) submitBtn.disabled = false;
+                return;
+              }
+            } else {
+              // رابط موجود مسبقاً في Storage
+              finalImages.push(item.src);
+            }
           }
 
           if (loadingText) loadingText.innerText = t("saving");
 
-          const imagesToSave = [...workingImagesArray];
           const productData = {
             nameAr, nameEn,
             descriptionAr, descriptionEn,
@@ -3079,7 +3243,7 @@
             size, finish, origin, color,
             price,
             isFeatured, hasDiscount,
-            images: imagesToSave
+            images: finalImages
           };
 
           if (editingId) {
@@ -3130,7 +3294,8 @@
         document.getElementById("p-desc-en").value = product.descriptionEn || "";
         document.getElementById("p-featured").checked = product.isFeatured || false;
         document.getElementById("p-discount").checked = product.hasDiscount || false;
-        workingImagesArray = product.images ? [...product.images] : [];
+        // ✅ NEW: تحويل الصور إلى { src } objects
+        workingImagesArray = (product.images || []).map((src) => ({ src }));
         renderWorkingImagesPreview();
         document.getElementById("admin-form-title").innerText = t("adminFormTitleEdit");
         document.getElementById("admin-submit-btn").innerText = t("submitEditBtn");
@@ -3280,10 +3445,26 @@
         showToast(t("logout"));
       };
 
+      // ✅ NEW: تحذير عند إغلاق لوحة الإدارة مع تعديلات غير محفوظة
       window.closeAdminPanel = () => {
+        if (adminOrderDirty) {
+          if (!confirm(t("unsavedChangesConfirm"))) return;
+          // تجاهل التعديلات - إعادة جلب المنتجات من Firebase
+          markAdminOrderDirty(false);
+          fetchProducts({ background: true });
+        }
         document.getElementById("admin-modal").style.display = "none";
         resetProductForm();
       };
+
+      // ✅ NEW: تحذير المتصفح عند مغادرة الصفحة مع تعديلات غير محفوظة
+      window.addEventListener("beforeunload", (e) => {
+        if (adminOrderDirty) {
+          e.preventDefault();
+          e.returnValue = t("unsavedChangesBrowser");
+          return t("unsavedChangesBrowser");
+        }
+      });
 
       document.addEventListener("DOMContentLoaded", () => {
         applyLanguage();
@@ -3294,8 +3475,11 @@
         const sortSelect = document.getElementById("product-sort");
         const clearFilters = document.getElementById("clear-filters-btn");
         const getLocationBtn = document.getElementById("get-location-btn");
+        const imageInput = document.getElementById("p-images");
 
         if (getLocationBtn) getLocationBtn.addEventListener("click", getMyLocation);
+        // ✅ NEW: مراقب رفع الصور
+        if (imageInput) imageInput.addEventListener("change", handleImageInputChange);
 
         searchInput?.addEventListener("input", (e) => {
           productSearchTerm = e.target.value || "";
@@ -3320,12 +3504,24 @@
           scrollToProductsTop();
         });
 
+        // ✅ NEW: عرض الكاش فوراً + إخفاء اللودر، أو الانتظار حتى Firebase
         (async () => {
           const loadedFromIDB = await loadProductsIndexedDB();
-          if (!loadedFromIDB) loadProductsCache();
-          fetchProducts({ background: true });
+          const loadedFromLS = !loadedFromIDB && loadProductsCache();
+
+          if (loadedFromIDB || loadedFromLS) {
+            // يوجد كاش → اعرضه فوراً وأخفِ اللودر
+            hidePageLoader();
+            // ثم جدد البيانات من Firebase في الخلفية
+            fetchProducts({ background: true });
+          } else {
+            // لا يوجد كاش → انتظر Firebase
+            updatePageLoaderText(t("pageLoading"));
+            await fetchProducts({ background: false });
+            hidePageLoader();
+          }
         })();
       });
     </script>
   </body>
-  </html>
+                </html>
