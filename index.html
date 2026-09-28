@@ -1627,7 +1627,6 @@
             </div>
           </div>
 
-          <!-- ⭐ الحقول المخصصة للسيراميك -->
           <div class="form-group">
             <label id="p-size-label">المقاس (سم):</label>
             <input type="text" id="p-size" placeholder="مثال: 60×60 أو 120×60" />
@@ -1733,8 +1732,6 @@
       }
     </script>
 
-    <script src="./config.js"></script>
-
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import {
@@ -1742,22 +1739,25 @@
       } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
       import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-      const CONFIG = window.RESTAURANT_CONFIG || {};
-      const PHONE_NUMBER = CONFIG.phoneNumber || "966510014106";
-      const BRAND_NAME_AR = CONFIG.brandNameAr || "سيراميك الفخامة";
-      const BRAND_NAME_EN = CONFIG.brandNameEn || "Al-Fakhama Ceramics";
-      const BRAND_SUB_AR = CONFIG.brandSubtitleAr || "تشكيلة راقية من أجود أنواع السيراميك والبورسلان 🏺";
-      const BRAND_SUB_EN = CONFIG.brandSubtitleEn || "Premium Ceramic & Porcelain Collection 🏺";
-      const SITE_URL = CONFIG.siteUrl || window.location.origin;
-
-      const firebaseConfig = CONFIG.firebase || {
-        apiKey: "AIzaSyA5HcEPCIYy61ec4_tlYMo7tZJVVKSrmuY",
-        authDomain: "amin-86f08.firebaseapp.com",
-        projectId: "amin-86f08",
-        storageBucket: "amin-86f08.firebasestorage.app",
-        messagingSenderId: "622374850244",
-        appId: "1:622374850244:web:3dce98962d5a2389de4391"
+      // ===================================================
+      // ✅ إعدادات Firebase الجديدة - مشروع ramah-6c086
+      // ===================================================
+      const firebaseConfig = {
+        apiKey: "AIzaSyBGmQ79uC7Vy25Dvrza6LNwRnLCApZBHLU",
+        authDomain: "ramah-6c086.firebaseapp.com",
+        projectId: "ramah-6c086",
+        storageBucket: "ramah-6c086.firebasestorage.app",
+        messagingSenderId: "1021899751757",
+        appId: "1:1021899751757:web:048e840f9e7aa12324f704"
       };
+
+      // إعدادات عامة
+      const PHONE_NUMBER = "966510014106";
+      const BRAND_NAME_AR = "سيراميك الفخامة";
+      const BRAND_NAME_EN = "Al-Fakhama Ceramics";
+      const BRAND_SUB_AR = "تشكيلة راقية من أجود أنواع السيراميك والبورسلان 🏺";
+      const BRAND_SUB_EN = "Premium Ceramic & Porcelain Collection 🏺";
+      const SITE_URL = window.location.origin;
 
       document.title = `${BRAND_NAME_AR} | ${BRAND_NAME_EN}`;
       document.querySelector('meta[property="og:site_name"]')?.setAttribute("content", BRAND_NAME_AR);
@@ -2821,7 +2821,6 @@
         document.getElementById("modal-price").innerText = `${product.price} ${t("currency")} / م²`;
         document.getElementById("modal-desc").innerText = productDescription;
 
-        // ⭐ عرض المواصفات
         const specsContainer = document.getElementById("modal-specs");
         const specs = [];
         if (product.size) specs.push({ icon: "fa-ruler-combined", label: t("sizeSpec"), value: product.size });
