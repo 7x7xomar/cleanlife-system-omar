@@ -3674,10 +3674,9 @@
         }
       });
 
-           document.addEventListener("DOMContentLoaded", () => {
+                 document.addEventListener("DOMContentLoaded", () => {
         applyLanguage();
         markAdminOrderDirty(false);
-        markAdminFormDirty(false);
         loadCartFromLocalStorage();
 
         const searchInput = document.getElementById("product-search");
@@ -3687,19 +3686,13 @@
         const imageInput = document.getElementById("p-images");
         const productForm = document.getElementById("product-form");
 
-        if (getLocationBtn)
-          getLocationBtn.addEventListener("click", getMyLocation);
-        if (imageInput)
-          imageInput.addEventListener("change", handleImageInputChange);
+        if (getLocationBtn) getLocationBtn.addEventListener("click", getMyLocation);
+        if (imageInput) imageInput.addEventListener("change", handleImageInputChange);
 
-        // ✅ تتبع أي تعديل في نموذج المنتج (يشمل الكتابة + الاختيار + الشيك بوكس)
+        // ✅ تتبع أي تعديل في نموذج المنتج
         if (productForm) {
-          productForm.addEventListener("input", () => {
-            markAdminFormDirty(true);
-          });
-          productForm.addEventListener("change", () => {
-            markAdminFormDirty(true);
-          });
+          productForm.addEventListener("input", () => { markAdminFormDirty(); });
+          productForm.addEventListener("change", () => { markAdminFormDirty(); });
         }
 
         searchInput?.addEventListener("input", (e) => {
@@ -3725,17 +3718,43 @@
           scrollToProductsTop();
         });
 
+        // ✅ دالة عرض رسالة التحميل المؤقتة في منطقة المنتجات
+        function showProductsLoadingPlaceholder() {
+          const grid = document.getElementById("products-grid");
+          if (grid && grid.children.length === 0) {
+            grid.innerHTML = `
+              <div style="grid-column: 1 / -1; text-align: center; padding: 60px 15px; color: var(--text-light);">
+                <div class="spinner" style="margin: 0 auto 16px;"></div>
+                <div style="font-weight: 700; font-size: 0.9rem;">${t("pageLoading")}</div>
+              </div>
+            `;
+          }
+        }
+
+        // ✅ التعديل الجديد: جلب المنتجات في الخلفية دون حجب الواجهة
         (async () => {
           const loadedFromIDB = await loadProductsIndexedDB();
           const loadedFromLS = !loadedFromIDB && loadProductsCache();
 
           if (loadedFromIDB || loadedFromLS) {
+            // البيانات موجودة في الكاش → عرض فوري + تحديث بالخلفية
             hidePageLoader();
             fetchProducts({ background: true });
           } else {
+            // لا يوجد كاش → عرض واجهة مؤقتة + جلب بالخلفية
             updatePageLoaderText(t("pageLoading"));
-            await fetchProducts({ background: false });
-            hidePageLoader();
+
+            // عرض رسالة تحميل داخل شبكة المنتجات (لتفادي الشاشة الفارغة)
+            showProductsLoadingPlaceholder();
+
+            // جلب المنتجات في الخلفية (بدون انتظار)
+            fetchProducts({ background: true });
+
+            // إخفاء شاشة التحميل الكبيرة بعد 1.2 ثانية كحد أقصى
+            // حتى لو لم تصل البيانات بعد، العميل يرى الواجهة ويتفاعل
+            setTimeout(() => {
+              hidePageLoader();
+            }, 1200);
           }
         })();
       });
