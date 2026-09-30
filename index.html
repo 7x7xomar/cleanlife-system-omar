@@ -3674,9 +3674,10 @@
         }
       });
 
-      document.addEventListener("DOMContentLoaded", () => {
+           document.addEventListener("DOMContentLoaded", () => {
         applyLanguage();
         markAdminOrderDirty(false);
+        markAdminFormDirty(false);
         loadCartFromLocalStorage();
 
         const searchInput = document.getElementById("product-search");
@@ -3686,13 +3687,19 @@
         const imageInput = document.getElementById("p-images");
         const productForm = document.getElementById("product-form");
 
-        if (getLocationBtn) getLocationBtn.addEventListener("click", getMyLocation);
-        if (imageInput) imageInput.addEventListener("change", handleImageInputChange);
+        if (getLocationBtn)
+          getLocationBtn.addEventListener("click", getMyLocation);
+        if (imageInput)
+          imageInput.addEventListener("change", handleImageInputChange);
 
-        // ✅ تتبع أي تعديل في نموذج المنتج
+        // ✅ تتبع أي تعديل في نموذج المنتج (يشمل الكتابة + الاختيار + الشيك بوكس)
         if (productForm) {
-          productForm.addEventListener("input", () => { markAdminFormDirty(); });
-          productForm.addEventListener("change", () => { markAdminFormDirty(); });
+          productForm.addEventListener("input", () => {
+            markAdminFormDirty(true);
+          });
+          productForm.addEventListener("change", () => {
+            markAdminFormDirty(true);
+          });
         }
 
         searchInput?.addEventListener("input", (e) => {
