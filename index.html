@@ -98,7 +98,7 @@
         background: linear-gradient(135deg, #4d2138 0%, #7a3b5c 55%, #a8557a 100%);
         color: white;
         text-align: center;
-        padding: 0.9rem 1rem 1.6rem;
+        padding: 2rem 1rem 1.75rem;
         position: relative;
         overflow: hidden;
       }
@@ -121,42 +121,8 @@
         background: radial-gradient(circle, rgba(212, 175, 122, 0.18) 0%, transparent 70%);
         pointer-events: none;
       }
-
-      .header-top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 780px;
-        margin: 0 auto 1rem;
-        position: relative;
-        z-index: 5;
-      }
-      .header-action-btn {
-        background: rgba(255, 255, 255, 0.13);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.28);
-        padding: 7px 14px;
-        border-radius: 999px;
-        cursor: pointer;
-        font-size: 0.74rem;
-        font-weight: 800;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s;
-        font-family: inherit;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-      }
-      .header-action-btn:hover {
-        background: rgba(212, 175, 122, 0.35);
-        border-color: var(--accent);
-      }
-      .header-action-btn:active { transform: scale(0.96); }
-      .header-action-btn i { font-size: 0.82rem; }
-
       header h1 {
-        font-size: 1.7rem;
+        font-size: 1.75rem;
         font-weight: 800;
         margin-bottom: 6px;
         letter-spacing: -0.3px;
@@ -169,12 +135,51 @@
         position: relative;
         z-index: 1;
       }
-      @media (max-width: 500px) {
-        header h1 { font-size: 1.4rem; }
-        header p { font-size: 0.78rem; }
-        .header-action-btn { padding: 6px 11px; font-size: 0.7rem; }
-      }
 
+      .admin-trigger {
+        position: absolute;
+        top: 14px;
+        left: 14px !important;
+        right: auto !important;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        z-index: 5;
+      }
+      .admin-trigger:hover {
+        background: rgba(212, 175, 122, 0.3);
+        border-color: var(--accent);
+      }
+      .language-switcher {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 8px 13px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 5;
+        transition: all 0.2s;
+      }
+      .language-switcher:hover {
+        background: rgba(212, 175, 122, 0.3);
+        border-color: var(--accent);
+      }
       .floating-whatsapp {
         position: fixed;
         left: 18px;
@@ -1590,18 +1595,14 @@
     </div>
 
     <header>
-      <div class="header-top-bar">
-        <button class="header-action-btn" onclick="openLoginModal()" id="admin-trigger-btn" title="الإدارة">
-          <i class="fa-solid fa-gear"></i>
-          <span id="admin-label">الإدارة</span>
-        </button>
+      <button class="admin-trigger" onclick="openLoginModal()" id="admin-trigger-btn" title="الإدارة">
+        <i class="fa-solid fa-gear"></i>
+      </button>
 
-        <button class="header-action-btn" id="language-switcher" onclick="toggleLanguage()">
-          <i class="fa-solid fa-language"></i>
-          <span id="language-label">English</span>
-        </button>
-      </div>
-
+      <button class="language-switcher" id="language-switcher" onclick="toggleLanguage()">
+        <i class="fa-solid fa-language"></i>
+        <span id="language-label">English</span>
+      </button>
       <div class="container">
         <h1 id="brand-title">ساعات وإكسسوارات صفاء</h1>
         <p id="brand-subtitle">تشكيلة راقية من الساعات والشنط والإكسسوارات النسائية 💎</p>
@@ -1624,7 +1625,7 @@
             <span id="join-banner-subtitle">نصمم لك متجرك الاحترافي بأسعار مناسبة</span>
           </div>
           <a
-            href="https://wa.me/966536980662?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D9%85%D8%AA%D8%AC%D8%B1%20%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A"
+            href="https://wa.me/966536980662?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%B9%D8%A8%20%D9%81%D9%8A%20%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D9%85%D8%AA%D8%AC%D8%B1%20%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A"
             class="join-banner-btn"
             target="_blank"
             rel="noopener noreferrer"
@@ -2008,7 +2009,6 @@
       const translations = {
         ar: {
           languageButton: "English",
-          adminLabel: "الإدارة",
           brandTitle: BRAND_NAME_AR,
           brandSubtitle: BRAND_SUB_AR,
           all: "الكل",
@@ -2136,7 +2136,6 @@
         },
         en: {
           languageButton: "العربية",
-          adminLabel: "Admin",
           brandTitle: BRAND_NAME_EN,
           brandSubtitle: BRAND_SUB_EN,
           all: "All",
@@ -2846,7 +2845,6 @@
         document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
 
         document.getElementById("language-label").innerText = t("languageButton");
-        document.getElementById("admin-label").innerText = t("adminLabel");
         document.getElementById("brand-title").innerText = t("brandTitle");
         document.getElementById("brand-subtitle").innerText = t("brandSubtitle");
         document.getElementById("admin-trigger-btn").title = currentLanguage === "en" ? "Admin" : "الإدارة";
@@ -3908,4 +3906,4 @@
       });
     </script>
   </body>
-              </html>
+</html>
