@@ -98,7 +98,7 @@
         background: linear-gradient(135deg, #4d2138 0%, #7a3b5c 55%, #a8557a 100%);
         color: white;
         text-align: center;
-        padding: 2rem 1rem 1.75rem;
+        padding: 0.9rem 1rem 1.6rem;
         position: relative;
         overflow: hidden;
       }
@@ -121,8 +121,42 @@
         background: radial-gradient(circle, rgba(212, 175, 122, 0.18) 0%, transparent 70%);
         pointer-events: none;
       }
+
+      .header-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 780px;
+        margin: 0 auto 1rem;
+        position: relative;
+        z-index: 5;
+      }
+      .header-action-btn {
+        background: rgba(255, 255, 255, 0.13);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        padding: 7px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 0.74rem;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+        font-family: inherit;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .header-action-btn:hover {
+        background: rgba(212, 175, 122, 0.35);
+        border-color: var(--accent);
+      }
+      .header-action-btn:active { transform: scale(0.96); }
+      .header-action-btn i { font-size: 0.82rem; }
+
       header h1 {
-        font-size: 1.75rem;
+        font-size: 1.7rem;
         font-weight: 800;
         margin-bottom: 6px;
         letter-spacing: -0.3px;
@@ -135,51 +169,12 @@
         position: relative;
         z-index: 1;
       }
+      @media (max-width: 500px) {
+        header h1 { font-size: 1.4rem; }
+        header p { font-size: 0.78rem; }
+        .header-action-btn { padding: 6px 11px; font-size: 0.7rem; }
+      }
 
-      .admin-trigger {
-        position: absolute;
-        top: 14px;
-        left: 14px !important;
-        right: auto !important;
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        z-index: 5;
-      }
-      .admin-trigger:hover {
-        background: rgba(212, 175, 122, 0.3);
-        border-color: var(--accent);
-      }
-      .language-switcher {
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 8px 13px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 0.75rem;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        z-index: 5;
-        transition: all 0.2s;
-      }
-      .language-switcher:hover {
-        background: rgba(212, 175, 122, 0.3);
-        border-color: var(--accent);
-      }
       .floating-whatsapp {
         position: fixed;
         left: 18px;
@@ -223,6 +218,83 @@
         }
       }
 
+      /* ═══════════ بانر الانضمام الصغير ═══════════ */
+      .join-banner {
+        margin: 12px 0 4px;
+      }
+      .join-banner-inner {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(135deg, #fef9f0 0%, #fdf2e0 100%);
+        border: 1.5px solid rgba(212, 175, 122, 0.42);
+        border-radius: 14px;
+        padding: 9px 12px;
+        box-shadow: 0 3px 12px rgba(212, 175, 122, 0.16);
+      }
+      .join-banner-icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        background: linear-gradient(135deg, #d4af7a 0%, #b8935a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(212, 175, 122, 0.4);
+      }
+      .join-banner-text {
+        flex: 1;
+        min-width: 0;
+        line-height: 1.35;
+      }
+      .join-banner-text strong {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+      }
+      .join-banner-text span {
+        display: block;
+        font-size: 0.68rem;
+        color: var(--text-light);
+        margin-top: 1px;
+      }
+      .join-banner-btn {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        color: #fff;
+        text-decoration: none;
+        padding: 8px 13px;
+        border-radius: 999px;
+        font-size: 0.73rem;
+        font-weight: 800;
+        box-shadow: 0 4px 10px rgba(122, 59, 92, 0.28);
+        border: 1.5px solid rgba(212, 175, 122, 0.4);
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+      .join-banner-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(122, 59, 92, 0.36);
+        color: #fff;
+      }
+      .join-banner-btn:active { transform: scale(0.96); }
+      .join-banner-btn i { font-size: 0.85rem; }
+
+      @media (max-width: 420px) {
+        .join-banner-icon { width: 36px; height: 36px; font-size: 1rem; }
+        .join-banner-text strong { font-size: 0.74rem; }
+        .join-banner-text span { font-size: 0.63rem; }
+        .join-banner-btn { padding: 7px 11px; font-size: 0.68rem; gap: 4px; }
+        .join-banner-inner { gap: 8px; padding: 8px 10px; }
+      }
+
       .bilingual-input {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -245,7 +317,7 @@
         border: 1px solid var(--border);
         border-radius: 18px;
         padding: 14px 12px;
-        margin: 14px 0;
+        margin: 12px 0;
         box-shadow: var(--shadow-md);
         position: relative;
         z-index: 100;
@@ -1500,198 +1572,6 @@
       .confirm-btn-ok.danger:hover {
         box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
       }
-
-      /* ═══════════ قسم التواصل بالواتساب ═══════════ */
-      .contact-section {
-        padding: 1.5rem 1rem 2.5rem;
-        margin-top: 1rem;
-      }
-
-      .contact-card {
-        max-width: 780px;
-        margin: 0 auto;
-        background: linear-gradient(135deg, #ffffff 0%, #fdf8fa 100%);
-        border-radius: 24px;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 12px 40px rgba(122, 59, 92, 0.12);
-        border: 1px solid var(--border);
-      }
-
-      .contact-card::before {
-        content: "";
-        position: absolute;
-        top: -60px;
-        right: -60px;
-        width: 180px;
-        height: 180px;
-        background: radial-gradient(circle, rgba(37, 211, 102, 0.14) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
-      }
-
-      .contact-card::after {
-        content: "";
-        position: absolute;
-        bottom: -80px;
-        left: -80px;
-        width: 220px;
-        height: 220px;
-        background: radial-gradient(circle, rgba(212, 175, 122, 0.18) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
-      }
-
-      .contact-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(37, 211, 102, 0.1);
-        color: #128c4b;
-        padding: 6px 14px;
-        border-radius: 999px;
-        font-size: 0.72rem;
-        font-weight: 800;
-        margin-bottom: 14px;
-        border: 1px solid rgba(37, 211, 102, 0.28);
-        position: relative;
-        z-index: 1;
-      }
-      .contact-badge .dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #25d366;
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-        animation: liveDot 1.6s infinite;
-      }
-      @keyframes liveDot {
-        0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-        70% { box-shadow: 0 0 0 8px rgba(37, 211, 102, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-      }
-
-      .contact-icon-wrap {
-        position: relative;
-        width: 78px;
-        height: 78px;
-        margin: 0 auto 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .contact-icon-wrap .pulse-ring {
-        position: absolute;
-        inset: 0;
-        border-radius: 50%;
-        background: rgba(37, 211, 102, 0.4);
-        animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      }
-      .contact-icon-wrap .pulse-ring.delay { animation-delay: 1s; }
-      @keyframes pulseRing {
-        0% { transform: scale(0.85); opacity: 0.7; }
-        100% { transform: scale(1.7); opacity: 0; }
-      }
-      .contact-icon {
-        position: relative;
-        width: 68px;
-        height: 68px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #25d366 0%, #128c4b 100%);
-        color: #fff;
-        font-size: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 26px rgba(37, 211, 102, 0.42);
-        z-index: 1;
-      }
-
-      .contact-title {
-        font-size: 1.3rem;
-        font-weight: 900;
-        color: var(--primary-dark);
-        margin-bottom: 6px;
-        position: relative;
-        z-index: 1;
-      }
-      .contact-subtitle {
-        font-size: 0.85rem;
-        color: var(--text-light);
-        margin-bottom: 20px;
-        max-width: 420px;
-        margin-left: auto;
-        margin-right: auto;
-        line-height: 1.7;
-        position: relative;
-        z-index: 1;
-      }
-
-      .contact-number-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-        color: #fff;
-        text-decoration: none;
-        padding: 14px 26px;
-        border-radius: 999px;
-        font-weight: 900;
-        font-size: 1.02rem;
-        box-shadow: 0 10px 26px rgba(122, 59, 92, 0.32);
-        border: 2px solid rgba(212, 175, 122, 0.45);
-        transition: all 0.25s ease;
-        position: relative;
-        z-index: 1;
-      }
-      .contact-number-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 14px 34px rgba(122, 59, 92, 0.4);
-        border-color: var(--accent);
-        color: #fff;
-      }
-      .contact-number-btn:active { transform: translateY(0) scale(0.98); }
-      .contact-number-btn i {
-        font-size: 1.15rem;
-        color: var(--accent);
-      }
-      .contact-number-btn .num {
-        direction: ltr;
-        unicode-bidi: isolate;
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-        letter-spacing: 0.5px;
-      }
-
-      .contact-hint {
-        font-size: 0.72rem;
-        color: var(--text-light);
-        margin-top: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        position: relative;
-        z-index: 1;
-      }
-      .contact-hint i {
-        color: var(--accent-dark);
-        animation: pointDown 1.5s ease-in-out infinite;
-      }
-      @keyframes pointDown {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(3px); }
-      }
-
-      @media (max-width: 500px) {
-        .contact-card { padding: 1.6rem 1.1rem; border-radius: 20px; }
-        .contact-title { font-size: 1.15rem; }
-        .contact-subtitle { font-size: 0.8rem; }
-        .contact-number-btn { padding: 12px 18px; font-size: 0.92rem; gap: 9px; }
-        .contact-icon { width: 60px; height: 60px; font-size: 1.8rem; }
-        .contact-icon-wrap { width: 70px; height: 70px; }
-      }
     </style>
   </head>
   <body>
@@ -1710,14 +1590,18 @@
     </div>
 
     <header>
-      <button class="admin-trigger" onclick="openLoginModal()" id="admin-trigger-btn" title="الإدارة">
-        <i class="fa-solid fa-gear"></i>
-      </button>
+      <div class="header-top-bar">
+        <button class="header-action-btn" onclick="openLoginModal()" id="admin-trigger-btn" title="الإدارة">
+          <i class="fa-solid fa-gear"></i>
+          <span id="admin-label">الإدارة</span>
+        </button>
 
-      <button class="language-switcher" id="language-switcher" onclick="toggleLanguage()">
-        <i class="fa-solid fa-language"></i>
-        <span id="language-label">English</span>
-      </button>
+        <button class="header-action-btn" id="language-switcher" onclick="toggleLanguage()">
+          <i class="fa-solid fa-language"></i>
+          <span id="language-label">English</span>
+        </button>
+      </div>
+
       <div class="container">
         <h1 id="brand-title">ساعات وإكسسوارات صفاء</h1>
         <p id="brand-subtitle">تشكيلة راقية من الساعات والشنط والإكسسوارات النسائية 💎</p>
@@ -1729,6 +1613,29 @@
     </a>
 
     <main class="container">
+      <!-- ═══════════ بانر الانضمام الصغير ═══════════ -->
+      <div class="join-banner">
+        <div class="join-banner-inner">
+          <div class="join-banner-icon">
+            <i class="fa-solid fa-handshake"></i>
+          </div>
+          <div class="join-banner-text">
+            <strong id="join-banner-title">هل تريد متجر إلكتروني مثل هذا؟</strong>
+            <span id="join-banner-subtitle">نصمم لك متجرك الاحترافي بأسعار مناسبة</span>
+          </div>
+          <a
+            href="https://wa.me/966536980662?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D9%85%D8%AA%D8%AC%D8%B1%20%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A"
+            class="join-banner-btn"
+            target="_blank"
+            rel="noopener noreferrer"
+            id="join-banner-btn"
+          >
+            <i class="fa-brands fa-whatsapp"></i>
+            <span id="join-banner-btn-text">انضم</span>
+          </a>
+        </div>
+      </div>
+
       <div class="products-toolbar" aria-label="فلترة المنتجات">
         <div class="filter-top-row">
           <div class="filter-search">
@@ -2000,45 +1907,6 @@
       </div>
     </div>
 
-    <!-- ═══════════ قسم التواصل بالواتساب ═══════════ -->
-    <section class="contact-section" id="contact-section">
-      <div class="contact-card">
-        <div class="contact-badge">
-          <span class="dot"></span>
-          <span id="contact-available">متاحون الآن</span>
-        </div>
-
-        <div class="contact-icon-wrap">
-          <span class="pulse-ring"></span>
-          <span class="pulse-ring delay"></span>
-          <div class="contact-icon">
-            <i class="fa-brands fa-whatsapp"></i>
-          </div>
-        </div>
-
-        <h3 class="contact-title" id="contact-title">للطلب والاستفسار</h3>
-        <p class="contact-subtitle" id="contact-subtitle">
-          تواصل معنا مباشرة عبر الواتساب وسنرد عليك في أسرع وقت ✨
-        </p>
-
-        <a
-          href="https://wa.me/966536980662?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%A7%D9%84%D9%85%D9%86%D8%AA%D8%AC%D8%A7%D8%AA"
-          class="contact-number-btn"
-          target="_blank"
-          rel="noopener noreferrer"
-          id="contact-number-link"
-        >
-          <i class="fa-solid fa-phone-volume"></i>
-          <span class="num" dir="ltr">+966 53 698 0662</span>
-        </a>
-
-        <div class="contact-hint">
-          <i class="fa-solid fa-hand-pointer"></i>
-          <span id="contact-hint-text">اضغط على الرقم للتواصل فوراً</span>
-        </div>
-      </div>
-    </section>
-
     <footer>
       <div class="footer-brand" id="footer-brand-text">
         ساعات وإكسسوارات صفاء — Al-Safa Watches & Accessories
@@ -2140,6 +2008,7 @@
       const translations = {
         ar: {
           languageButton: "English",
+          adminLabel: "الإدارة",
           brandTitle: BRAND_NAME_AR,
           brandSubtitle: BRAND_SUB_AR,
           all: "الكل",
@@ -2261,13 +2130,13 @@
           unsavedChangesBrowser: "لديك تعديلات غير محفوظة.",
           pageLoading: "جاري التحميل...",
           loadingProducts: "جاري تحميل المنتجات...",
-          contactAvailable: "متاحون الآن",
-          contactTitle: "للطلب والاستفسار",
-          contactSubtitle: "تواصل معنا مباشرة عبر الواتساب وسنرد عليك في أسرع وقت ✨",
-          contactHint: "اضغط على الرقم للتواصل فوراً"
+          joinBannerTitle: "هل تريد متجر إلكتروني مثل هذا؟",
+          joinBannerSubtitle: "نصمم لك متجرك الاحترافي بأسعار مناسبة",
+          joinBannerBtn: "انضم"
         },
         en: {
           languageButton: "العربية",
+          adminLabel: "Admin",
           brandTitle: BRAND_NAME_EN,
           brandSubtitle: BRAND_SUB_EN,
           all: "All",
@@ -2389,10 +2258,9 @@
           unsavedChangesBrowser: "You have unsaved changes.",
           pageLoading: "Loading...",
           loadingProducts: "Loading products...",
-          contactAvailable: "Available now",
-          contactTitle: "Order & Inquiries",
-          contactSubtitle: "Contact us directly on WhatsApp — we'll reply as soon as possible ✨",
-          contactHint: "Tap the number to contact us instantly"
+          joinBannerTitle: "Want an online store like this?",
+          joinBannerSubtitle: "We design your professional store at great prices",
+          joinBannerBtn: "Join"
         }
       };
 
@@ -2978,6 +2846,7 @@
         document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
 
         document.getElementById("language-label").innerText = t("languageButton");
+        document.getElementById("admin-label").innerText = t("adminLabel");
         document.getElementById("brand-title").innerText = t("brandTitle");
         document.getElementById("brand-subtitle").innerText = t("brandSubtitle");
         document.getElementById("admin-trigger-btn").title = currentLanguage === "en" ? "Admin" : "الإدارة";
@@ -3009,6 +2878,11 @@
         document.getElementById("login-password-label").textContent = t("loginPasswordLabel");
         document.getElementById("login-btn-text").textContent = t("loginBtn");
 
+        // ✅ بانر الانضمام
+        document.getElementById("join-banner-title").textContent = t("joinBannerTitle");
+        document.getElementById("join-banner-subtitle").textContent = t("joinBannerSubtitle");
+        document.getElementById("join-banner-btn-text").textContent = t("joinBannerBtn");
+
         const editingId = document.getElementById("editing-product-id")?.value || "";
         document.getElementById("admin-form-title").innerText = editingId ? t("adminFormTitleEdit") : t("adminFormTitle");
         document.getElementById("p-name-label").textContent = t("mealNameLabel");
@@ -3039,19 +2913,6 @@
         document.getElementById("save-order-text").textContent = t("saveOrderBtn");
         document.getElementById("logout-text").textContent = t("logoutBtn");
         document.getElementById("admin-order-help-text").textContent = t("adminOrderHelp");
-
-        // ✅ ترجمة قسم التواصل
-        const elContactAvail = document.getElementById("contact-available");
-        if (elContactAvail) elContactAvail.textContent = t("contactAvailable");
-
-        const elContactTitle = document.getElementById("contact-title");
-        if (elContactTitle) elContactTitle.textContent = t("contactTitle");
-
-        const elContactSub = document.getElementById("contact-subtitle");
-        if (elContactSub) elContactSub.textContent = t("contactSubtitle");
-
-        const elContactHint = document.getElementById("contact-hint-text");
-        if (elContactHint) elContactHint.textContent = t("contactHint");
 
         renderCategoryFilters(globalProducts);
         renderProducts(globalProducts);
@@ -4047,4 +3908,4 @@
       });
     </script>
   </body>
-  </html>
+              </html>
