@@ -141,7 +141,7 @@
         font-weight: 700;
       }
 
-      /* ✅ الهيدر - النسخة الأصلية */
+      /* ✅ الهيدر - نسخة Flexbox الجديدة */
       header {
         background: linear-gradient(
           135deg,
@@ -150,8 +150,7 @@
           #0369a1 100%
         );
         color: white;
-        text-align: center;
-        padding: 2rem 1rem 1.75rem;
+        padding: 1.5rem 0 1.25rem;
         position: relative;
         overflow: hidden;
       }
@@ -183,34 +182,48 @@
         );
         pointer-events: none;
       }
-      header h1 {
+
+      /* ✅ صف الهيدر بنظام Flexbox */
+      .header-bar {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 0 14px;
+        max-width: 780px;
+        margin: 0 auto;
+      }
+
+      .header-center {
+        flex: 1;
+        min-width: 0; /* مهم جدًا لعمل ellipsis داخل flex */
+        text-align: center;
+      }
+
+      .header-center h1 {
         font-size: 1.75rem;
         font-weight: 800;
-        margin: 0 70px 6px;
+        margin: 0 0 6px;
         letter-spacing: -0.3px;
-        position: relative;
-        z-index: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      header p {
-        font-size: 0.87rem;
-        color: #bae6fd;
-        position: relative;
-        z-index: 1;
-        margin: 0 70px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
-      /* ✅ زر الإدارة - النسخة الأصلية */
+      .header-center p {
+        font-size: 0.87rem;
+        color: #bae6fd;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* ✅ زر الإدارة */
       .admin-trigger {
-        position: absolute;
-        top: 14px;
-        left: 14px !important;
-        right: auto !important;
+        flex-shrink: 0;
         background: rgba(255, 255, 255, 0.1);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.25);
@@ -222,18 +235,15 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s;
-        z-index: 5;
       }
       .admin-trigger:hover {
         background: rgba(56, 189, 248, 0.3);
         border-color: var(--accent);
       }
 
-      /* ✅ زر اللغة - النسخة الأصلية */
+      /* ✅ زر اللغة */
       .language-switcher {
-        position: absolute;
-        top: 14px;
-        right: 14px;
+        flex-shrink: 0;
         background: rgba(255, 255, 255, 0.1);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.25);
@@ -245,8 +255,8 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        z-index: 5;
         transition: all 0.2s;
+        white-space: nowrap;
       }
       .language-switcher:hover {
         background: rgba(56, 189, 248, 0.3);
@@ -255,29 +265,28 @@
 
       @media (max-width: 600px) {
         header {
-          padding: 1.6rem 0.75rem 1.35rem;
+          padding: 1.1rem 0 1rem;
         }
-
-        header h1 {
-          font-size: 1.35rem;
-          margin-left: 58px;
-          margin-right: 58px;
+        .header-bar {
+          padding: 0 10px;
+          gap: 8px;
         }
-
-        header p {
-          font-size: 0.75rem;
-          margin-left: 58px;
-          margin-right: 58px;
+        .header-center h1 {
+          font-size: 1.05rem;
+          margin-bottom: 4px;
         }
-
+        .header-center p {
+          font-size: 0.68rem;
+        }
         .admin-trigger {
-          top: 10px;
-          left: 10px !important;
+          width: 34px;
+          height: 34px;
+          font-size: 0.85rem;
         }
-
         .language-switcher {
-          top: 10px;
-          right: 10px;
+          padding: 6px 10px;
+          font-size: 0.68rem;
+          gap: 4px;
         }
       }
 
@@ -2263,30 +2272,33 @@
       <span id="toast-text">تمت العملية بنجاح</span>
     </div>
 
-    <!-- ✅ الهيدر - النسخة الأصلية -->
+    <!-- ✅ الهيدر - نسخة Flexbox الجديدة -->
     <header>
-      <button
-        class="admin-trigger"
-        onclick="openLoginModal()"
-        id="admin-trigger-btn"
-        title="الإدارة"
-      >
-        <i class="fa-solid fa-gear"></i>
-      </button>
+      <div class="header-bar">
+        <button
+          class="admin-trigger"
+          onclick="openLoginModal()"
+          id="admin-trigger-btn"
+          title="الإدارة"
+        >
+          <i class="fa-solid fa-gear"></i>
+        </button>
 
-      <button
-        class="language-switcher"
-        id="language-switcher"
-        onclick="toggleLanguage()"
-      >
-        <i class="fa-solid fa-language"></i>
-        <span id="language-label">English</span>
-      </button>
-      <div class="container">
-        <h1 id="brand-title">الملك ستار للهواتف الذكية</h1>
-        <p id="brand-subtitle">
-          أحدث الهواتف الذكية والإكسسوارات الأصلية بأفضل الأسعار 📱
-        </p>
+        <div class="header-center">
+          <h1 id="brand-title">الملك ستار للهواتف الذكية</h1>
+          <p id="brand-subtitle">
+            أحدث الهواتف الذكية والإكسسوارات الأصلية بأفضل الأسعار 📱
+          </p>
+        </div>
+
+        <button
+          class="language-switcher"
+          id="language-switcher"
+          onclick="toggleLanguage()"
+        >
+          <i class="fa-solid fa-language"></i>
+          <span id="language-label">English</span>
+        </button>
       </div>
     </header>
 
@@ -2302,7 +2314,7 @@
       <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- ✅ زر العودة للأعلى - يستدعي دالة عامة -->
+    <!-- ✅ زر العودة للأعلى -->
     <button id="back-to-top-btn" title="العودة للأعلى" aria-label="Back to top">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
@@ -2861,10 +2873,6 @@
         </div>
       </div>
 
-      <!-- <div class="footer-brand" id="footer-brand-text">
-        الملك ستار للهواتف الذكية — Al-Malik Star Smartphones
-      </div> -->
-
       <div class="footer-socials">
         <a
           href="https://instagram.com/7x7xomar"
@@ -2910,7 +2918,6 @@
         }, 500);
       }
 
-      // ✅ دالة عامة للعودة للأعلى (يستدعيها زر back-to-top)
       window.scrollToTopGlobal = function () {
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
@@ -3346,7 +3353,6 @@
           .replace(/'/g, "&#039;");
       }
 
-      // ✅ جعلها عامة للاستخدام من onclick
       window.scrollToProductsTop = function () {
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
@@ -5227,17 +5233,14 @@
         }, 200);
       }
 
-      // ✅ ربط زر العودة للأعلى بالحدث (بديل onclick)
       function initBackToTop() {
         const btn = document.getElementById("back-to-top-btn");
         if (!btn) return;
 
-        // ربط الحدث بشكل صحيح (بدل onclick inline)
         btn.addEventListener("click", () => {
           window.scrollTo({ top: 0, behavior: "smooth" });
         });
 
-        // إظهار/إخفاء الزر حسب التمرير
         window.addEventListener(
           "scroll",
           () => {
