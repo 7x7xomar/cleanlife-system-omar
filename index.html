@@ -141,7 +141,7 @@
         font-weight: 700;
       }
 
-      /* ✅ الهيدر - نسخة Flexbox الجديدة */
+      /* ✅ الهيدر - نسخة Flexbox */
       header {
         background: linear-gradient(
           135deg,
@@ -183,7 +183,6 @@
         pointer-events: none;
       }
 
-      /* ✅ صف الهيدر بنظام Flexbox */
       .header-bar {
         position: relative;
         z-index: 2;
@@ -198,7 +197,7 @@
 
       .header-center {
         flex: 1;
-        min-width: 0; /* مهم جدًا لعمل ellipsis داخل flex */
+        min-width: 0;
         text-align: center;
       }
 
@@ -221,7 +220,6 @@
         text-overflow: ellipsis;
       }
 
-      /* ✅ زر الإدارة */
       .admin-trigger {
         flex-shrink: 0;
         background: rgba(255, 255, 255, 0.1);
@@ -241,7 +239,6 @@
         border-color: var(--accent);
       }
 
-      /* ✅ زر اللغة */
       .language-switcher {
         flex-shrink: 0;
         background: rgba(255, 255, 255, 0.1);
@@ -721,22 +718,126 @@
       .product-card:active {
         transform: scale(0.98);
       }
+
+      /* ✅ حاوية الصور - دعم السحب */
       .card-img-container {
         position: relative;
         width: 100%;
         aspect-ratio: 1 / 1;
         background-color: #e0f2fe;
         overflow: hidden;
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-user-select: none;
       }
-      .card-img-container img {
+
+      /* ✅ كل صورة في طبقة منفصلة */
+      .card-img-container .card-img {
+        position: absolute;
+        inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.4s ease;
+        opacity: 0;
+        z-index: 1;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
       }
-      .product-card:hover .card-img-container img {
+
+      .card-img-container .card-img.active {
+        opacity: 1;
+        z-index: 2;
+      }
+
+      /* ✅ عند المرور على الكمبيوتر - نعرض أول صورة بتكبير */
+      .product-card:hover .card-img-container .card-img.active {
         transform: scale(1.05);
       }
+
+      /* ✅ نقاط المؤشر (dots) */
+      .card-dots {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        background: rgba(8, 47, 73, 0.5);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 999px;
+        z-index: 7;
+        pointer-events: none;
+      }
+
+      .card-dots span {
+        display: block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.55);
+        transition: all 0.25s ease;
+      }
+
+      .card-dots span.active {
+        background: #fff;
+        width: 16px;
+        border-radius: 3px;
+      }
+
+      /* ✅ أسهم التنقل (تظهر فقط على الكمبيوتر) */
+      .card-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--primary);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        z-index: 8;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: all 0.25s ease;
+        padding: 0;
+        font-family: inherit;
+      }
+
+      .card-nav-btn.prev {
+        right: 8px;
+      }
+      .card-nav-btn.next {
+        left: 8px;
+      }
+
+      .product-card:hover .card-nav-btn {
+        opacity: 1;
+      }
+
+      .card-nav-btn:hover {
+        background: var(--primary);
+        color: #fff;
+        transform: translateY(-50%) scale(1.12);
+      }
+
+      /* إخفاء الأسهم على الأجهزة اللمسية */
+      @media (hover: none), (max-width: 768px) {
+        .card-nav-btn {
+          display: none;
+        }
+      }
+
+      /* ✅ شارة عدد الصور (أسفل يسار) */
       .img-badge {
         position: absolute;
         bottom: 8px;
@@ -749,7 +850,29 @@
         border-radius: 6px;
         font-weight: 700;
         border: 1px solid rgba(56, 189, 248, 0.4);
+        z-index: 6;
       }
+
+      .img-count-badge {
+        bottom: 8px !important;
+        left: 8px !important;
+      }
+
+      @media (max-width: 500px) {
+        .card-dots {
+          padding: 3px 6px;
+          gap: 3px;
+          bottom: 6px;
+        }
+        .card-dots span {
+          width: 5px;
+          height: 5px;
+        }
+        .card-dots span.active {
+          width: 13px;
+        }
+      }
+
       .product-badges {
         position: absolute;
         top: 10px;
@@ -1960,7 +2083,7 @@
         border-top: 4px solid var(--accent);
       }
 
-      /* ═══════════ شريط الثقة (داخل الفوتر) ═══════════ */
+      /* ═══════════ شريط الثقة ═══════════ */
       .trust-bar {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -2272,7 +2395,6 @@
       <span id="toast-text">تمت العملية بنجاح</span>
     </div>
 
-    <!-- ✅ الهيدر - نسخة Flexbox الجديدة -->
     <header>
       <div class="header-bar">
         <button
@@ -2314,7 +2436,6 @@
       <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- ✅ زر العودة للأعلى -->
     <button id="back-to-top-btn" title="العودة للأعلى" aria-label="Back to top">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
@@ -3918,6 +4039,134 @@
         return html;
       }
 
+      /* ✅ دالة تفعيل السحب بين صور الكارد */
+      function attachImageSwipe(cardElement) {
+        const container = cardElement.querySelector(".card-img-container");
+        if (!container) return;
+
+        const images = container.querySelectorAll(".card-img");
+        const dots = container.querySelectorAll(".card-dots span");
+        const prevBtn = container.querySelector(".card-nav-btn.prev");
+        const nextBtn = container.querySelector(".card-nav-btn.next");
+
+        if (images.length <= 1) return;
+
+        let currentIndex = 0;
+        let startX = 0;
+        let startY = 0;
+        let tracking = false;
+        let didSwipe = false;
+        const SWIPE_THRESHOLD = 35;
+
+        function goToSlide(index) {
+          index = (index + images.length) % images.length;
+          if (index === currentIndex) return;
+          images[currentIndex].classList.remove("active");
+          if (dots[currentIndex]) dots[currentIndex].classList.remove("active");
+          currentIndex = index;
+          images[currentIndex].classList.add("active");
+          if (dots[currentIndex]) dots[currentIndex].classList.add("active");
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            goToSlide(currentIndex - 1);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            goToSlide(currentIndex + 1);
+          });
+        }
+
+        function onStart(x, y) {
+          startX = x;
+          startY = y;
+          tracking = true;
+          didSwipe = false;
+        }
+
+        function onEnd(x, y) {
+          if (!tracking) return;
+          tracking = false;
+          const dx = x - startX;
+          const dy = y - startY;
+          if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+            didSwipe = true;
+            if (dx < 0) {
+              goToSlide(currentIndex + 1);
+            } else {
+              goToSlide(currentIndex - 1);
+            }
+          }
+        }
+
+        container.addEventListener(
+          "touchstart",
+          (e) => {
+            const touch = e.touches[0];
+            onStart(touch.clientX, touch.clientY);
+          },
+          { passive: true }
+        );
+
+        container.addEventListener(
+          "touchmove",
+          (e) => {
+            if (!tracking) return;
+            const touch = e.touches[0];
+            const dx = Math.abs(touch.clientX - startX);
+            const dy = Math.abs(touch.clientY - startY);
+            if (dx > dy && dx > 8) {
+              e.preventDefault();
+            }
+          },
+          { passive: false }
+        );
+
+        container.addEventListener("touchend", (e) => {
+          const touch = e.changedTouches[0];
+          onEnd(touch.clientX, touch.clientY);
+        });
+
+        let mouseDown = false;
+        container.addEventListener("mousedown", (e) => {
+          if (e.target.closest(".card-nav-btn")) return;
+          mouseDown = true;
+          onStart(e.clientX, e.clientY);
+        });
+
+        container.addEventListener("mouseup", (e) => {
+          if (!mouseDown) return;
+          mouseDown = false;
+          onEnd(e.clientX, e.clientY);
+        });
+
+        container.addEventListener("mouseleave", () => {
+          if (mouseDown) {
+            mouseDown = false;
+            tracking = false;
+          }
+        });
+
+        container.addEventListener(
+          "click",
+          (e) => {
+            if (didSwipe) {
+              e.stopPropagation();
+              e.preventDefault();
+              didSwipe = false;
+            }
+          },
+          true
+        );
+      }
+
       function renderProducts(products) {
         products = sortProducts(products);
         const gridContainer = document.getElementById("products-grid");
@@ -3948,8 +4197,8 @@
           card.className = "product-card";
           card.onclick = () => openProductModal(product.id);
 
-          const firstImg = product.images?.[0] || "";
-          const imgCount = product.images?.length || 0;
+          const images = product.images || [];
+          const imgCount = images.length;
           const displayName = getProductName(product);
           const categoryDisplay = getCategoryDisplayName(product);
 
@@ -3960,6 +4209,36 @@
             badgesHtml += `<span class="badge badge-featured"><i class="fa-solid fa-star"></i> ${t("badgeFeatured")}</span>`;
           badgesHtml += "</div>";
 
+          let imagesHtml = "";
+          if (images.length > 0) {
+            imagesHtml = images
+              .map(
+                (src, i) =>
+                  `<img src="${src}" class="card-img ${i === 0 ? "active" : ""}" alt="${escapeHtml(displayName)}" loading="${i === 0 ? "eager" : "lazy"}" decoding="async">`
+              )
+              .join("");
+          } else {
+            imagesHtml = `<img src="" class="card-img active" alt="${escapeHtml(displayName)}">`;
+          }
+
+          let dotsHtml = "";
+          if (images.length > 1) {
+            dotsHtml =
+              '<div class="card-dots">' +
+              images
+                .map((_, i) => `<span class="${i === 0 ? "active" : ""}"></span>`)
+                .join("") +
+              "</div>";
+          }
+
+          let arrowsHtml = "";
+          if (images.length > 1) {
+            arrowsHtml = `
+              <button type="button" class="card-nav-btn prev" aria-label="Previous"><i class="fa-solid fa-chevron-right"></i></button>
+              <button type="button" class="card-nav-btn next" aria-label="Next"><i class="fa-solid fa-chevron-left"></i></button>
+            `;
+          }
+
           const categoryBadge = categoryDisplay
             ? `<span class="img-badge"><i class="fa-solid fa-layer-group"></i> ${escapeHtml(categoryDisplay)}</span>`
             : "";
@@ -3967,8 +4246,14 @@
           card.innerHTML = `
             <div class="card-img-container">
               ${badgesHtml}
-              <img src="${firstImg}" alt="${escapeHtml(displayName)}" loading="lazy" decoding="async">
-              ${imgCount > 1 ? `<span class="img-badge"><i class="fa-regular fa-images"></i> ${imgCount}</span>` : categoryBadge}
+              ${imagesHtml}
+              ${
+                imgCount > 1
+                  ? `<span class="img-badge img-count-badge"><i class="fa-regular fa-images"></i> ${imgCount}</span>`
+                  : categoryBadge
+              }
+              ${arrowsHtml}
+              ${dotsHtml}
             </div>
             <div class="card-content">
               ${categoryDisplay ? `<div style="font-size:.68rem;color:var(--accent-dark);font-weight:800;margin-bottom:4px;">${escapeHtml(categoryDisplay)}</div>` : ""}
@@ -3980,6 +4265,10 @@
             </div>
           `;
           gridContainer.appendChild(card);
+
+          if (images.length > 1) {
+            attachImageSwipe(card);
+          }
         });
       }
 
