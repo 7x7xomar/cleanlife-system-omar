@@ -2185,6 +2185,145 @@
       .confirm-btn-ok.danger:hover {
         box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
       }
+
+      /* ═══════════ ✅ حقل الملاحظات مع زر الموقع داخل الحدود ═══════════ */
+      .notes-field-wrapper {
+        position: relative;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        background: #fcfbf8;
+        overflow: hidden;
+        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      }
+      .notes-field-wrapper:focus-within {
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(13, 76, 92, 0.08);
+      }
+      .notes-field-wrapper textarea {
+        width: 100% !important;
+        padding: 0.75rem 0.85rem 0.4rem !important;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+        font-size: 0.9rem;
+        font-family: inherit;
+        color: var(--text);
+        resize: vertical;
+        min-height: 62px;
+        border-radius: 0 !important;
+      }
+      .notes-field-wrapper textarea::placeholder {
+        color: #9aa8b0;
+      }
+      .notes-field-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 4px 14px 12px;
+      }
+      .attach-location-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        background: linear-gradient(135deg, var(--whatsapp) 0%, #1fb855 100%);
+        color: #fff;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 0.78rem;
+        font-weight: 800;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.28);
+        transition: all 0.2s;
+        font-family: inherit;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+      }
+      .attach-location-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.42);
+      }
+      .attach-location-btn:active {
+        transform: scale(0.96);
+      }
+      .attach-location-btn i {
+        font-size: 0.85rem;
+      }
+      .attach-location-btn.loading {
+        opacity: 0.75;
+        cursor: wait;
+        pointer-events: none;
+      }
+      .attach-location-btn.loading i {
+        animation: spin 0.9s linear infinite;
+      }
+
+      /* ✅ Chip الموقع المرفق */
+      .location-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, rgba(37, 211, 102, 0.12), rgba(37, 211, 102, 0.22));
+        border: 1.5px solid rgba(37, 211, 102, 0.5);
+        color: var(--primary-dark);
+        padding: 7px 10px 7px 14px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        box-shadow: 0 3px 10px rgba(37, 211, 102, 0.18);
+        animation: chipIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-width: 100%;
+      }
+      .location-chip i.fa-location-dot {
+        color: var(--whatsapp);
+        font-size: 0.95rem;
+        flex-shrink: 0;
+      }
+      .location-chip a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 0.75rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.75);
+        transition: all 0.2s;
+      }
+      .location-chip a:hover {
+        background: #fff;
+        color: var(--whatsapp);
+      }
+      .location-chip-remove {
+        background: rgba(220, 38, 38, 0.12);
+        color: var(--danger);
+        border: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        margin-inline-start: 2px;
+        flex-shrink: 0;
+        transition: all 0.2s;
+        padding: 0;
+      }
+      .location-chip-remove:hover {
+        background: var(--danger);
+        color: #fff;
+        transform: scale(1.08);
+      }
+      @keyframes chipIn {
+        from { opacity: 0; transform: translateY(-6px) scale(0.9); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
     </style>
   </head>
   <body>
@@ -2329,10 +2468,16 @@
             </div>
             <div class="form-group">
               <label id="customer-notes-label">عنوان المشروع أو ملاحظات إضافية (اختياري):</label>
-              <textarea id="customer-notes" rows="3" placeholder="المدينة، الحي، مساحة المشروع، أي تفاصيل أخرى..."></textarea>
-              <button type="button" id="get-location-btn" style="background: var(--whatsapp); color: white; border: none; padding: 9px 14px; border-radius: 8px; cursor: pointer; margin-top: 8px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">
-                📍 إرفاق موقعي الحالي
-              </button>
+              <div class="notes-field-wrapper">
+                <textarea id="customer-notes" rows="3" placeholder="المدينة، الحي، مساحة المشروع، أي تفاصيل أخرى..."></textarea>
+                <div class="notes-field-actions">
+                  <button type="button" id="get-location-btn" class="attach-location-btn">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span id="attach-location-text">إرفاق موقعي الحالي</span>
+                  </button>
+                  <div id="location-chip-container"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2695,6 +2840,9 @@
       let pendingDimensionProduct = null;
       let editingCartItemId = null;
 
+      // ✅ موقع العميل المرفق (chip منفصل عن textarea)
+      let attachedLocation = null;
+
       let isInitialLoadComplete = false;
 
       const LANGUAGE_STORAGE_KEY = "ceramics_lang_v1";
@@ -2752,13 +2900,17 @@
           customerNamePlaceholder: "الاسم الكامل",
           customerNotesLabel: "عنوان المشروع أو ملاحظات إضافية (اختياري):",
           customerNotesPlaceholder: "المدينة، الحي، مساحة المشروع، أي تفاصيل أخرى...",
-          getLocationBtn: "📍 إرفاق موقعي الحالي",
+          attachLocationText: "إرفاق موقعي الحالي",
+          locationDetecting: "جاري التحديد...",
           sendOrderBtn: "إرسال طلب عرض السعر",
           addToCartSuccess: "🛒 تمت إضافة المنتج للقائمة",
           orderSent: "✅ تم إرسال الطلب بنجاح",
           locationAttached: "تم إرفاق موقعك بنجاح!",
           locationError: "تعذر تحديد الموقع، يرجى السماح بالصلاحية.",
           locationNotSupported: "متصفحك لا يدعم تحديد الموقع.",
+          locationAttachedChip: "تم إرفاق الموقع",
+          locationView: "عرض",
+          locationRemove: "إزالة الموقع",
           modalAddToCart: "أضف لعرض السعر",
           addToCartCard: "أضف للعرض",
           dimTitleAdd: "حساب المساحة",
@@ -2904,13 +3056,17 @@
           customerNamePlaceholder: "Full name",
           customerNotesLabel: "Project address or additional notes (optional):",
           customerNotesPlaceholder: "City, district, project area, other details...",
-          getLocationBtn: "📍 Attach my current location",
+          attachLocationText: "Attach my location",
+          locationDetecting: "Detecting...",
           sendOrderBtn: "Send Quote Request",
           addToCartSuccess: "🛒 Product added to list",
           orderSent: "✅ Request sent successfully",
           locationAttached: "Location attached successfully!",
           locationError: "Could not determine location. Please allow permission.",
           locationNotSupported: "Your browser does not support geolocation.",
+          locationAttachedChip: "Location attached",
+          locationView: "View",
+          locationRemove: "Remove location",
           modalAddToCart: "Add to Quote",
           addToCartCard: "Add to Quote",
           dimTitleAdd: "Calculate Area",
@@ -3401,6 +3557,11 @@
         if (notes) {
           message += currentLanguage === "en" ? `📝 *Notes:* ${notes}\n` : `📝 *ملاحظات:* ${notes}\n`;
         }
+        if (attachedLocation) {
+          message += currentLanguage === "en"
+            ? `📍 *Location:* ${attachedLocation.mapsLink}\n`
+            : `📍 *الموقع:* ${attachedLocation.mapsLink}\n`;
+        }
 
         message += currentLanguage === "en"
           ? `\n--------------------------\n*Request Details:*\n`
@@ -3441,34 +3602,77 @@
         window.open(waUrl, "_blank");
 
         cartItems = [];
+        attachedLocation = null;
+        renderLocationChip();
+        document.getElementById("customer-name").value = "";
+        document.getElementById("customer-notes").value = "";
         saveCartToLocalStorage();
         closeCartModal();
         showToast(t("orderSent"));
       };
 
-      function getMyLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lon = position.coords.longitude;
-              const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
-              const notesInput = document.getElementById("customer-notes");
-              const prefix = currentLanguage === "en" ? "Customer location: " : "رابط موقع العميل: ";
-              if (notesInput.value) {
-                notesInput.value += `\n${prefix}${mapsLink}`;
-              } else {
-                notesInput.value = `${prefix}${mapsLink}`;
-              }
-              showToast(t("locationAttached"));
-            },
-            () => {
-              showToast(t("locationError"), true);
-            }
-          );
-        } else {
-          showToast(t("locationNotSupported"), true);
+      // ✅ chip الموقع
+      function renderLocationChip() {
+        const container = document.getElementById("location-chip-container");
+        const btn = document.getElementById("get-location-btn");
+        if (!container) return;
+        if (!attachedLocation) {
+          container.innerHTML = "";
+          if (btn) btn.style.display = "inline-flex";
+          return;
         }
+        const label = t("locationAttachedChip");
+        const viewLabel = t("locationView");
+        const removeTitle = t("locationRemove");
+        container.innerHTML = `
+          <div class="location-chip">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>${label}</span>
+            <a href="${attachedLocation.mapsLink}" target="_blank" rel="noopener noreferrer">${viewLabel}</a>
+            <button type="button" class="location-chip-remove" onclick="removeLocationChip()" title="${removeTitle}" aria-label="${removeTitle}">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        `;
+        if (btn) btn.style.display = "none";
+      }
+
+      window.removeLocationChip = function () {
+        attachedLocation = null;
+        renderLocationChip();
+      };
+
+      function getMyLocation() {
+        if (!navigator.geolocation) {
+          showToast(t("locationNotSupported"), true);
+          return;
+        }
+        const btn = document.getElementById("get-location-btn");
+        const btnText = document.getElementById("attach-location-text");
+        if (btn) btn.classList.add("loading");
+        if (btnText) btnText.textContent = t("locationDetecting");
+
+        const restoreBtn = () => {
+          if (btn) btn.classList.remove("loading");
+          if (btnText) btnText.textContent = t("attachLocationText");
+        };
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
+            attachedLocation = { lat, lon, mapsLink };
+            restoreBtn();
+            renderLocationChip();
+            showToast(t("locationAttached"));
+          },
+          () => {
+            restoreBtn();
+            showToast(t("locationError"), true);
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
       }
 
       function getProductCategories(products = globalProducts) {
@@ -3928,7 +4132,8 @@
         document.getElementById("customer-name").placeholder = t("customerNamePlaceholder");
         document.getElementById("customer-notes-label").textContent = t("customerNotesLabel");
         document.getElementById("customer-notes").placeholder = t("customerNotesPlaceholder");
-        document.getElementById("get-location-btn").textContent = t("getLocationBtn");
+        const attachText = document.getElementById("attach-location-text");
+        if (attachText) attachText.textContent = t("attachLocationText");
         document.getElementById("send-order-text").textContent = t("sendOrderBtn");
         document.getElementById("share-btn-text").innerText = t("share");
         document.getElementById("whatsapp-btn-text").innerText = t("orderWhatsapp");
@@ -3996,6 +4201,7 @@
         renderCategoryFilters(globalProducts);
         renderProducts(globalProducts);
         updateCartUI();
+        renderLocationChip();
         if (activeSelectedProduct) renderActiveProductModal();
         renderAdminList(globalProducts);
       }
@@ -4335,7 +4541,6 @@
         }
 
         const baseUrl = SITE_URL.endsWith("/") ? SITE_URL.slice(0, -1) : SITE_URL;
-        // ✅ تم التعديل: #product- بدل #meal-
         const productUrl = `${baseUrl}#product-${product.id}`;
         const arabicProductName = product.nameAr || product.name || productName;
 
@@ -4365,7 +4570,6 @@
         renderActiveProductModal();
         document.getElementById("product-modal").style.display = "flex";
 
-        // ✅ تحديث الرابط ليصبح قابلاً للمشاركة مباشرة
         const baseUrl = SITE_URL.endsWith("/") ? SITE_URL.slice(0, -1) : SITE_URL;
         try {
           history.replaceState(null, document.title, `${baseUrl}#product-${productId}`);
@@ -4375,7 +4579,6 @@
       window.shareCurrentProduct = async function () {
         if (!activeSelectedProduct) return;
         const baseUrl = SITE_URL.endsWith("/") ? SITE_URL.slice(0, -1) : SITE_URL;
-        // ✅ تم التعديل: #product- بدل #meal-
         const productUrl = `${baseUrl}#product-${activeSelectedProduct.id}`;
         const shareProductName = getProductName(activeSelectedProduct);
         const shareText =
@@ -4406,7 +4609,6 @@
 
       function checkUrlHashForProduct() {
         const hash = window.location.hash;
-        // ✅ يدعم الصيغة الجديدة #product- والقديمة #meal- للتوافق
         const match = hash.match(/^#(?:product|meal)-(.+)$/);
         if (match && match[1]) {
           const productId = match[1];
@@ -4471,7 +4673,6 @@
       window.closeProductModal = function () {
         document.getElementById("product-modal").style.display = "none";
         activeSelectedProduct = null;
-        // ✅ يدعم الصيغتين عند التنظيف
         if (/^#(?:product|meal)-/.test(window.location.hash))
           history.pushState("", document.title, window.location.pathname);
       };
@@ -5015,7 +5216,6 @@
           productForm.addEventListener("change", () => { markAdminFormDirty(); });
         }
 
-        // ✅ Debounce للبحث — 280ms لتقليل إعادة الرسم أثناء الكتابة
         let searchDebounceTimer = null;
         searchInput?.addEventListener("input", (e) => {
           const value = e.target.value || "";
@@ -5044,7 +5244,6 @@
           window.scrollToProductsTop();
         });
 
-        // ✅ مراقبة تغيير الـ hash لفتح المنتج تلقائياً عند التنقل الداخلي
         window.addEventListener("hashchange", () => {
           checkUrlHashForProduct();
         });
