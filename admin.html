@@ -56,7 +56,7 @@
         position: fixed;
         inset: 0;
         background: linear-gradient(135deg, #072f3a 0%, #0d4c5c 55%, #1a6b7e 100%);
-        display: flex;
+        display: flex; /* تم التعديل: سيتم التحكم بها عبر JS */
         align-items: center;
         justify-content: center;
         padding: 20px;
@@ -191,9 +191,10 @@
         max-width: 1200px;
         margin: 0 auto;
         display: flex; align-items: center; justify-content: space-between;
-        gap: 14px; flex-wrap: wrap;
+        gap: 10px;
+        flex-wrap: nowrap; /* التعديل: منع النزول لسطر جديد */
       }
-      .dash-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+      .dash-brand { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
       .dash-brand-icon {
         width: 44px; height: 44px; border-radius: 12px;
         background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
@@ -201,13 +202,14 @@
         font-size: 1.2rem; color: #2a1f08; flex-shrink: 0;
         box-shadow: 0 4px 12px rgba(201, 169, 97, 0.4);
       }
+      .dash-brand-text { min-width: 0; }
       .dash-brand-text h1 {
         font-size: 1.15rem; font-weight: 800; margin-bottom: 2px;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
       .dash-brand-text p { font-size: 0.72rem; color: #e8d9b0; font-weight: 600; }
       .dash-header-actions {
-        display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap;
+        display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: nowrap;
       }
       .dash-btn {
         display: inline-flex; align-items: center; gap: 6px;
@@ -653,9 +655,14 @@
       }
       .empty-products-state span { font-size: 0.78rem; }
 
+      /* التعديل: تحسين الهيدر للجوال */
       @media (max-width: 700px) {
+        .dash-header { padding: 0.75rem 12px; }
+        .dash-brand-icon { width: 36px; height: 36px; font-size: 1rem; }
+        .dash-brand-text h1 { font-size: 0.95rem; }
+        .dash-brand-text p { display: none; } /* إخفاء النص الفرعي لتوفير مساحة */
         .dash-header-actions .dash-btn span.label { display: none; }
-        .dash-btn { padding: 10px 12px; }
+        .dash-btn { padding: 8px 10px; font-size: 0.75rem; gap: 4px; }
       }
 
       /* ═══════════ مودال معاينة المنتج ═══════════ */
@@ -1001,7 +1008,7 @@
 
       /* Loading */
       #loading-overlay {
-        display: none;
+        display: flex; /* التعديل: تظهر افتراضياً حتى يتم التحقق من الجلسة */
         position: fixed; inset: 0;
         background: rgba(7, 47, 58, 0.88);
         backdrop-filter: blur(3px);
@@ -1125,7 +1132,7 @@
   </head>
   <body>
     <!-- شاشة تسجيل الدخول -->
-    <div id="login-screen">
+    <div id="login-screen" class="hidden">
       <div class="login-card">
         <div class="login-brand-icon">
           <i class="fa-solid fa-shield-halved"></i>
@@ -1501,6 +1508,8 @@
       const DRAFT_KEY = "ceramics_dashboard_draft_v1";
       const LANG_KEY = "ceramics_dashboard_lang";
       const LOADING_TIMEOUT_MS = 12000;
+      // التعديل: مفتاح التخزين المؤقت للمنتجات
+      const PRODUCTS_CACHE_KEY = "ceramics_products_cache_v1";
 
       // ═══════════ الترجمات ═══════════
       const translations = {
@@ -1580,7 +1589,6 @@
           imageTooLarge: "الصورة كبيرة جداً: ",
           imageProcessError: "تعذر معالجة الصورة ",
           prices: "ر.س",
-          // معاينة المنتج
           previewTitle: "معاينة المنتج",
           descriptionPreview: "الوصف:",
           close: "إغلاق",
@@ -1715,9 +1723,6 @@
       const db = getFirestore(app);
       const auth = getAuth(app);
 
-      // ═══════════════════════════════════════════════════════════
-      // ✅ FIX 1: تعيين Persistence إلى LOCAL لضمان بقاء الجلسة بعد التحديث
-      // ═══════════════════════════════════════════════════════════
       setPersistence(auth, browserLocalPersistence).catch((err) => {
         console.error("setPersistence error:", err);
       });
@@ -1798,7 +1803,7 @@
       }
 
       // ═══════════════════════════════════════════════════════════
-      // ✅ FIX 2: تسجيل الدخول - معالجة أول نداء null من Firebase
+      // ✅ FIX 1: تسجيل الدخول - إخفاء الشاشات حتى يتم التحقق
       // ═══════════════════════════════════════════════════════════
       const loginScreen = document.getElementById("login-screen");
       const dashboardScreen = document.getElementById("dashboard-screen");
@@ -1812,24 +1817,22 @@
       onAuthStateChanged(auth, async (user) => {
         clearTimeout(authTimeout);
 
-        // ✅ Firebase يستدعي هذه الدالة مرة بقيمة null أثناء استرجاع الجلسة
-        // ننتظر قليلاً للتأكد من انتهاء الاسترجاع قبل اتخاذ أي قرار
         if (isFirstAuthCallback) {
           isFirstAuthCallback = false;
-          await new Promise((resolve) => setTimeout(resolve, 300));
-          // نأخذ القيمة الحالية من auth بدل القيمة القديمة
+          // Firebase يستدعي هذه الدالة مرة بقيمة null أثناء استرجاع الجلسة
+          // ننتظر قليلاً للتأكد من انتهاء الاسترجاع قبل اتخاذ أي قرار
+          await new Promise((resolve) => setTimeout(resolve, 150)); // تم تقليل الوقت
           user = auth.currentUser;
         }
 
         try {
           if (user && user.uid === ADMIN_UID) {
-            // مستخدم مسجل بنجاح
             loginScreen.classList.add("hidden");
             dashboardScreen.classList.add("active");
-            await fetchProducts();
+            // ✅ FIX: استدعاء دالة التحميل مع التخزين المؤقت
+            await fetchProducts(); 
             checkDraftExists();
           } else {
-            // لا يوجد مستخدم مسجل أو UID غير مطابق
             if (user && user.uid !== ADMIN_UID) {
               await signOut(auth);
             }
@@ -1840,6 +1843,7 @@
         } catch (err) {
           console.error("Auth state error:", err);
           showLoading(false);
+          loginScreen.classList.remove("hidden"); // إظهار شاشة الدخول في حال الخطأ
         }
       });
 
@@ -1897,8 +1901,29 @@
         }
       };
 
+      // ═══════════════════════════════════════════════════════════
+      // ✅ FIX 2: جلب المنتجات مع التخزين المؤقت (Caching)
+      // ═══════════════════════════════════════════════════════════
       async function fetchProducts() {
-        showLoading(true, t("loadingProducts"));
+        // 1. محاولة العرض الفوري من الذاكرة المؤقتة
+        const cached = localStorage.getItem(PRODUCTS_CACHE_KEY);
+        let hasCache = false;
+        if (cached) {
+          try {
+            globalProducts = JSON.parse(cached);
+            updateStats();
+            renderAdminList(globalProducts);
+            hasCache = true;
+          } catch (e) {
+            console.error("Cache parse error", e);
+          }
+        }
+
+        // 2. إظهار التحميل فقط إذا لم تكن هناك بيانات مخزنة مسبقاً
+        if (!hasCache) {
+          showLoading(true, t("loadingProducts"));
+        }
+
         try {
           const snap = await getDocs(collection(db, "products"));
           const products = [];
@@ -1917,11 +1942,15 @@
             });
           });
           globalProducts = products;
+          
+          // 3. تحديث الذاكرة المؤقتة
+          localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(products));
+          
           updateStats();
           renderAdminList(globalProducts);
         } catch (err) {
           console.error(err);
-          showToast(t("fetchError"), true);
+          if (!hasCache) showToast(t("fetchError"), true); // إظهار الخطأ فقط إذا لم تكن هناك بيانات مخزنة
         } finally {
           showLoading(false);
         }
@@ -1997,6 +2026,7 @@
           ordered.forEach((p) => { batch.update(doc(db, "products", p.id), { sortOrder: p.sortOrder }); });
           await batch.commit();
           globalProducts = ordered;
+          localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(globalProducts)); // تحديث الكاش
           markAdminOrderDirty(false);
           showToast(t("orderSaved"));
         } catch (err) {
@@ -2187,9 +2217,6 @@
         updateStats();
       }
 
-      // ═══════════════════════════════════════════════════════════
-      // ✅ FIX 3: معاينة المنتج داخل الداشبورد (بدل فتح المتجر)
-      // ═══════════════════════════════════════════════════════════
       window.openPreviewModal = function (id) {
         const product = globalProducts.find((p) => p.id === id);
         if (!product) return;
@@ -2198,10 +2225,8 @@
         previewImages = product.images || [];
         previewCurrentIndex = 0;
 
-        // اسم المنتج
         document.getElementById("preview-title").textContent = getProductName(product);
 
-        // القسم
         const categoryEl = document.getElementById("preview-category");
         const catAr = product.categoryAr || product.category || "";
         const catEn = product.categoryEn || "";
@@ -2213,7 +2238,6 @@
           categoryEl.style.display = "none";
         }
 
-        // الشارات
         const badgesEl = document.getElementById("preview-badges");
         badgesEl.innerHTML = "";
         if (product.hasDiscount) {
@@ -2223,7 +2247,6 @@
           badgesEl.innerHTML += `<span class="preview-badge featured"><i class="fa-solid fa-star"></i> ${t("featured")}</span>`;
         }
 
-        // السعر
         const priceRow = document.getElementById("preview-price-row");
         const price = Number(product.price) || 0;
         const compare = Number(product.comparePrice) || 0;
@@ -2242,7 +2265,6 @@
           `;
         }
 
-        // المواصفات
         const specsEl = document.getElementById("preview-specs");
         const specs = [];
         if (product.size) specs.push({ icon: "fa-ruler-combined", label: t("sizeLabel"), value: product.size });
@@ -2263,7 +2285,6 @@
           specsEl.style.display = "none";
         }
 
-        // الوصف
         const descSection = document.getElementById("preview-desc-section");
         const description = currentLang === "en"
           ? (product.descriptionEn || product.description || product.descriptionAr || "")
@@ -2275,17 +2296,14 @@
           descSection.style.display = "none";
         }
 
-        // زر التعديل
         const editBtn = document.getElementById("preview-edit-btn");
         editBtn.onclick = () => {
           closePreviewModal();
           prepareEditProduct(id);
         };
 
-        // الصور
         renderPreviewSlider();
 
-        // إظهار المودال
         const modal = document.getElementById("product-preview-modal");
         modal.style.display = "flex";
         requestAnimationFrame(() => modal.classList.add("show"));
@@ -2318,7 +2336,6 @@
           sliderEl.appendChild(img);
         });
 
-        // أزرار التنقل
         if (previewImages.length > 1) {
           const prevBtn = document.createElement("button");
           prevBtn.className = "preview-nav-btn preview-nav-prev";
@@ -2337,7 +2354,6 @@
           counter.textContent = `${previewCurrentIndex + 1} / ${previewImages.length}`;
           sliderEl.appendChild(counter);
 
-          // المصغّرات
           previewImages.forEach((src, idx) => {
             const thumb = document.createElement("img");
             thumb.src = src;
@@ -2369,12 +2385,10 @@
         }, 200);
       };
 
-      // إغلاق المودال عند الضغط على الخلفية
       document.getElementById("product-preview-modal").addEventListener("click", (e) => {
         if (e.target === document.getElementById("product-preview-modal")) closePreviewModal();
       });
 
-      // ═══════════ صور المنتج ═══════════
       function renderWorkingImagesPreview() {
         const container = document.getElementById("current-images-preview");
         container.innerHTML = "";
@@ -2510,6 +2524,9 @@
             showToast(t("productAdded"));
           }
 
+          // تحديث الذاكرة المؤقتة بعد الحفظ
+          localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(globalProducts));
+
           clearDraft();
           resetProductForm();
           renderAdminList(globalProducts);
@@ -2634,6 +2651,10 @@
           showLoading(true, t("loading"));
           await deleteDoc(doc(db, "products", id));
           globalProducts = globalProducts.filter((p) => p.id !== id);
+          
+          // تحديث الذاكرة المؤقتة بعد الحذف
+          localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(globalProducts));
+          
           renderAdminList(globalProducts);
           showToast(t("productDeleted"));
         } catch (err) {
@@ -2767,7 +2788,6 @@
       };
 
       document.addEventListener("keydown", (e) => {
-        // Esc لإغلاق المودالات
         if (e.key === "Escape") {
           if (document.getElementById("product-preview-modal").classList.contains("show")) {
             closePreviewModal();
@@ -2846,4 +2866,4 @@
       applyLanguage();
     </script>
   </body>
-                                                </html>
+</html>
