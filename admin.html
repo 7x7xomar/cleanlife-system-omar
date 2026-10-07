@@ -51,12 +51,12 @@
         min-height: 100vh;
       }
 
-      /* ═══════════ شاشة تسجيل الدخول ══=═════════ */
+      /* ═══════════ شاشة تسجيل الدخول ═══════════ */
       #login-screen {
         position: fixed;
         inset: 0;
         background: linear-gradient(135deg, #072f3a 0%, #0d4c5c 55%, #1a6b7e 100%);
-        display: flex; /* تم التعديل: سيتم التحكم بها عبر JS */
+        display: flex;
         align-items: center;
         justify-content: center;
         padding: 20px;
@@ -192,7 +192,7 @@
         margin: 0 auto;
         display: flex; align-items: center; justify-content: space-between;
         gap: 10px;
-        flex-wrap: nowrap; /* التعديل: منع النزول لسطر جديد */
+        flex-wrap: nowrap; /* منع النزول لسطر جديد */
       }
       .dash-brand { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
       .dash-brand-icon {
@@ -655,7 +655,7 @@
       }
       .empty-products-state span { font-size: 0.78rem; }
 
-      /* التعديل: تحسين الهيدر للجوال */
+      /* ✅ التعديل: تحسين الهيدر للجوال ليبقى في سطر واحد */
       @media (max-width: 700px) {
         .dash-header { padding: 0.75rem 12px; }
         .dash-brand-icon { width: 36px; height: 36px; font-size: 1rem; }
@@ -1008,7 +1008,7 @@
 
       /* Loading */
       #loading-overlay {
-        display: flex; /* التعديل: تظهر افتراضياً حتى يتم التحقق من الجلسة */
+        display: flex; /* تظهر افتراضياً حتى يتم التحقق */
         position: fixed; inset: 0;
         background: rgba(7, 47, 58, 0.88);
         backdrop-filter: blur(3px);
@@ -1508,7 +1508,7 @@
       const DRAFT_KEY = "ceramics_dashboard_draft_v1";
       const LANG_KEY = "ceramics_dashboard_lang";
       const LOADING_TIMEOUT_MS = 12000;
-      // التعديل: مفتاح التخزين المؤقت للمنتجات
+      // ✅ إضافة مفتاح التخزين المؤقت للمنتجات
       const PRODUCTS_CACHE_KEY = "ceramics_products_cache_v1";
 
       // ═══════════ الترجمات ═══════════
@@ -1803,7 +1803,7 @@
       }
 
       // ═══════════════════════════════════════════════════════════
-      // ✅ FIX 1: تسجيل الدخول - إخفاء الشاشات حتى يتم التحقق
+      // ✅ FIX 1: تحسين سرعة التحميل باستخدام الذاكرة المؤقتة
       // ═══════════════════════════════════════════════════════════
       const loginScreen = document.getElementById("login-screen");
       const dashboardScreen = document.getElementById("dashboard-screen");
@@ -1819,9 +1819,7 @@
 
         if (isFirstAuthCallback) {
           isFirstAuthCallback = false;
-          // Firebase يستدعي هذه الدالة مرة بقيمة null أثناء استرجاع الجلسة
-          // ننتظر قليلاً للتأكد من انتهاء الاسترجاع قبل اتخاذ أي قرار
-          await new Promise((resolve) => setTimeout(resolve, 150)); // تم تقليل الوقت
+          // إزالة التأخير غير الضروري لتسريع الاستجابة
           user = auth.currentUser;
         }
 
@@ -1829,7 +1827,6 @@
           if (user && user.uid === ADMIN_UID) {
             loginScreen.classList.add("hidden");
             dashboardScreen.classList.add("active");
-            // ✅ FIX: استدعاء دالة التحميل مع التخزين المؤقت
             await fetchProducts(); 
             checkDraftExists();
           } else {
@@ -1843,7 +1840,7 @@
         } catch (err) {
           console.error("Auth state error:", err);
           showLoading(false);
-          loginScreen.classList.remove("hidden"); // إظهار شاشة الدخول في حال الخطأ
+          loginScreen.classList.remove("hidden");
         }
       });
 
@@ -1901,9 +1898,6 @@
         }
       };
 
-      // ═══════════════════════════════════════════════════════════
-      // ✅ FIX 2: جلب المنتجات مع التخزين المؤقت (Caching)
-      // ═══════════════════════════════════════════════════════════
       async function fetchProducts() {
         // 1. محاولة العرض الفوري من الذاكرة المؤقتة
         const cached = localStorage.getItem(PRODUCTS_CACHE_KEY);
@@ -1914,6 +1908,7 @@
             updateStats();
             renderAdminList(globalProducts);
             hasCache = true;
+            showLoading(false); // إخفاء شاشة التحميل فوراً
           } catch (e) {
             console.error("Cache parse error", e);
           }
@@ -1925,6 +1920,7 @@
         }
 
         try {
+          // 3. جلب البيانات الجديدة من Firebase في الخلفية
           const snap = await getDocs(collection(db, "products"));
           const products = [];
           snap.forEach((docSnap) => {
@@ -1943,14 +1939,13 @@
           });
           globalProducts = products;
           
-          // 3. تحديث الذاكرة المؤقتة
+          // 4. تحديث الذاكرة المؤقتة والواجهة
           localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(products));
-          
           updateStats();
           renderAdminList(globalProducts);
         } catch (err) {
           console.error(err);
-          if (!hasCache) showToast(t("fetchError"), true); // إظهار الخطأ فقط إذا لم تكن هناك بيانات مخزنة
+          if (!hasCache) showToast(t("fetchError"), true);
         } finally {
           showLoading(false);
         }
@@ -2524,7 +2519,6 @@
             showToast(t("productAdded"));
           }
 
-          // تحديث الذاكرة المؤقتة بعد الحفظ
           localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(globalProducts));
 
           clearDraft();
@@ -2652,7 +2646,6 @@
           await deleteDoc(doc(db, "products", id));
           globalProducts = globalProducts.filter((p) => p.id !== id);
           
-          // تحديث الذاكرة المؤقتة بعد الحذف
           localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(globalProducts));
           
           renderAdminList(globalProducts);
