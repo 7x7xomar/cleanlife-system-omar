@@ -22,7 +22,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- ✅ مكتبة SheetJS لتصدير Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -33,7 +32,6 @@
         --accent: #c9a961;
         --accent-dark: #a88844;
         --bg: #f7f5f0;
-        --card-bg: #ffffff;
         --text: #1c2b2b;
         --text-light: #64748b;
         --danger: #dc2626;
@@ -42,7 +40,6 @@
         --info: #0ea5e9;
         --purple: #8b5cf6;
         --border: #e5e0d5;
-        --radius: 14px;
         --shadow-sm: 0 1px 3px rgba(13, 76, 92, 0.06);
         --shadow-md: 0 4px 14px rgba(13, 76, 92, 0.08);
         --shadow-lg: 0 18px 40px rgba(13, 76, 92, 0.14);
@@ -123,8 +120,6 @@
         box-shadow: 0 24px 60px rgba(7, 47, 58, 0.35);
         border-top: 5px solid var(--accent);
         text-align: center;
-        position: relative;
-        z-index: 1;
         animation: cardIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       @keyframes cardIn {
@@ -162,10 +157,18 @@
         margin-bottom: 24px;
         font-weight: 600;
       }
+
+      /* ✅ FIX: إزالة text-align الثابت ليتبع اتجاه اللغة */
       .form-group {
         margin-bottom: 14px;
+      }
+      [dir="rtl"] .form-group {
         text-align: right;
       }
+      [dir="ltr"] .form-group {
+        text-align: left;
+      }
+
       .form-group label {
         display: block;
         margin-bottom: 6px;
@@ -231,7 +234,9 @@
         cursor: wait;
       }
       .login-back-link {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         margin-top: 18px;
         color: var(--text-light);
         font-size: 0.82rem;
@@ -242,11 +247,7 @@
       .login-back-link:hover {
         color: var(--primary);
       }
-      .login-back-link i {
-        margin-inline-end: 4px;
-      }
 
-      /* ═══════════ لوحة التحكم ═══════════ */
       #dashboard-screen {
         display: none;
         padding-bottom: 100px;
@@ -476,7 +477,7 @@
         border-radius: 18px;
         margin-bottom: 20px;
         box-shadow: var(--shadow-md);
-        overflow: visible; /* ✅ FIX: تم التعديل من hidden إلى visible لمنع قص القائمة المنسدلة */
+        overflow: visible;
         transition: var(--transition);
       }
       .dash-section-header {
@@ -490,8 +491,8 @@
         flex-wrap: wrap;
         cursor: pointer;
         user-select: none;
-        border-top-left-radius: 17px; /* ✅ FIX: إضافة تدوير الزوايا لتعويض إزالة overflow */
-        border-top-right-radius: 17px; /* ✅ FIX: إضافة تدوير الزوايا لتعويض إزالة overflow */
+        border-top-left-radius: 17px;
+        border-top-right-radius: 17px;
       }
       .dash-section-header:hover {
         background: linear-gradient(135deg, #f5f1e6 0%, #ebe5d5 100%);
@@ -849,7 +850,6 @@
         box-shadow: 0 0 0 3px rgba(13, 76, 92, 0.08);
       }
 
-      /* ✅ تنسيق القائمة المنسدلة المخصصة للفرز */
       .custom-dropdown {
         position: relative;
         display: inline-block;
@@ -932,6 +932,9 @@
         color: #fff;
         font-weight: 800;
       }
+      [dir="ltr"] .custom-dropdown-item {
+        text-align: left;
+      }
       @media (max-width: 600px) {
         .custom-dropdown {
           width: 100%;
@@ -998,7 +1001,6 @@
         flex: 1 1 auto;
         min-width: 0;
       }
-
       .admin-item-actions {
         display: flex;
         align-items: center;
@@ -1283,7 +1285,6 @@
         flex-shrink: 0;
       }
 
-      /* ✅ زر العودة للأعلى */
       .back-to-top-btn {
         position: fixed;
         bottom: 80px;
@@ -1310,6 +1311,14 @@
         background: var(--accent);
         color: #2a1f08;
         transform: translateY(-3px);
+      }
+      [dir="rtl"] .back-to-top-btn {
+        left: 20px;
+        right: auto;
+      }
+      [dir="ltr"] .back-to-top-btn {
+        right: 20px;
+        left: auto;
       }
 
       @media (max-width: 768px) {
@@ -1393,7 +1402,6 @@
         }
       }
 
-      /* ═══════════ مودال معاينة المنتج ═══════════ */
       #product-preview-modal {
         display: none;
         position: fixed;
@@ -1551,7 +1559,6 @@
         overflow-y: auto;
         flex-grow: 1;
       }
-
       .preview-header-row {
         display: flex;
         justify-content: space-between;
@@ -1580,7 +1587,6 @@
         font-weight: 800;
         white-space: nowrap;
       }
-
       .preview-badges {
         display: flex;
         gap: 6px;
@@ -1780,7 +1786,6 @@
         opacity: 0.6;
       }
 
-      /* Loading */
       #loading-overlay {
         display: flex;
         position: fixed;
@@ -1900,6 +1905,14 @@
         );
         color: var(--danger);
       }
+      .confirm-icon.info {
+        background: linear-gradient(
+          135deg,
+          rgba(14, 165, 233, 0.12),
+          rgba(14, 165, 233, 0.22)
+        );
+        color: var(--info);
+      }
       .confirm-title {
         font-size: 1.1rem;
         font-weight: 800;
@@ -1948,6 +1961,184 @@
       }
       .confirm-btn-ok.danger {
         background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      }
+      .confirm-btn-ok.info {
+        background: linear-gradient(135deg, var(--info) 0%, #0369a1 100%);
+      }
+
+      #import-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(7, 47, 58, 0.85);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        z-index: 4200;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      #import-modal.show {
+        display: flex;
+        opacity: 1;
+      }
+      .import-modal-content {
+        background: #fff;
+        border-radius: 24px;
+        max-width: 520px;
+        width: 100%;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 24px 60px rgba(7, 47, 58, 0.4);
+        border-top: 5px solid var(--accent);
+        transform: scale(0.94);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      #import-modal.show .import-modal-content {
+        transform: scale(1);
+      }
+      .import-modal-header {
+        padding: 22px 26px 18px;
+        background: linear-gradient(135deg, #fbf9f4 0%, #f5f1e6 100%);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .import-modal-title {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .import-modal-title i {
+        color: var(--accent-dark);
+        font-size: 1.3rem;
+      }
+      .import-modal-close {
+        background: transparent;
+        border: none;
+        color: var(--text-light);
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+      .import-modal-close:hover {
+        background: rgba(13, 76, 92, 0.08);
+        color: var(--primary);
+      }
+      .import-modal-body {
+        padding: 24px 26px 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .import-option {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 20px;
+        border-radius: 16px;
+        background: #fcfbf8;
+        border: 2px solid var(--border);
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: right;
+      }
+      [dir="ltr"] .import-option {
+        text-align: left;
+      }
+      .import-option:hover {
+        border-color: var(--accent);
+        background: #fff;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+      .import-option-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+      }
+      .import-option.download .import-option-icon {
+        background: linear-gradient(
+          135deg,
+          rgba(201, 169, 97, 0.15),
+          rgba(201, 169, 97, 0.28)
+        );
+        color: var(--accent-dark);
+      }
+      .import-option.upload .import-option-icon {
+        background: linear-gradient(
+          135deg,
+          rgba(22, 163, 74, 0.12),
+          rgba(22, 163, 74, 0.22)
+        );
+        color: var(--success);
+      }
+      .import-option-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .import-option-info strong {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+        margin-bottom: 4px;
+      }
+      .import-option-info span {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--text-light);
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      .import-option-arrow {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+      .import-option:hover .import-option-arrow {
+        color: var(--accent-dark);
+        transform: translateX(-4px);
+      }
+      [dir="ltr"] .import-option:hover .import-option-arrow {
+        transform: translateX(4px);
+      }
+      .import-modal-note {
+        padding: 14px 16px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border: 1.5px solid rgba(245, 158, 11, 0.4);
+        font-size: 0.78rem;
+        color: #78350f;
+        font-weight: 700;
+        line-height: 1.7;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .import-modal-note i {
+        color: var(--warning);
+        font-size: 1rem;
+        flex-shrink: 0;
+        margin-top: 2px;
       }
 
       .draft-banner {
@@ -2045,7 +2236,7 @@
         </form>
 
         <a href="index.html" class="login-back-link">
-          <i class="fa-solid fa-arrow-right"></i>
+          <i class="fa-solid fa-arrow-right" id="login-back-arrow"></i>
           <span data-i18n="backToStore">العودة إلى المتجر</span>
         </a>
       </div>
@@ -2372,7 +2563,17 @@
               </div>
 
               <div class="form-group">
-                <label data-i18n="images">صور المنتج:</label>
+                <label data-i18n="images"
+                  >صور المنتج:
+                  <span
+                    style="
+                      font-weight: 600;
+                      color: var(--text-light);
+                      font-size: 0.72rem;
+                    "
+                    >(اختياري - إن لم ترفع صورة، ستُستخدم صورة افتراضية)</span
+                  ></label
+                >
                 <div class="image-upload-zone" id="image-upload-zone">
                   <input type="file" id="p-images" accept="image/*" multiple />
                   <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -2416,6 +2617,19 @@
               (<span id="products-count-inline">0</span>)
             </h2>
             <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <button
+                type="button"
+                class="dash-btn"
+                style="
+                  background: rgba(14, 165, 233, 0.1);
+                  color: var(--info);
+                  border: 1px solid rgba(14, 165, 233, 0.3);
+                "
+                onclick="openImportModal()"
+              >
+                <i class="fa-solid fa-file-import"></i>
+                <span data-i18n="importExcel">استيراد Excel</span>
+              </button>
               <button
                 type="button"
                 class="dash-btn"
@@ -2470,7 +2684,6 @@
                 />
               </div>
 
-              <!-- ✅ القائمة المنسدلة المخصصة للفرز -->
               <div class="custom-dropdown" id="sort-dropdown-container">
                 <button
                   type="button"
@@ -2545,7 +2758,7 @@
       </main>
     </div>
 
-    <!-- ✅ شريط الإجراءات العائم (Bulk Actions) -->
+    <!-- ✅ شريط الإجراءات العائم -->
     <div class="bulk-actions-bar" id="bulk-actions-bar">
       <span id="bulk-count-text">0 منتجات محددة</span>
       <button type="button" onclick="deleteSelectedProducts()">
@@ -2567,7 +2780,69 @@
       <i class="fa-solid fa-arrow-up"></i>
     </button>
 
-    <!-- مودال معاينة المنتج داخل الداشبورد -->
+    <!-- ✅ حقل استيراد ملف الإكسل (مخفي) -->
+    <input
+      type="file"
+      id="import-excel-input"
+      accept=".xlsx, .xls, .csv"
+      style="display: none"
+      onchange="handleImportExcel(event)"
+    />
+
+    <!-- ✅ مودال الاستيراد -->
+    <div id="import-modal">
+      <div class="import-modal-content">
+        <div class="import-modal-header">
+          <h3 class="import-modal-title">
+            <i class="fa-solid fa-file-import"></i>
+            <span data-i18n="importExcel">استيراد Excel</span>
+          </h3>
+          <button
+            type="button"
+            class="import-modal-close"
+            onclick="closeImportModal()"
+            title="إغلاق"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="import-modal-body">
+          <div class="import-option download" onclick="downloadTemplate()">
+            <div class="import-option-icon">
+              <i class="fa-solid fa-download"></i>
+            </div>
+            <div class="import-option-info">
+              <strong data-i18n="templateTitle">تنزيل القالب الفارغ</strong>
+              <span data-i18n="templateDesc"
+                >احصل على ملف Excel جاهز بالتنسيق الصحيح لتعبئة بياناتك</span
+              >
+            </div>
+            <i class="fa-solid fa-chevron-left import-option-arrow"></i>
+          </div>
+          <div class="import-option upload" onclick="triggerImportExcel()">
+            <div class="import-option-icon">
+              <i class="fa-solid fa-upload"></i>
+            </div>
+            <div class="import-option-info">
+              <strong data-i18n="uploadTitle">رفع ملف Excel</strong>
+              <span data-i18n="uploadDesc"
+                >ارفع الملف الذي تم تعبئته لاستيراد المنتجات دفعة واحدة</span
+              >
+            </div>
+            <i class="fa-solid fa-chevron-left import-option-arrow"></i>
+          </div>
+          <div class="import-modal-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span data-i18n="importNote"
+              >ملاحظة: لن يتم استيراد الصور من ملف Excel. سيتم استخدام صورة
+              افتراضية لكل منتج، ويمكنك إضافة الصور الحقيقية لاحقاً.</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- مودال معاينة المنتج -->
     <div id="product-preview-modal">
       <div class="preview-modal-content">
         <button
@@ -2577,10 +2852,8 @@
         >
           &times;
         </button>
-
         <div class="preview-slider" id="preview-slider"></div>
         <div class="preview-thumbnails" id="preview-thumbnails"></div>
-
         <div class="preview-body">
           <div class="preview-header-row">
             <h2 class="preview-title" id="preview-title"></h2>
@@ -2590,15 +2863,11 @@
               style="display: none"
             ></span>
           </div>
-
           <div class="preview-badges" id="preview-badges"></div>
-
           <div class="preview-price-box">
             <div class="preview-price-row" id="preview-price-row"></div>
           </div>
-
           <div class="preview-specs-grid" id="preview-specs"></div>
-
           <div class="preview-desc-section" id="preview-desc-section">
             <div class="preview-section-title">
               <i class="fa-solid fa-align-right"></i>
@@ -2607,7 +2876,6 @@
             <div class="preview-desc" id="preview-desc"></div>
           </div>
         </div>
-
         <div class="preview-footer">
           <button class="preview-btn-close" onclick="closePreviewModal()">
             <i class="fa-solid fa-xmark"></i>
@@ -2621,19 +2889,16 @@
       </div>
     </div>
 
-    <!-- Loading Overlay -->
     <div id="loading-overlay">
       <div class="spinner"></div>
       <span id="loading-text" data-i18n="loading">جاري المعالجة...</span>
     </div>
 
-    <!-- Toast -->
     <div id="toast-notification">
       <i class="fa-solid fa-check-circle"></i>
       <span id="toast-text">تمت العملية بنجاح</span>
     </div>
 
-    <!-- Confirm Modal -->
     <div id="confirm-modal">
       <div class="confirm-modal-content">
         <div class="confirm-icon" id="confirm-icon">
@@ -2702,7 +2967,9 @@
       const LOADING_TIMEOUT_MS = 12000;
       const PRODUCTS_CACHE_KEY = "ceramics_products_cache_v1";
 
-      // ═══════════ الترجمات ═══════════
+      const PLACEHOLDER_IMAGE =
+        "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect fill='%23f0ece2' width='400' height='400'/><g transform='translate(200,180)'><path d='M-60,-40 L60,-40 L60,40 L-60,40 Z' fill='none' stroke='%23a88844' stroke-width='3'/><path d='M-60,-15 L60,-15 M-60,15 L60,15 M-30,-40 L-30,40 M0,-40 L0,40 M30,-40 L30,40' stroke='%23a88844' stroke-width='1.5' fill='none'/></g><text x='200' y='280' font-family='Arial,sans-serif' font-size='16' fill='%2364748b' text-anchor='middle'>لا توجد صورة</text><text x='200' y='305' font-family='Arial,sans-serif' font-size='12' fill='%2394a3b8' text-anchor='middle'>No Image</text></svg>";
+
       const translations = {
         ar: {
           loginTitle: "لوحة التحكم",
@@ -2763,7 +3030,8 @@
           confirm: "تأكيد",
           searchAdmin: "ابحث في المنتجات...",
           noProducts: "لا توجد منتجات مسجلة بعد",
-          noProductsSub: "ابدأ بإضافة أول منتج من النموذج أعلاه",
+          noProductsSub:
+            "ابدأ بإضافة أول منتج من النموذج أعلاه، أو استورد قائمة من Excel",
           noResults: "لا توجد نتائج مطابقة",
           noResultsSub: "جرّب تغيير كلمة البحث أو الفلتر",
           edit: "تعديل",
@@ -2793,7 +3061,6 @@
           productSaveError: "تعذر حفظ المنتج: ",
           pleaseEnterName: "يرجى إدخال اسم المنتج",
           pleaseEnterPrice: "يرجى إدخال سعر صحيح",
-          pleaseAddImage: "أرفق صورة واحدة على الأقل",
           docTooLarge: "حجم الصور كبير جداً",
           deleteProduct: "حذف المنتج",
           deleteConfirmMsg: "سيتم حذف",
@@ -2833,6 +3100,7 @@
           sortNameAsc: "الاسم: أ - ي",
           sortNewest: "الأحدث أولاً",
           exportExcel: "تصدير Excel",
+          importExcel: "استيراد Excel",
           exportSuccess: "تم تصدير المنتجات بنجاح",
           noExportData: "لا توجد منتجات لتصديرها",
           sortHint: "التعديل والترتيب متاح فقط في وضع 'الترتيب الافتراضي'",
@@ -2840,7 +3108,26 @@
           selectedCount: "منتجات محددة",
           bulkDeleteConfirm: "سيتم حذف المنتجات المحددة نهائياً. هل أنت متأكد؟",
           toggleFeatured: "تبديل التمييز",
-          toggleDiscount: "تبديل العرض الخاص"
+          toggleDiscount: "تبديل العرض الخاص",
+          importConfirmTitle: "تأكيد استيراد المنتجات",
+          importConfirmMsg:
+            "سيتم إضافة {count} منتج إلى قاعدة البيانات. هل أنت متأكد؟",
+          importSuccess: "تم استيراد {count} منتج بنجاح!",
+          importError:
+            "حدث خطأ أثناء قراءة الملف. تأكد من أن الملف بتنسيق Excel صحيح.",
+          importNoData: "لم يتم العثور على منتجات صالحة في الملف.",
+          importNote:
+            "ملاحظة: لن يتم استيراد الصور من ملف Excel. سيتم استخدام صورة افتراضية لكل منتج، ويمكنك إضافة الصور الحقيقية لاحقاً.",
+          importStarted: "جاري استيراد المنتجات...",
+          importFileFormatError:
+            "تنسيق الملف غير مدعوم. يرجى رفع ملف Excel (.xlsx, .xls) أو CSV.",
+          templateDownloaded: "تم تنزيل القالب بنجاح! قم بتعبئته ثم ارفعه.",
+          templateError: "حدث خطأ أثناء تنزيل القالب. حاول مرة أخرى.",
+          templateTitle: "تنزيل القالب الفارغ",
+          templateDesc:
+            "احصل على ملف Excel جاهز بالتنسيق الصحيح لتعبئة بياناتك",
+          uploadTitle: "رفع ملف Excel",
+          uploadDesc: "ارفع الملف الذي تم تعبئته لاستيراد المنتجات دفعة واحدة"
         },
         en: {
           loginTitle: "Dashboard",
@@ -2902,7 +3189,8 @@
           confirm: "Confirm",
           searchAdmin: "Search products...",
           noProducts: "No products registered yet",
-          noProductsSub: "Start by adding your first product above",
+          noProductsSub:
+            "Start by adding your first product above, or import a list from Excel",
           noResults: "No matching results",
           noResultsSub: "Try changing your search or filter",
           edit: "Edit",
@@ -2932,7 +3220,6 @@
           productSaveError: "Failed to save product: ",
           pleaseEnterName: "Please enter a product name",
           pleaseEnterPrice: "Please enter a valid price",
-          pleaseAddImage: "Please attach at least one image",
           docTooLarge: "Images are too large",
           deleteProduct: "Delete Product",
           deleteConfirmMsg: "Will delete",
@@ -2973,6 +3260,7 @@
           sortNameAsc: "Name: A - Z",
           sortNewest: "Newest First",
           exportExcel: "Export Excel",
+          importExcel: "Import Excel",
           exportSuccess: "Products exported successfully",
           noExportData: "No products to export",
           sortHint:
@@ -2982,7 +3270,27 @@
           bulkDeleteConfirm:
             "Selected products will be permanently deleted. Are you sure?",
           toggleFeatured: "Toggle Featured",
-          toggleDiscount: "Toggle Special Offer"
+          toggleDiscount: "Toggle Special Offer",
+          importConfirmTitle: "Confirm Import",
+          importConfirmMsg:
+            "Will add {count} products to the database. Are you sure?",
+          importSuccess: "{count} products imported successfully!",
+          importError:
+            "Error reading file. Please make sure it's a valid Excel file.",
+          importNoData: "No valid products found in the file.",
+          importNote:
+            "Note: Images are not imported from Excel. You can add images to products after import.",
+          importStarted: "Importing products...",
+          importFileFormatError:
+            "Unsupported file format. Please upload an Excel (.xlsx, .xls) or CSV file.",
+          templateDownloaded:
+            "Template downloaded successfully! Fill it then upload it.",
+          templateError: "Error downloading template. Please try again.",
+          templateTitle: "Download Empty Template",
+          templateDesc:
+            "Get an Excel file with the correct format to fill your data",
+          uploadTitle: "Upload Excel File",
+          uploadDesc: "Upload the filled file to import products at once"
         }
       };
 
@@ -3010,7 +3318,6 @@
         const adminSearch = document.getElementById("admin-search");
         if (adminSearch) adminSearch.placeholder = t("searchAdmin");
 
-        // تحديث نصوص القائمة المنسدلة للفرز
         document.querySelectorAll(".custom-dropdown-item").forEach((item) => {
           const key = item.getAttribute("data-i18n");
           if (key) item.textContent = t(key);
@@ -3025,6 +3332,15 @@
             const key = activeItem.getAttribute("data-i18n");
             sortLabel.textContent = t(key);
           }
+        }
+
+        // ✅ FIX: عكس اتجاه السهم في شاشة تسجيل الدخول بناءً على اللغة
+        const loginBackArrow = document.getElementById("login-back-arrow");
+        if (loginBackArrow) {
+          loginBackArrow.className =
+            currentLang === "en"
+              ? "fa-solid fa-arrow-left"
+              : "fa-solid fa-arrow-right";
         }
 
         if (
@@ -3064,7 +3380,6 @@
       let previewProductId = null;
       let selectedProducts = new Set();
 
-      // ═══════════ أدوات مساعدة ═══════════
       function escapeHtml(value) {
         if (value === null || value === undefined) return "";
         return String(value)
@@ -3087,9 +3402,6 @@
           return 0;
         }
       }
-      function getProductName(product) {
-        return product.nameAr || product.name || product.nameEn || "";
-      }
       function showToast(message, isError = false) {
         const toast = document.getElementById("toast-notification");
         const icon = toast.querySelector("i");
@@ -3100,7 +3412,7 @@
         toast.className = isError ? "error show" : "show";
         setTimeout(() => {
           toast.className = "";
-        }, 2800);
+        }, 3200);
       }
       function showLoading(show, text) {
         const overlay = document.getElementById("loading-overlay");
@@ -3469,16 +3781,15 @@
         });
       }
 
-      // ✅ FIX: نظام التمرير التلقائي باستخدام requestAnimationFrame لضمان العمل بسلاسة
       let scrollAnimationFrame = null;
-      let currentScrollDirection = 0; // 0 = none, -1 = up, 1 = down
+      let currentScrollDirection = 0;
       const adminListContainer = document.getElementById(
         "admin-list-container"
       );
 
       function performAutoScroll() {
         if (currentScrollDirection !== 0 && adminListContainer) {
-          adminListContainer.scrollTop += currentScrollDirection * 12; // سرعة التمرير
+          adminListContainer.scrollTop += currentScrollDirection * 12;
         }
         scrollAnimationFrame = requestAnimationFrame(performAutoScroll);
       }
@@ -3499,17 +3810,17 @@
       }
 
       adminListContainer.addEventListener("dragover", (e) => {
-        e.preventDefault(); // ضروري للسماح بالإفلات
+        e.preventDefault();
         if (!draggedAdminItemId || currentSort !== "default") return;
 
         const rect = adminListContainer.getBoundingClientRect();
-        const threshold = 80; // مسافة الحافة لبدء التمرير
+        const threshold = 80;
         const y = e.clientY - rect.top;
 
         if (y < threshold) {
-          startAutoScroll(-1); // تمرير لأعلى
+          startAutoScroll(-1);
         } else if (y > rect.height - threshold) {
-          startAutoScroll(1); // تمرير لأسفل
+          startAutoScroll(1);
         } else {
           stopAutoScroll();
         }
@@ -3517,7 +3828,6 @@
 
       adminListContainer.addEventListener("dragleave", (e) => {
         const rect = adminListContainer.getBoundingClientRect();
-        // التحقق مما إذا كان المؤشر قد خرج فعلاً من حدود القائمة
         if (
           e.clientX <= rect.left ||
           e.clientX >= rect.right ||
@@ -3718,14 +4028,12 @@
         }
       };
 
-      // ✅ دالة التبديل السريع لشارات المنتج
       window.toggleProductFlag = async function (id, field) {
         const product = globalProducts.find((p) => p.id === id);
         if (!product) return;
         const newValue = !product[field];
         product[field] = newValue;
 
-        // Optimistic UI update
         renderAdminList(globalProducts);
 
         try {
@@ -3744,7 +4052,6 @@
                 : "تم إلغاء العرض الخاص"
           );
         } catch (err) {
-          // Revert on error
           product[field] = !newValue;
           renderAdminList(globalProducts);
           showToast("حدث خطأ أثناء التحديث", true);
@@ -3785,6 +4092,10 @@
               <i class="fa-solid fa-box-open"></i>
               <strong>${t("noProducts")}</strong>
               <span>${t("noProductsSub")}</span>
+              <button type="button" class="dash-btn" style="margin-top: 16px; background: rgba(14, 165, 233, 0.1); color: var(--info); border: 1px solid rgba(14, 165, 233, 0.3); padding: 10px 20px; font-size: 0.85rem;" onclick="openImportModal()">
+                <i class="fa-solid fa-file-import"></i>
+                ${t("importExcel")}
+              </button>
             </div>
           `;
           updateStats();
@@ -3821,13 +4132,19 @@
           );
           const isFirst = originalIndex === 0;
           const isLast = originalIndex === allOrdered.length - 1;
-          const catAr = product.categoryAr || product.category || "";
-          const catEn = product.categoryEn || "";
+
+          // ✅ FIX: عرض الاسم والقسم حسب اللغة المختارة
           const catDisplay =
-            catAr && catEn && catAr !== catEn
-              ? `${catAr} / ${catEn}`
-              : catAr || catEn;
-          const img = product.images?.[0] || "";
+            currentLang === "en"
+              ? product.categoryEn || product.categoryAr || ""
+              : product.categoryAr || product.categoryEn || "";
+
+          const prodName =
+            currentLang === "en"
+              ? product.nameEn || product.nameAr || ""
+              : product.nameAr || product.nameEn || "";
+
+          const img = product.images?.[0] || PLACEHOLDER_IMAGE;
           const isSelected = selectedProducts.has(product.id);
 
           const item = document.createElement("div");
@@ -3839,18 +4156,12 @@
               <input type="checkbox" class="admin-item-checkbox" ${isSelected ? "checked" : ""} onchange="toggleProductSelection('${product.id}', this.checked)">
               <span class="admin-drag-handle" title="${t("dragToReorder")}"><i class="fa-solid fa-grip-vertical"></i></span>
               <span class="admin-order-badge">${originalIndex + 1}</span>
-              ${
-                img
-                  ? `<img src="${img}" class="admin-item-thumb" alt="" loading="lazy">`
-                  : `<span class="admin-item-thumb"><i class="fa-solid fa-image"></i></span>`
-              }
+              <img src="${img}" class="admin-item-thumb" alt="" loading="lazy">
               <div class="admin-item-info">
-                <div class="admin-item-name">${escapeHtml(getProductName(product))}</div>
+                <div class="admin-item-name">${escapeHtml(prodName)}</div>
                 <div class="admin-item-meta">
                   <span class="admin-item-price">${product.price} ${t("prices")}</span>
                   ${catDisplay ? `<span class="admin-item-category-badge" title="${escapeHtml(catDisplay)}"><i class="fa-solid fa-layer-group"></i> ${escapeHtml(catDisplay)}</span>` : ""}
-                  
-                  <!-- ✅ أزرار التبديل السريع للشارات -->
                   <button type="button" class="admin-item-tag discount ${product.hasDiscount ? "active" : "inactive"}" onclick="toggleProductFlag('${product.id}', 'hasDiscount')" title="${t("toggleDiscount")}">
                     <i class="fa-solid fa-tags"></i>
                   </button>
@@ -3893,7 +4204,6 @@
         }
 
         const data = globalProducts.map((p) => ({
-          ID: p.id,
           "الاسم (عربي)": p.nameAr || "",
           "الاسم (إنجليزي)": p.nameEn || "",
           "القسم (عربي)": p.categoryAr || "",
@@ -3905,7 +4215,9 @@
           "بلد المنشأ": p.origin || "",
           اللون: p.color || "",
           مميز: p.isFeatured ? "نعم" : "لا",
-          "عرض خاص": p.hasDiscount ? "نعم" : "لا"
+          "عرض خاص": p.hasDiscount ? "نعم" : "لا",
+          "الوصف (عربي)": p.descriptionAr || "",
+          "الوصف (إنجليزي)": p.descriptionEn || ""
         }));
 
         const ws = XLSX.utils.json_to_sheet(data);
@@ -3913,7 +4225,6 @@
         XLSX.utils.book_append_sheet(wb, ws, "Products");
 
         const wscols = [
-          { wch: 20 },
           { wch: 25 },
           { wch: 25 },
           { wch: 15 },
@@ -3921,11 +4232,13 @@
           { wch: 10 },
           { wch: 15 },
           { wch: 10 },
-          { wch: 10 },
+          { wch: 12 },
           { wch: 15 },
-          { wch: 10 },
+          { wch: 12 },
           { wch: 8 },
-          { wch: 8 }
+          { wch: 8 },
+          { wch: 30 },
+          { wch: 30 }
         ];
         ws["!cols"] = wscols;
 
@@ -3935,6 +4248,279 @@
         );
         showToast(t("exportSuccess"));
       };
+
+      window.openImportModal = function () {
+        const modal = document.getElementById("import-modal");
+        modal.style.display = "flex";
+        requestAnimationFrame(() => modal.classList.add("show"));
+      };
+
+      window.closeImportModal = function () {
+        const modal = document.getElementById("import-modal");
+        modal.classList.remove("show");
+        setTimeout(() => {
+          modal.style.display = "none";
+        }, 200);
+      };
+
+      document.getElementById("import-modal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("import-modal"))
+          closeImportModal();
+      });
+
+      window.downloadTemplate = function () {
+        try {
+          const templateData = [
+            {
+              "الاسم (عربي)": "بلاط بورسلان إسباني",
+              "الاسم (إنجليزي)": "Spanish Porcelain Tile",
+              "القسم (عربي)": "بلاط أرضيات",
+              "القسم (إنجليزي)": "Floor Tiles",
+              السعر: 45,
+              "السعر قبل الخصم": 60,
+              المقاس: "60×60",
+              "نوع السطح": "لامع",
+              "بلد المنشأ": "إسبانيا",
+              اللون: "بيج",
+              مميز: "لا",
+              "عرض خاص": "لا",
+              "الوصف (عربي)":
+                "بلاط بورسلان عالي الجودة من إسبانيا، مناسب للأرضيات الداخلية",
+              "الوصف (إنجليزي)":
+                "High quality porcelain tile from Spain, suitable for indoor floors"
+            },
+            {
+              "الاسم (عربي)": "سيراميك مطابخ إيطالي",
+              "الاسم (إنجليزي)": "Italian Kitchen Ceramic",
+              "القسم (عربي)": "سيراميك مطابخ",
+              "القسم (إنجليزي)": "Kitchen Ceramic",
+              السعر: 35,
+              "السعر قبل الخصم": 50,
+              المقاس: "30×60",
+              "نوع السطح": "مطفي",
+              "بلد المنشأ": "إيطاليا",
+              اللون: "أبيض",
+              مميز: "نعم",
+              "عرض خاص": "نعم",
+              "الوصف (عربي)": "سيراميك مطابخ إيطالي بجودة عالية",
+              "الوصف (إنجليزي)": "High quality Italian kitchen ceramic"
+            },
+            {
+              "الاسم (عربي)": "رخام طبيعي فاخر",
+              "الاسم (إنجليزي)": "Luxury Natural Marble",
+              "القسم (عربي)": "رخام",
+              "القسم (إنجليزي)": "Marble",
+              السعر: 120,
+              "السعر قبل الخصم": "",
+              المقاس: "80×80",
+              "نوع السطح": "رخامي",
+              "بلد المنشأ": "تركيا",
+              اللون: "رمادي",
+              مميز: "نعم",
+              "عرض خاص": "لا",
+              "الوصف (عربي)": "رخام طبيعي فاخر للجدران والأرضيات",
+              "الوصف (إنجليزي)": "Luxury natural marble for walls and floors"
+            }
+          ];
+
+          const ws = XLSX.utils.json_to_sheet(templateData);
+
+          const wscols = [
+            { wch: 25 },
+            { wch: 25 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 10 },
+            { wch: 15 },
+            { wch: 10 },
+            { wch: 12 },
+            { wch: 15 },
+            { wch: 12 },
+            { wch: 8 },
+            { wch: 8 },
+            { wch: 35 },
+            { wch: 35 }
+          ];
+          ws["!cols"] = wscols;
+
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Products Template");
+
+          XLSX.writeFile(
+            wb,
+            `products_template_${new Date().toISOString().split("T")[0]}.xlsx`
+          );
+          showToast(t("templateDownloaded"));
+        } catch (err) {
+          console.error("Template download error:", err);
+          showToast(t("templateError"), true);
+        }
+      };
+
+      window.triggerImportExcel = function () {
+        closeImportModal();
+        setTimeout(() => {
+          document.getElementById("import-excel-input").click();
+        }, 250);
+      };
+
+      window.handleImportExcel = async function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (!file.name.match(/\.(xlsx|xls|csv)$/i)) {
+          showToast(t("importFileFormatError"), true);
+          event.target.value = "";
+          return;
+        }
+
+        showLoading(true, t("importStarted"));
+        event.target.value = "";
+
+        try {
+          const data = await readExcelFile(file);
+          const productsToImport = parseExcelData(data);
+
+          if (productsToImport.length === 0) {
+            showToast(t("importNoData"), true);
+            showLoading(false);
+            return;
+          }
+
+          showLoading(false);
+
+          const confirmMsg = t("importConfirmMsg").replace(
+            "{count}",
+            productsToImport.length
+          );
+          const ok = await showConfirm({
+            type: "info",
+            title: t("importConfirmTitle"),
+            message: `${confirmMsg}\n\n${t("importNote")}`,
+            confirmText: t("confirm"),
+            cancelText: t("cancel")
+          });
+
+          if (!ok) return;
+
+          showLoading(true, t("importStarted"));
+
+          const addedProducts = [];
+          for (const productData of productsToImport) {
+            productData.createdAt = Date.now();
+            const newDoc = await addDoc(
+              collection(db, "products"),
+              productData
+            );
+            addedProducts.push({ id: newDoc.id, ...productData });
+          }
+
+          globalProducts = [...globalProducts, ...addedProducts];
+          localStorage.setItem(
+            PRODUCTS_CACHE_KEY,
+            JSON.stringify(globalProducts)
+          );
+
+          renderAdminList(globalProducts);
+
+          const successMsg = t("importSuccess").replace(
+            "{count}",
+            addedProducts.length
+          );
+          showToast(successMsg);
+        } catch (err) {
+          console.error("Import error:", err);
+          showToast(t("importError"), true);
+        } finally {
+          showLoading(false);
+        }
+      };
+
+      function readExcelFile(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            try {
+              const data = new Uint8Array(e.target.result);
+              const workbook = XLSX.read(data, { type: "array" });
+              const firstSheetName = workbook.SheetNames[0];
+              const worksheet = workbook.Sheets[firstSheetName];
+              const jsonData = XLSX.utils.sheet_to_json(worksheet);
+              resolve(jsonData);
+            } catch (error) {
+              reject(error);
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
+      function parseExcelData(jsonData) {
+        const products = [];
+
+        jsonData.forEach((row) => {
+          const nameAr = String(
+            row["الاسم (عربي)"] || row["nameAr"] || ""
+          ).trim();
+          const nameEn = String(
+            row["الاسم (إنجليزي)"] || row["nameEn"] || ""
+          ).trim();
+          const price = Number(row["السعر"] || row["price"] || 0);
+
+          if ((!nameAr && !nameEn) || price <= 0) return;
+
+          const categoryAr = String(
+            row["القسم (عربي)"] || row["categoryAr"] || ""
+          ).trim();
+          const categoryEn = String(
+            row["القسم (إنجليزي)"] || row["categoryEn"] || ""
+          ).trim();
+
+          const isFeaturedRaw = row["مميز"] || row["isFeatured"] || "";
+          const hasDiscountRaw = row["عرض خاص"] || row["hasDiscount"] || "";
+
+          const isFeatured =
+            String(isFeaturedRaw).trim() === "نعم" ||
+            String(isFeaturedRaw).toLowerCase() === "yes" ||
+            isFeaturedRaw === true;
+          const hasDiscount =
+            String(hasDiscountRaw).trim() === "نعم" ||
+            String(hasDiscountRaw).toLowerCase() === "yes" ||
+            hasDiscountRaw === true;
+
+          products.push({
+            nameAr: nameAr,
+            nameEn: nameEn,
+            name: nameAr || nameEn,
+            categoryAr: categoryAr,
+            categoryEn: categoryEn,
+            category: categoryAr || categoryEn,
+            price: price,
+            comparePrice: Number(
+              row["السعر قبل الخصم"] || row["comparePrice"] || 0
+            ),
+            size: String(row["المقاس"] || row["size"] || "").trim(),
+            finish: String(row["نوع السطح"] || row["finish"] || "").trim(),
+            origin: String(row["بلد المنشأ"] || row["origin"] || "").trim(),
+            color: String(row["اللون"] || row["color"] || "").trim(),
+            descriptionAr: String(
+              row["الوصف (عربي)"] || row["descriptionAr"] || ""
+            ).trim(),
+            descriptionEn: String(
+              row["الوصف (إنجليزي)"] || row["descriptionEn"] || ""
+            ).trim(),
+            description: String(
+              row["الوصف (عربي)"] || row["descriptionAr"] || ""
+            ).trim(),
+            isFeatured: isFeatured,
+            hasDiscount: hasDiscount,
+            images: [PLACEHOLDER_IMAGE]
+          });
+        });
+
+        return products;
+      }
 
       window.openPreviewModal = function (id) {
         const product = globalProducts.find((p) => p.id === id);
@@ -3948,12 +4534,10 @@
           getProductName(product);
 
         const categoryEl = document.getElementById("preview-category");
-        const catAr = product.categoryAr || product.category || "";
-        const catEn = product.categoryEn || "";
         const catDisplay =
-          catAr && catEn && catAr !== catEn
-            ? `${catAr} / ${catEn}`
-            : catAr || catEn;
+          currentLang === "en"
+            ? product.categoryEn || product.categoryAr || ""
+            : product.categoryAr || product.categoryEn || "";
         if (catDisplay) {
           categoryEl.innerHTML = `<i class="fa-solid fa-layer-group"></i> ${escapeHtml(catDisplay)}`;
           categoryEl.style.display = "inline-flex";
@@ -4034,14 +4618,8 @@
         const descSection = document.getElementById("preview-desc-section");
         const description =
           currentLang === "en"
-            ? product.descriptionEn ||
-              product.description ||
-              product.descriptionAr ||
-              ""
-            : product.descriptionAr ||
-              product.description ||
-              product.descriptionEn ||
-              "";
+            ? product.descriptionEn || product.descriptionAr || ""
+            : product.descriptionAr || product.descriptionEn || "";
         if (description) {
           document.getElementById("preview-desc").textContent = description;
           descSection.style.display = "block";
@@ -4286,15 +4864,17 @@
               showToast(t("pleaseEnterPrice"), true);
               return;
             }
-            if (!workingImagesArray.length) {
-              showToast(t("pleaseAddImage"), true);
-              return;
-            }
 
             submitBtn.disabled = true;
             showLoading(true, t("loading"));
 
-            const finalImages = workingImagesArray.map((item) => item.src);
+            let finalImages;
+            if (workingImagesArray.length === 0) {
+              finalImages = [PLACEHOLDER_IMAGE];
+            } else {
+              finalImages = workingImagesArray.map((item) => item.src);
+            }
+
             const productData = {
               nameAr,
               nameEn,
@@ -4420,7 +5000,10 @@
         document.getElementById("p-discount").checked =
           product.hasDiscount || false;
 
-        workingImagesArray = (product.images || []).map((src) => ({ src }));
+        const realImages = (product.images || []).filter(
+          (img) => img !== PLACEHOLDER_IMAGE
+        );
+        workingImagesArray = realImages.map((src) => ({ src }));
         renderWorkingImagesPreview();
         updateDiscountCalculator();
 
@@ -4493,7 +5076,10 @@
         document.getElementById("p-discount").checked =
           product.hasDiscount || false;
 
-        workingImagesArray = (product.images || []).map((src) => ({ src }));
+        const realImages = (product.images || []).filter(
+          (img) => img !== PLACEHOLDER_IMAGE
+        );
+        workingImagesArray = realImages.map((src) => ({ src }));
         renderWorkingImagesPreview();
         updateDiscountCalculator();
 
@@ -4566,6 +5152,7 @@
           cancelBtn.textContent = options.cancelText || t("cancel");
           okBtn.textContent = options.confirmText || t("confirm");
           okBtn.classList.toggle("danger", type === "danger");
+          okBtn.classList.toggle("info", type === "info");
 
           confirmModalResolver = resolve;
           modal.style.display = "flex";
@@ -4687,6 +5274,12 @@
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           if (
+            document.getElementById("import-modal").classList.contains("show")
+          ) {
+            closeImportModal();
+            return;
+          }
+          if (
             document
               .getElementById("product-preview-modal")
               .classList.contains("show")
@@ -4778,21 +5371,22 @@
         }, 200);
       });
 
-      // ✅ مستمع حدث التمرير لإظهار زر العودة للأعلى
-      adminListContainer.addEventListener("scroll", () => {
+      window.addEventListener("scroll", updateBackToTopVisibility);
+      adminListContainer.addEventListener("scroll", updateBackToTopVisibility);
+
+      function updateBackToTopVisibility() {
         const btn = document.getElementById("back-to-top-btn");
-        if (adminListContainer.scrollTop > 300) {
+        if (window.scrollY > 300 || adminListContainer.scrollTop > 300) {
           btn.classList.add("show");
         } else {
           btn.classList.remove("show");
         }
-      });
+      }
 
       window.scrollToTop = function () {
-        adminListContainer.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
-      // ✅ دوال القائمة المنسدلة المخصصة للفرز
       window.toggleSortDropdown = function (e) {
         e.stopPropagation();
         const menu = document.getElementById("sort-menu");
@@ -4802,23 +5396,14 @@
       window.selectSortOption = function (value, labelKey, e) {
         if (e) e.stopPropagation();
         currentSort = value;
-
-        // تحديث النص المعروض
         document.getElementById("sort-label").textContent = t(labelKey);
-
-        // تحديث العنصر النشط
         document.querySelectorAll(".custom-dropdown-item").forEach((item) => {
           item.classList.toggle("active", item.dataset.value === value);
         });
-
-        // إغلاق القائمة
         document.getElementById("sort-menu").classList.remove("show");
-
-        // إعادة رسم القائمة
         renderAdminList(globalProducts);
       };
 
-      // إغلاق القائمة المنسدلة عند النقر خارجها
       document.addEventListener("click", (e) => {
         const dropdown = document.getElementById("sort-dropdown-container");
         if (dropdown && !dropdown.contains(e.target)) {
