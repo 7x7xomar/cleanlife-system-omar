@@ -250,7 +250,7 @@
       #dashboard-screen {
         display: none;
         padding-bottom: 100px;
-      } /* مساحة للشريط العائم */
+      }
       #dashboard-screen.active {
         display: block;
       }
@@ -476,7 +476,7 @@
         border-radius: 18px;
         margin-bottom: 20px;
         box-shadow: var(--shadow-md);
-        overflow: hidden;
+        overflow: visible; /* ✅ FIX: تم التعديل من hidden إلى visible لمنع قص القائمة المنسدلة */
         transition: var(--transition);
       }
       .dash-section-header {
@@ -490,6 +490,8 @@
         flex-wrap: wrap;
         cursor: pointer;
         user-select: none;
+        border-top-left-radius: 17px; /* ✅ FIX: إضافة تدوير الزوايا لتعويض إزالة overflow */
+        border-top-right-radius: 17px; /* ✅ FIX: إضافة تدوير الزوايا لتعويض إزالة overflow */
       }
       .dash-section-header:hover {
         background: linear-gradient(135deg, #f5f1e6 0%, #ebe5d5 100%);
@@ -847,62 +849,107 @@
         box-shadow: 0 0 0 3px rgba(13, 76, 92, 0.08);
       }
 
-      .admin-sort-select {
-        padding: 6px 12px;
-        border-radius: 999px;
-        border: 1.5px solid var(--border);
-        background: #fcfbf8;
-        color: var(--text);
-        font-size: 0.75rem;
-        font-weight: 800;
-        outline: none;
-        cursor: pointer;
-        font-family: inherit;
-        transition: var(--transition);
+      /* ✅ تنسيق القائمة المنسدلة المخصصة للفرز */
+      .custom-dropdown {
+        position: relative;
+        display: inline-block;
+        user-select: none;
       }
-      .admin-sort-select:focus {
-        border-color: var(--primary);
-      }
-
-      .admin-filter-chips {
+      .custom-dropdown-toggle {
         display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .admin-filter-chip {
-        padding: 6px 12px;
-        border-radius: 999px;
-        border: 1.5px solid var(--border);
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
         background: #fcfbf8;
-        color: var(--text-light);
-        font-size: 0.75rem;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-size: 0.78rem;
         font-weight: 800;
+        color: var(--text);
         cursor: pointer;
         transition: var(--transition);
         font-family: inherit;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
+        white-space: nowrap;
       }
-      .admin-filter-chip:hover {
+      .custom-dropdown-toggle:hover {
         border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(13, 76, 92, 0.08);
+      }
+      .custom-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 6px);
+        inset-inline-start: 0;
+        min-width: 200px;
+        background: #fff;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        z-index: 1000;
+        display: none;
+        flex-direction: column;
+        padding: 6px;
+        animation: fadeInUp 0.2s ease;
+        overflow: hidden;
+      }
+      .custom-dropdown-menu.show {
+        display: flex;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .custom-dropdown-item {
+        padding: 10px 14px;
+        text-align: right;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: var(--transition);
+        font-family: inherit;
+        white-space: nowrap;
+      }
+      .custom-dropdown-item:hover {
+        background: rgba(13, 76, 92, 0.06);
         color: var(--primary);
       }
-      .admin-filter-chip.active {
+      .custom-dropdown-item.active {
         background: linear-gradient(
           135deg,
           var(--primary) 0%,
           var(--primary-light) 100%
         );
         color: #fff;
-        border-color: transparent;
-        box-shadow: 0 4px 12px rgba(13, 76, 92, 0.25);
+        font-weight: 800;
+      }
+      @media (max-width: 600px) {
+        .custom-dropdown {
+          width: 100%;
+        }
+        .custom-dropdown-toggle {
+          width: 100%;
+          justify-content: space-between;
+        }
+        .custom-dropdown-menu {
+          width: 100%;
+          inset-inline-start: 0;
+        }
       }
 
       .products-admin-list {
         max-height: 650px;
         overflow-y: auto;
-        padding: 4px;
+        padding: 20px 4px;
       }
       .products-admin-list::-webkit-scrollbar {
         width: 6px;
@@ -1055,22 +1102,42 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       .admin-item-tag {
         display: inline-flex;
         align-items: center;
-        gap: 3px;
-        padding: 2px 8px;
+        justify-content: center;
+        padding: 4px 8px;
         border-radius: 999px;
         font-size: 0.68rem;
         font-weight: 800;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: var(--transition);
+        font-family: inherit;
       }
-      .admin-item-tag.discount {
-        background: rgba(192, 38, 211, 0.12);
+      .admin-item-tag:hover {
+        transform: scale(1.05);
+      }
+      .admin-item-tag.discount.active {
+        background: rgba(192, 38, 211, 0.15);
         color: #c026d3;
+        border-color: rgba(192, 38, 211, 0.3);
       }
-      .admin-item-tag.featured {
+      .admin-item-tag.discount.inactive {
+        background: #f1f0eb;
+        color: #94a3b8;
+        opacity: 0.6;
+      }
+      .admin-item-tag.featured.active {
         background: rgba(201, 169, 97, 0.2);
         color: var(--accent-dark);
+        border-color: rgba(201, 169, 97, 0.4);
+      }
+      .admin-item-tag.featured.inactive {
+        background: #f1f0eb;
+        color: #94a3b8;
+        opacity: 0.6;
       }
 
       .admin-move-group {
@@ -1158,7 +1225,6 @@
         transform: translateY(-1px);
       }
 
-      /* ✅ تنسيق شريط الإجراءات العائم (Bulk Actions) */
       .bulk-actions-bar {
         position: fixed;
         bottom: 20px;
@@ -1209,13 +1275,41 @@
         background: rgba(255, 255, 255, 0.2);
       }
 
-      /* ✅ تنسيق مربع الاختيار (Checkbox) */
       .admin-item-checkbox {
         width: 20px;
         height: 20px;
         cursor: pointer;
         accent-color: var(--accent);
         flex-shrink: 0;
+      }
+
+      /* ✅ زر العودة للأعلى */
+      .back-to-top-btn {
+        position: fixed;
+        bottom: 80px;
+        left: 20px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: #fff;
+        border: 2px solid var(--accent);
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        transition: var(--transition);
+        font-size: 1.1rem;
+      }
+      .back-to-top-btn.show {
+        display: flex;
+      }
+      .back-to-top-btn:hover {
+        background: var(--accent);
+        color: #2a1f08;
+        transform: translateY(-3px);
       }
 
       @media (max-width: 768px) {
@@ -2376,49 +2470,72 @@
                 />
               </div>
 
-              <select id="admin-sort" class="admin-sort-select">
-                <option value="default" data-i18n="sortDefault">
-                  الترتيب الافتراضي
-                </option>
-                <option value="price-asc" data-i18n="sortPriceAsc">
-                  السعر: من الأقل للأعلى
-                </option>
-                <option value="price-desc" data-i18n="sortPriceDesc">
-                  السعر: من الأعلى للأقل
-                </option>
-                <option value="name-asc" data-i18n="sortNameAsc">
-                  الاسم: أ - ي
-                </option>
-                <option value="newest" data-i18n="sortNewest">
-                  الأحدث أولاً
-                </option>
-              </select>
-
-              <div class="admin-filter-chips">
+              <!-- ✅ القائمة المنسدلة المخصصة للفرز -->
+              <div class="custom-dropdown" id="sort-dropdown-container">
                 <button
-                  class="admin-filter-chip active"
-                  data-filter="all"
-                  onclick="setAdminFilter('all')"
+                  type="button"
+                  class="custom-dropdown-toggle"
+                  id="sort-toggle"
+                  onclick="toggleSortDropdown(event)"
                 >
-                  <i class="fa-solid fa-border-all"></i>
-                  <span data-i18n="all">الكل</span>
+                  <i class="fa-solid fa-arrow-down-wide-short"></i>
+                  <span id="sort-label">الترتيب الافتراضي</span>
+                  <i
+                    class="fa-solid fa-chevron-down"
+                    style="font-size: 0.7rem"
+                  ></i>
                 </button>
-                <button
-                  class="admin-filter-chip"
-                  data-filter="featured"
-                  onclick="setAdminFilter('featured')"
-                >
-                  <i class="fa-solid fa-star"></i>
-                  <span data-i18n="featured">مميز</span>
-                </button>
-                <button
-                  class="admin-filter-chip"
-                  data-filter="discount"
-                  onclick="setAdminFilter('discount')"
-                >
-                  <i class="fa-solid fa-tags"></i>
-                  <span data-i18n="specialOffer">عرض خاص</span>
-                </button>
+                <div class="custom-dropdown-menu" id="sort-menu">
+                  <button
+                    type="button"
+                    class="custom-dropdown-item active"
+                    data-value="default"
+                    data-i18n="sortDefault"
+                    onclick="selectSortOption('default', 'sortDefault', event)"
+                  >
+                    الترتيب الافتراضي
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-dropdown-item"
+                    data-value="price-asc"
+                    data-i18n="sortPriceAsc"
+                    onclick="
+                      selectSortOption('price-asc', 'sortPriceAsc', event)
+                    "
+                  >
+                    السعر: من الأقل للأعلى
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-dropdown-item"
+                    data-value="price-desc"
+                    data-i18n="sortPriceDesc"
+                    onclick="
+                      selectSortOption('price-desc', 'sortPriceDesc', event)
+                    "
+                  >
+                    السعر: من الأعلى للأقل
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-dropdown-item"
+                    data-value="name-asc"
+                    data-i18n="sortNameAsc"
+                    onclick="selectSortOption('name-asc', 'sortNameAsc', event)"
+                  >
+                    الاسم: أ - ي
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-dropdown-item"
+                    data-value="newest"
+                    data-i18n="sortNewest"
+                    onclick="selectSortOption('newest', 'sortNewest', event)"
+                  >
+                    الأحدث أولاً
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -2439,6 +2556,16 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
+
+    <!-- ✅ زر العودة للأعلى -->
+    <button
+      id="back-to-top-btn"
+      class="back-to-top-btn"
+      onclick="scrollToTop()"
+      title="العودة للأعلى"
+    >
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
 
     <!-- مودال معاينة المنتج داخل الداشبورد -->
     <div id="product-preview-modal">
@@ -2711,7 +2838,9 @@
           sortHint: "التعديل والترتيب متاح فقط في وضع 'الترتيب الافتراضي'",
           deleteSelected: "حذف المحدد",
           selectedCount: "منتجات محددة",
-          bulkDeleteConfirm: "سيتم حذف المنتجات المحددة نهائياً. هل أنت متأكد؟"
+          bulkDeleteConfirm: "سيتم حذف المنتجات المحددة نهائياً. هل أنت متأكد؟",
+          toggleFeatured: "تبديل التمييز",
+          toggleDiscount: "تبديل العرض الخاص"
         },
         en: {
           loginTitle: "Dashboard",
@@ -2851,7 +2980,9 @@
           deleteSelected: "Delete Selected",
           selectedCount: "products selected",
           bulkDeleteConfirm:
-            "Selected products will be permanently deleted. Are you sure?"
+            "Selected products will be permanently deleted. Are you sure?",
+          toggleFeatured: "Toggle Featured",
+          toggleDiscount: "Toggle Special Offer"
         }
       };
 
@@ -2878,6 +3009,23 @@
 
         const adminSearch = document.getElementById("admin-search");
         if (adminSearch) adminSearch.placeholder = t("searchAdmin");
+
+        // تحديث نصوص القائمة المنسدلة للفرز
+        document.querySelectorAll(".custom-dropdown-item").forEach((item) => {
+          const key = item.getAttribute("data-i18n");
+          if (key) item.textContent = t(key);
+        });
+
+        const sortLabel = document.getElementById("sort-label");
+        if (sortLabel) {
+          const activeItem = document.querySelector(
+            ".custom-dropdown-item.active"
+          );
+          if (activeItem) {
+            const key = activeItem.getAttribute("data-i18n");
+            sortLabel.textContent = t(key);
+          }
+        }
 
         if (
           typeof globalProducts !== "undefined" &&
@@ -2914,7 +3062,7 @@
       let previewImages = [];
       let previewCurrentIndex = 0;
       let previewProductId = null;
-      let selectedProducts = new Set(); // ✅ لتخزين المنتجات المحددة
+      let selectedProducts = new Set();
 
       // ═══════════ أدوات مساعدة ═══════════
       function escapeHtml(value) {
@@ -3281,6 +3429,7 @@
           document
             .querySelectorAll("#admin-list-container .admin-item")
             .forEach((el) => el.classList.remove("drag-over"));
+          stopAutoScroll();
         });
         item.addEventListener("dragover", (e) => {
           e.preventDefault();
@@ -3316,14 +3465,74 @@
             .map((p, i) => ({ ...p, sortOrder: i + 1 }));
           renderAdminList(globalProducts);
           markAdminOrderDirty(true);
+          stopAutoScroll();
         });
       }
 
+      // ✅ FIX: نظام التمرير التلقائي باستخدام requestAnimationFrame لضمان العمل بسلاسة
+      let scrollAnimationFrame = null;
+      let currentScrollDirection = 0; // 0 = none, -1 = up, 1 = down
+      const adminListContainer = document.getElementById(
+        "admin-list-container"
+      );
+
+      function performAutoScroll() {
+        if (currentScrollDirection !== 0 && adminListContainer) {
+          adminListContainer.scrollTop += currentScrollDirection * 12; // سرعة التمرير
+        }
+        scrollAnimationFrame = requestAnimationFrame(performAutoScroll);
+      }
+
+      function startAutoScroll(direction) {
+        currentScrollDirection = direction;
+        if (!scrollAnimationFrame) {
+          scrollAnimationFrame = requestAnimationFrame(performAutoScroll);
+        }
+      }
+
+      function stopAutoScroll() {
+        currentScrollDirection = 0;
+        if (scrollAnimationFrame) {
+          cancelAnimationFrame(scrollAnimationFrame);
+          scrollAnimationFrame = null;
+        }
+      }
+
+      adminListContainer.addEventListener("dragover", (e) => {
+        e.preventDefault(); // ضروري للسماح بالإفلات
+        if (!draggedAdminItemId || currentSort !== "default") return;
+
+        const rect = adminListContainer.getBoundingClientRect();
+        const threshold = 80; // مسافة الحافة لبدء التمرير
+        const y = e.clientY - rect.top;
+
+        if (y < threshold) {
+          startAutoScroll(-1); // تمرير لأعلى
+        } else if (y > rect.height - threshold) {
+          startAutoScroll(1); // تمرير لأسفل
+        } else {
+          stopAutoScroll();
+        }
+      });
+
+      adminListContainer.addEventListener("dragleave", (e) => {
+        const rect = adminListContainer.getBoundingClientRect();
+        // التحقق مما إذا كان المؤشر قد خرج فعلاً من حدود القائمة
+        if (
+          e.clientX <= rect.left ||
+          e.clientX >= rect.right ||
+          e.clientY <= rect.top ||
+          e.clientY >= rect.bottom
+        ) {
+          stopAutoScroll();
+        }
+      });
+
+      document.addEventListener("dragend", stopAutoScroll);
+      document.addEventListener("drop", stopAutoScroll);
+
       window.setAdminFilter = function (mode) {
         adminFilterMode = mode;
-        document.querySelectorAll(".admin-filter-chip").forEach((chip) => {
-          chip.classList.toggle("active", chip.dataset.filter === mode);
-        });
         renderAdminList(globalProducts);
       };
 
@@ -3431,7 +3640,6 @@
         }
         updateBulkActionsBar();
 
-        // تحديث واجهة العنصر
         const item = document.querySelector(
           `.admin-item[data-product-id="${id}"]`
         );
@@ -3510,6 +3718,39 @@
         }
       };
 
+      // ✅ دالة التبديل السريع لشارات المنتج
+      window.toggleProductFlag = async function (id, field) {
+        const product = globalProducts.find((p) => p.id === id);
+        if (!product) return;
+        const newValue = !product[field];
+        product[field] = newValue;
+
+        // Optimistic UI update
+        renderAdminList(globalProducts);
+
+        try {
+          await updateDoc(doc(db, "products", id), { [field]: newValue });
+          localStorage.setItem(
+            PRODUCTS_CACHE_KEY,
+            JSON.stringify(globalProducts)
+          );
+          showToast(
+            field === "isFeatured"
+              ? newValue
+                ? "تم تمييز المنتج"
+                : "تم إلغاء التمييز"
+              : newValue
+                ? "تم تفعيل العرض الخاص"
+                : "تم إلغاء العرض الخاص"
+          );
+        } catch (err) {
+          // Revert on error
+          product[field] = !newValue;
+          renderAdminList(globalProducts);
+          showToast("حدث خطأ أثناء التحديث", true);
+        }
+      };
+
       function renderAdminList(products) {
         const container = document.getElementById("admin-list-container");
         if (!container) return;
@@ -3561,7 +3802,6 @@
           return;
         }
 
-        // ✅ إضافة رأس القائمة مع "تحديد الكل"
         const listHeader = document.createElement("div");
         listHeader.style.cssText =
           "display: flex; align-items: center; gap: 10px; padding: 8px 12px; margin-bottom: 8px; background: #fbf9f4; border-radius: 10px; border: 1px solid var(--border);";
@@ -3609,8 +3849,14 @@
                 <div class="admin-item-meta">
                   <span class="admin-item-price">${product.price} ${t("prices")}</span>
                   ${catDisplay ? `<span class="admin-item-category-badge" title="${escapeHtml(catDisplay)}"><i class="fa-solid fa-layer-group"></i> ${escapeHtml(catDisplay)}</span>` : ""}
-                  ${product.hasDiscount ? `<span class="admin-item-tag discount"><i class="fa-solid fa-tags"></i> ${t("specialOffer")}</span>` : ""}
-                  ${product.isFeatured ? `<span class="admin-item-tag featured"><i class="fa-solid fa-star"></i> ${t("featured")}</span>` : ""}
+                  
+                  <!-- ✅ أزرار التبديل السريع للشارات -->
+                  <button type="button" class="admin-item-tag discount ${product.hasDiscount ? "active" : "inactive"}" onclick="toggleProductFlag('${product.id}', 'hasDiscount')" title="${t("toggleDiscount")}">
+                    <i class="fa-solid fa-tags"></i>
+                  </button>
+                  <button type="button" class="admin-item-tag featured ${product.isFeatured ? "active" : "inactive"}" onclick="toggleProductFlag('${product.id}', 'isFeatured')" title="${t("toggleFeatured")}">
+                    <i class="fa-solid fa-star"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -3640,7 +3886,6 @@
         updateStats();
       }
 
-      // ✅ تصدير إلى Excel حقيقي (XLSX)
       window.exportToExcel = function () {
         if (globalProducts.length === 0) {
           showToast(t("noExportData"), true);
@@ -3667,7 +3912,6 @@
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Products");
 
-        // ضبط عرض الأعمدة ليكون مناسباً
         const wscols = [
           { wch: 20 },
           { wch: 25 },
@@ -4534,9 +4778,52 @@
         }, 200);
       });
 
-      document.getElementById("admin-sort").addEventListener("change", (e) => {
-        currentSort = e.target.value;
+      // ✅ مستمع حدث التمرير لإظهار زر العودة للأعلى
+      adminListContainer.addEventListener("scroll", () => {
+        const btn = document.getElementById("back-to-top-btn");
+        if (adminListContainer.scrollTop > 300) {
+          btn.classList.add("show");
+        } else {
+          btn.classList.remove("show");
+        }
+      });
+
+      window.scrollToTop = function () {
+        adminListContainer.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      // ✅ دوال القائمة المنسدلة المخصصة للفرز
+      window.toggleSortDropdown = function (e) {
+        e.stopPropagation();
+        const menu = document.getElementById("sort-menu");
+        menu.classList.toggle("show");
+      };
+
+      window.selectSortOption = function (value, labelKey, e) {
+        if (e) e.stopPropagation();
+        currentSort = value;
+
+        // تحديث النص المعروض
+        document.getElementById("sort-label").textContent = t(labelKey);
+
+        // تحديث العنصر النشط
+        document.querySelectorAll(".custom-dropdown-item").forEach((item) => {
+          item.classList.toggle("active", item.dataset.value === value);
+        });
+
+        // إغلاق القائمة
+        document.getElementById("sort-menu").classList.remove("show");
+
+        // إعادة رسم القائمة
         renderAdminList(globalProducts);
+      };
+
+      // إغلاق القائمة المنسدلة عند النقر خارجها
+      document.addEventListener("click", (e) => {
+        const dropdown = document.getElementById("sort-dropdown-container");
+        if (dropdown && !dropdown.contains(e.target)) {
+          document.getElementById("sort-menu")?.classList.remove("show");
+        }
       });
 
       document
