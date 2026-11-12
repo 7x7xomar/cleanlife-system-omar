@@ -301,8 +301,18 @@
         border-radius: 18px; padding: 14px 12px; margin: 12px 0;
         box-shadow: var(--shadow-md);
       }
-      .filter-top-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
-      .filter-search { flex: 1; min-width: 0; position: relative; }
+      
+      /* ✅ Updated Filter Row */
+      .filter-top-row { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        margin-bottom: 12px; 
+      }
+      .filter-search { 
+        width: 100%; 
+        position: relative; 
+      }
       .filter-search i {
         position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
         color: var(--primary); pointer-events: none; font-size: 0.85rem;
@@ -316,27 +326,43 @@
       }
       .filter-search input::placeholder { color: var(--text-dim); }
       .filter-search input:focus { border-color: var(--primary); background: rgba(16, 185, 129, 0.06); }
+      
+      .filter-actions-row {
+        display: flex;
+        gap: 10px;
+      }
+      
+      .filter-category-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 44px;
+        border: 1.5px solid var(--border); 
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04); 
+        color: var(--accent-light);
+        padding: 0 14px; 
+        font-size: 0.82rem; 
+        font-weight: 800; 
+        outline: none; 
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .filter-category-btn:hover { border-color: var(--primary); background: rgba(16, 185, 129, 0.08); }
+      .filter-category-btn i { color: var(--primary); font-size: 0.9rem; }
+      .filter-category-btn .btn-text { flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      html[dir="ltr"] .filter-category-btn .btn-text { text-align: left; }
+      .filter-category-btn .fa-chevron-down { font-size: 0.7rem; color: var(--text-light); }
+
       .filter-sort {
+        flex: 0 0 auto;
         height: 44px; border: 1.5px solid var(--border); border-radius: 12px;
         background: rgba(255, 255, 255, 0.04); color: var(--accent-light);
-        padding: 0 12px; font-size: 0.78rem; font-weight: 700; outline: none; cursor: pointer;
+        padding: 0 12px; font-size: 0.8rem; font-weight: 700; outline: none; cursor: pointer;
       }
       .filter-sort option { background: #1e1e26; }
-      .category-filters {
-        display: flex; gap: 8px; overflow-x: auto;
-        scrollbar-width: none; padding: 2px 1px 4px;
-      }
-      .category-filters::-webkit-scrollbar { display: none; }
-      .category-chip {
-        flex: 0 0 auto; border: 1.5px solid var(--border);
-        background: rgba(255, 255, 255, 0.03); color: var(--text-light);
-        border-radius: 999px; padding: 8px 16px; font-size: 0.78rem;
-        font-weight: 800; cursor: pointer; white-space: nowrap;
-      }
-      .category-chip.active {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        color: #ffffff; border-color: transparent;
-      }
+      
       .filter-result-row {
         display: flex; align-items: center; justify-content: space-between;
         gap: 8px; margin-top: 10px; color: var(--text-light); font-size: 0.72rem;
@@ -344,6 +370,93 @@
       .clear-filters-btn {
         border: 0; background: transparent; color: var(--primary);
         font-weight: 800; cursor: pointer; font-size: 0.72rem;
+      }
+
+      /* ✅ Category Modal */
+      #category-modal {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(6px);
+        z-index: 1050; justify-content: center; align-items: flex-end; padding: 0;
+      }
+      @media (min-width: 768px) {
+        #category-modal { align-items: center; padding: 1rem; }
+      }
+      
+      .category-modal-content {
+        background: linear-gradient(160deg, #1e1e26 0%, #0a0a0f 100%);
+        width: 100%; max-width: 520px; border-radius: 24px 24px 0 0;
+        overflow: hidden; display: flex; flex-direction: column;
+        max-height: 85vh; box-shadow: var(--shadow-lg);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-bottom: none; position: relative; min-height: 0;
+        animation: slideUpModal 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+      }
+      @keyframes slideUpModal {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+      @media (min-width: 768px) {
+        .category-modal-content {
+          border-radius: 20px; border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+          animation: fadeInModal 0.25s ease;
+        }
+      }
+      @keyframes fadeInModal {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+
+      .category-modal-body {
+        padding: 18px; overflow-y: auto; flex-grow: 1; min-height: 0;
+      }
+      
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      @media (min-width: 500px) {
+        .category-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+      
+      .category-btn {
+        display: flex; align-items: center; gap: 8px;
+        padding: 14px 12px; 
+        background: rgba(255, 255, 255, 0.03);
+        border: 1.5px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: 0.85rem; font-weight: 700;
+        font-family: inherit; cursor: pointer;
+        text-align: right;
+        transition: all 0.2s;
+      }
+      html[dir="ltr"] .category-btn { text-align: left; }
+      
+      .category-btn i {
+        color: var(--text-dim);
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+      
+      .category-btn span {
+        flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      
+      .category-btn:hover {
+        background: rgba(16, 185, 129, 0.08);
+        border-color: var(--primary);
+      }
+      
+      .category-btn.active {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+        border-color: var(--primary);
+        color: var(--accent-light);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+      }
+      
+      .category-btn.active i {
+        color: var(--primary);
       }
 
       .products-grid {
@@ -455,7 +568,6 @@
         color: #ffffff; border-color: transparent;
       }
 
-      /* ✅ Load More Button */
       .load-more-wrapper {
         grid-column: 1 / -1;
         display: flex; flex-direction: column;
@@ -1705,20 +1817,27 @@
       </div>
 
       <div class="products-toolbar">
+        <!-- ✅ تحديث شريط البحث والفلترة -->
         <div class="filter-top-row">
           <div class="filter-search">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input id="product-search" type="search" placeholder="ابحث عن منتج..." />
           </div>
-          <select id="product-sort" class="filter-sort">
-            <option value="manual" id="sort-manual-opt">الأحدث</option>
-            <option value="price-low" id="sort-pricelow-opt">السعر: من الأقل</option>
-            <option value="price-high" id="sort-pricehigh-opt">السعر: من الأعلى</option>
-            <option value="discount" id="sort-discount-opt">عرض خاص</option>
-            <option value="featured" id="sort-featured-opt">المميزة أولاً</option>
-          </select>
+          <div class="filter-actions-row">
+            <button type="button" class="filter-category-btn" onclick="openCategoryModal()">
+              <i class="fa-solid fa-layer-group"></i>
+              <span class="btn-text" id="category-filter-btn-text">كل الفئات</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <select id="product-sort" class="filter-sort">
+              <option value="manual" id="sort-manual-opt">الأحدث</option>
+              <option value="price-low" id="sort-pricelow-opt">السعر: من الأقل</option>
+              <option value="price-high" id="sort-pricehigh-opt">السعر: من الأعلى</option>
+              <option value="discount" id="sort-discount-opt">عرض خاص</option>
+              <option value="featured" id="sort-featured-opt">المميزة أولاً</option>
+            </select>
+          </div>
         </div>
-        <div id="category-filters" class="category-filters"></div>
         <div class="filter-result-row">
           <span id="filter-result-count">عرض جميع المنتجات</span>
           <button id="clear-filters-btn" class="clear-filters-btn" style="display: none">مسح الفلاتر</button>
@@ -1729,6 +1848,25 @@
         <div id="products-grid" class="products-grid"></div>
       </section>
     </main>
+
+    <!-- ✅ نافذة الفئات المنبثقة -->
+    <div id="category-modal">
+      <div class="category-modal-content">
+        <div class="cart-modal-header">
+          <h2 id="category-modal-title" style="font-size: 1.1rem; font-weight: 800; color: var(--accent-light);">
+            <i class="fa-solid fa-layer-group"></i> تصفح الأقسام
+          </h2>
+          <button class="close-modal" style="position: static" onclick="closeCategoryModal()" aria-label="close">
+            &times;
+          </button>
+        </div>
+        <div class="category-modal-body">
+          <div class="category-grid" id="category-list-container">
+            <!-- سيتم توليد الأقسام هنا بواسطة JS -->
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div id="floating-cart-bar" class="floating-cart-bar hidden" onclick="openCartModal()">
       <div class="fc-info">
@@ -2318,6 +2456,8 @@
           brandTitle: BRAND_NAME_AR,
           brandSubtitle: BRAND_SUB_AR,
           all: "الكل",
+          allCategories: "كل الفئات",
+          selectCategory: "تصفح الأقسام",
           share: "مشاركة",
           orderWhatsapp: "اطلب الآن عبر الواتساب",
           currency: "ريال سعودي",
@@ -2508,6 +2648,8 @@
           brandTitle: BRAND_NAME_EN,
           brandSubtitle: BRAND_SUB_EN,
           all: "All",
+          allCategories: "All Categories",
+          selectCategory: "Select Category",
           share: "Share",
           orderWhatsapp: "Order Now via WhatsApp",
           currency: "SAR",
@@ -3164,39 +3306,80 @@
         return [...categoriesMap.values()].sort((a, b) => a.ar.localeCompare(b.ar, "ar", { sensitivity: "base" }));
       }
 
+      window.openCategoryModal = function() {
+        const modal = document.getElementById("category-modal");
+        if (modal) modal.style.display = "flex";
+      };
+
+      window.closeCategoryModal = function() {
+        const modal = document.getElementById("category-modal");
+        if (modal) modal.style.display = "none";
+      };
+
+      // Close category modal when clicking outside
+      document.getElementById("category-modal")?.addEventListener("click", (e) => {
+        if (e.target === document.getElementById("category-modal")) closeCategoryModal();
+      });
+
+      function updateCategoryBtnText() {
+        const btnText = document.getElementById("category-filter-btn-text");
+        if (!btnText) return;
+        if (activeCategoryFilter === "all") {
+          btnText.textContent = t("allCategories");
+        } else {
+          const cats = getProductCategories(globalProducts);
+          const found = cats.find(c => c.ar.toLocaleLowerCase("ar") === activeCategoryFilter.toLocaleLowerCase("ar"));
+          btnText.textContent = found ? (currentLanguage === "en" ? found.en : found.ar) : t("allCategories");
+        }
+      }
+
       function renderCategoryFilters(products = globalProducts) {
-        const container = document.getElementById("category-filters");
+        const container = document.getElementById("category-list-container");
         if (!container) return;
         const categories = getProductCategories(products);
+        
+        // Reset if current category no longer exists
         const currentExists = activeCategoryFilter === "all" ||
           categories.some((cat) => cat.ar.toLocaleLowerCase("ar") === activeCategoryFilter.toLocaleLowerCase("ar"));
         if (!currentExists) { activeCategoryFilter = "all"; currentActiveCategory = "all"; }
+        
         container.innerHTML = "";
-        const allChip = document.createElement("button");
-        allChip.type = "button";
-        allChip.className = "category-chip" + (activeCategoryFilter === "all" ? " active" : "");
-        allChip.innerHTML = `<i class="fa-solid fa-border-all"></i> ${t("all")}`;
-        allChip.onclick = () => {
+        
+        // "All" Button
+        const allBtn = document.createElement("button");
+        allBtn.type = "button";
+        allBtn.className = "category-btn" + (activeCategoryFilter === "all" ? " active" : "");
+        allBtn.innerHTML = `<i class="fa-solid fa-border-all"></i> <span>${t("all")}</span>`;
+        allBtn.onclick = () => {
           activeCategoryFilter = "all"; currentActiveCategory = "all";
           resetProductsPagination();
-          renderCategoryFilters(globalProducts); renderProducts(globalProducts);
+          updateCategoryBtnText();
+          renderCategoryFilters(globalProducts); 
+          renderProducts(globalProducts);
+          closeCategoryModal();
           window.scrollToProductsTop();
         };
-        container.appendChild(allChip);
+        container.appendChild(allBtn);
+        
+        // Other Categories
         categories.forEach((cat) => {
-          const chip = document.createElement("button");
-          chip.type = "button";
-          chip.className = "category-chip" +
-            (activeCategoryFilter.toLocaleLowerCase("ar") === cat.ar.toLocaleLowerCase("ar") ? " active" : "");
-          chip.textContent = currentLanguage === "en" ? cat.en || cat.ar : cat.ar;
-          chip.onclick = () => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "category-btn" + (activeCategoryFilter.toLocaleLowerCase("ar") === cat.ar.toLocaleLowerCase("ar") ? " active" : "");
+          btn.innerHTML = `<i class="fa-solid fa-tag"></i> <span>${currentLanguage === "en" ? cat.en || cat.ar : cat.ar}</span>`;
+          btn.onclick = () => {
             activeCategoryFilter = cat.ar; currentActiveCategory = cat.ar;
             resetProductsPagination();
-            renderCategoryFilters(globalProducts); renderProducts(globalProducts);
+            updateCategoryBtnText();
+            renderCategoryFilters(globalProducts); 
+            renderProducts(globalProducts);
+            closeCategoryModal();
             window.scrollToProductsTop();
           };
-          container.appendChild(chip);
+          container.appendChild(btn);
         });
+
+        updateCategoryBtnText();
       }
 
       function getFilteredProducts(products) {
@@ -3400,7 +3583,6 @@
           if (images.length > 1) attachImageSwipe(card);
         });
 
-        /* ✅ Load More Button */
         if (hasMore) {
           const remaining = allFiltered.length - displayedProducts.length;
           const wrapper = document.createElement("div");
@@ -3498,6 +3680,11 @@
         document.getElementById("trust-original").textContent = t("trustOriginal");
         document.getElementById("trust-cod").textContent = t("trustCod");
         document.getElementById("trust-return").textContent = t("trustReturn");
+
+        const categoryModalTitle = document.getElementById("category-modal-title");
+        if (categoryModalTitle) {
+          categoryModalTitle.innerHTML = `<i class="fa-solid fa-layer-group"></i> ${t("selectCategory")}`;
+        }
 
         const privacyBannerText = document.getElementById("privacy-banner-text");
         if (privacyBannerText) {
