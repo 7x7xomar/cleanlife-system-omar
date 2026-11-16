@@ -1806,7 +1806,8 @@
             <strong id="join-banner-title">هل تريد متجر إلكتروني مثل هذا؟</strong>
             <span id="join-banner-subtitle">نصمم لك متجرك الاحترافي بأسعار مناسبة</span>
           </div>
-          <a href="https://wa.me/966536980662" class="join-banner-btn" target="_blank">
+          <!-- ✅ تم تعديل الرابط لإرسال رسالة واتساب مع اسم المتجر -->
+          <a href="https://wa.me/966536980662?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%85%D8%AA%D8%AC%D8%B1%D8%A7%D9%8B%20%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D8%A7%D9%8B%20%D9%85%D8%AB%D9%84%20%D9%87%D8%B0%D8%A7.%20(%D9%85%D8%B9%D8%B1%D9%81%20%D8%A7%D9%84%D9%85%D8%AA%D8%AC%D8%B1%3A%20binco-shoes)" class="join-banner-btn" target="_blank">
             <i class="fa-brands fa-whatsapp"></i>
             <span id="join-banner-btn-text">انضم</span>
           </a>
@@ -1814,7 +1815,6 @@
       </div>
 
       <div class="products-toolbar">
-        <!-- ✅ تحديث شريط البحث والفلترة -->
         <div class="filter-top-row">
           <div class="filter-search">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -1846,7 +1846,6 @@
       </section>
     </main>
 
-    <!-- ✅ نافذة الفئات المنبثقة -->
     <div id="category-modal">
       <div class="category-modal-content">
         <div class="cart-modal-header">
@@ -2352,15 +2351,15 @@
         onAuthStateChanged, setPersistence, browserLocalPersistence
       } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-      // ⚠️ تأكد من أن هذه الإعدادات تخص متجر الأحذية (بيانكو شوز)
+      // ✅ قاعدة البيانات الصحيحة الخاصة بمتجر بيانكو شوز
       const firebaseConfig = {
-        apiKey: "AIzaSyBNMn_ETaCsgZuzOe7lxoNvC_71jKT1a4M",
-        authDomain: "dawaa-alarab.firebaseapp.com",
-        projectId: "dawaa-alarab",
-        storageBucket: "dawaa-alarab.firebasestorage.app",
-        messagingSenderId: "1028416576715",
-        appId: "1:1028416576715:web:8091c7e2b5ebb56bcd4f4e",
-        measurementId: "G-B2EQ7GVZB6"
+        apiKey: "AIzaSyDlXW0rPn-nea1eQM2u9SCO4BJg7ZD6Ro0",
+        authDomain: "binco-shoes.firebaseapp.com",
+        projectId: "binco-shoes",
+        storageBucket: "binco-shoes.firebasestorage.app",
+        messagingSenderId: "1063091804123",
+        appId: "1:1063091804123:web:a16505779825448c0e39fe",
+        measurementId: "G-THZR74VXBW"
       };
 
       const PHONE_NUMBER = "966536980662";
